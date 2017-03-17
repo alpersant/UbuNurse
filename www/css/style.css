@@ -1,0 +1,14 @@
+
+
+th {
+	background: #ABABAB;
+    border-bottom: 3px solid #0D0D0D;
+	align-content: center;
+	
+
+}
+
+tr:nth-child(even) {
+    background: #C9E1E7;
+	border-radius: 12px;
+}
