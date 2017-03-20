@@ -13,7 +13,7 @@
     <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
    <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
    <script type="text/javascript"></script>
-   <title>Hello World</title>
+   <title>UbuNurse</title>
 </head>
 
 <body >
@@ -122,7 +122,8 @@
   <div data-role="controlgroup" data-type="horizontal">
  
   <input type="reset" value="Restablecer" />
-   <a href="#page_test" data-role="button">Inciar</a>
+  <a href="barthel.html" data-role="button">Iniciar</a>
+   
   </div>
   
   
@@ -202,26 +203,37 @@
   
   </div>
   </div>  
+  
 <!--Página ayuda-->
 <div data-role="page" id="page_help" data-theme="c">
   <div data-role="header">
   <a href="#page_inicio" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
     <h1>AYUDA</h1>
   </div>
-  <div data-role="content">Contenido</div>
+  <div data-role="content">
+	
+	</div>
   <div data-role="footer" data-position="fixed">
      <h4>Copyright@2017 <a href="#page_contact" data-role="link">Contacto</a> </h4>
   </div>
 </div>
-<!--Página Contacto
-<div data-role="page" id="page_histTest" data-theme="d">
+<!--Página Contacto --> 
+<div data-role="page" id="page_contact" data-theme="d">
   <div data-role="header">
 	<a href="#page_inicio" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
     <h1>FORMULARIO DE CONTACTO</h1>
   </div>
-  <div data-role="content">Contenido</div>
+  <div data-role="content">
+  <div data-role="fieldcontain">
+          <input type="text" name="ti_asunto" id="ti_asunto" value="" placeholder="Asunto"  />
+        </div>
+        <div data-role="fieldcontain">
+          <textarea cols="40" rows="8" name="ta_body" id="ta_body" placeholder="Este es el cuerpo del mensaje..."></textarea>
+        </div>
+        <button id="btn_enviar_mail">Enviar</button>
   </div>
--->  
+  </div>
+ 
 </body>
 
 </html>
