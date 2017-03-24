@@ -12,7 +12,7 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
    <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
-   <script type="text/javascript"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
    <title>UbuNurse</title>
 </head>
 
@@ -40,24 +40,64 @@
   </div>
   <div data-role="content">
   <!--Datos del paciente-->
-   PACIENTE
-  <label for="search">Buscar paciente:</label>
-  <input type="search" name="search" id="search_paciente" value="" placeholder="Buscar..." />
-  <div data-role="fieldcontain">
-    <label for="textarea">Nombre:</label>
+  
+  <table data-role="table" data-filter="true" data-filter-placeholder="Buscar paciente.." class="ui-responsive ui-shadow" id="myTable" >
+      <thead>
+        <tr>
+          <th data-priority="1">CIP</th>
+          <th data-priority="2">Nombre</th>
+          
+          <th data-priority="4">Fecha</th>
+          <th data-priority="5">Seleccionar</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CYL1234567890</td>
+          <td>Ávaro Pérez</td>
+          <td>17/03/2017</td>
+          <td><div data-role="fieldcontain">
+            <fieldset data-role="controlgroup">
+              
+              <input type="checkbox" name="checkbox_CYL11" id="checkbox_paciente_1" class="custom" value="" />
+              
+            </fieldset>
+          </div></td>
+          
+          
+        </tr>
+        <tr>
+          <td>CYL1234567890</td>
+          <td>Junjo Pedrosa</td>
+          
+          <td>16/03/2017</td>
+          <td><div data-role="fieldcontain">
+            <fieldset data-role="controlgroup">
+              
+              <input type="checkbox" name="checkbox_CYL12" id="checkbox_paciente_2" class="custom" value="" />
+              
+            </fieldset>
+          </div></td>
+          
+          
+        </tr>
+        
+      </tbody>
+    </table>
+<button data-icon="plus" data-iconpos="left" onClick="displayNuevo()">Nuevo paciente</button>
+  
+<div data-role="fieldcontain" class="oculto" id="nuevoPaciente">
+  <label for="textarea">Nombre:</label>
     <textarea cols="40" rows="1" name="textarea" id="name"></textarea>
     <label for="textarea">CIP:</label>
     <textarea cols="40" rows="1" name="textarea" id="cip"></textarea>
-  </div>
-  TEST
+</div>
+  
 <!--Buscar Test-->
-  <div data-role="fieldcontain">
-    <label for="search">Buscar test:</label>
-    <input type="search" name="search" id="search_test" value="" placeholder="Buscar..." />
-    
-  </div>
+
   <!--Seleccionar Test-->
-  <div data-role="collapsible-set">
+  <div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Buscar test..">
     <div data-role="collapsible">
       <h3>Percepción</h3>
       <p>
@@ -129,17 +169,7 @@
   
   </div>
 </div>
-<!--Página test-->
-<div data-role="page" id="page_test">
-  <div data-role="header">
-   <a href="#page_initTest" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
-    <h1>Nombre Test</h1>
-  </div>
-  <div data-role="content">
-  
-  
- </div>
-</div>
+
 <!--Página historial test-->
 <div data-role="page" id="page_histTest" data-theme="b">
   <div data-role="header">
@@ -148,10 +178,20 @@
   </div>
   <div data-role="content">
   
-  <input type="search" name="search" id="search_histTest" value=""  placeholder="Buscar..." />
+  
   <!--Tabla con el historial test realizado-->
+  <div data-role="fieldcontain">
+    <fieldset data-role="controlgroup" data-type="horizontal">
+      <legend>Busqueda por: </legend>
+      <input type="radio" name="busquedaHistorial" id="busquedaHistorial_0" value="" />
+      <label for="busquedaHistorial_0">CIP</label>
+      <input type="radio" name="busquedaHistorial" id="busquedaHistorial_1" value="" />
+      <label for="busquedaHistorial_1">Nombre</label>
+    </fieldset>
+  </div>
  
-  <table data-role="table"  class="ui-responsive ui-shadow" id="myTable" >
+  <table data-role="table" data-filter="true" data-filter-placeholder="Buscar paciente.." class="ui-responsive ui-shadow" id="myTable" >
+
       <thead>
         <tr>
           <th data-priority="1">CIP</th>
