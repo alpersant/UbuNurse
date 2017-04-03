@@ -10,6 +10,6 @@
     <content src="index.html" />
     <access origin="*" />
 	<icon src="icon.png"/>
-	 <plugin name="cordova-plugin-splashscreen" />
-	 <gap:splash src="icon.png"       gap:platform="android"  />
+	<plugin name="cordova-plugin-splashscreen" />
+	<gap:splash src="icon.png"       gap:platform="android"  />
 </widget>

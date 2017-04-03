@@ -12,7 +12,7 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
    <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
-   <script type="text/javascript"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
    <title>Barthel</title>
 </head>
 
@@ -20,43 +20,26 @@
 <!--Página inicial-->
 <div data-role="page" id="page_inicio" data-theme="b">
   <div data-role="header">
-	<a href="index.html#page_initTest" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+	<a href="index.html#page_selecTest" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
     <h1>Barthel</h1>
   </div>
   <div data-role="content" data-theme="b">
-    <div data-role="fieldcontain">
-     <table data-role="table"  class="ui-responsive ui-shadow" id="myTable"  dat>
+  
+   <table data-role="table"  class="ui-responsive ui-shadow" id="alimentacion">
       <thead>
         <tr>
-          <th data-priority="1">Alimentación</th>
-          <th data-priority="2"></th>
-          <th data-priority="3"></th>
-          
+          <th colspan="3">Alimentación</th>
+     
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Independiente</td>
+            <tr>
+				 <td>Independiente</td>
           <td>Come solo en un tiempo razonable. Es
 capaz de poder utilizar cubiertos si lo
 necesita, de cortar el alimento, usar
 sal, extender mantequilla, etc.</td>
-          <td >10</td>
-        </tr>
-        <tr>
-          <td>Necesita ayuda</td>
-          <td>Necesita ayuda para algunas de las
-actividades previas.</td>
-        <td >5</td>
-        </tr>
-        
-        <tr>
-          <td>Dependiente</td>
-          <td>Necesita ser alimentado.</td>
-           <td >0</td>
-        </tr>
-        <tr><td colspan="3"><div data-role="fieldcontain">
-          <fieldset data-role="controlgroup" data-type="horizontal">
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_alimentacion" >
            
             <input type="radio" name="opcion_alimentacion" id="opcion_alimentacion_0" value="10" />
             <label for="opcion_alimentacion_0">10</label>
@@ -64,22 +47,386 @@ actividades previas.</td>
             <label for="opcion_alimentacion_1">5</label>
             <input type="radio" name="opcion_alimentacion" id="opcion_alimentacion_2" value="0" />
             <label for="opcion_alimentacion_2">0</label>
-          </fieldset>
-        </div></td></tr>
-        
-      </tbody>
-    </table>
-     <div data-position="absolute" align="center">
-       <div data-inline="true">
-         <button data-inline="true" data-icon="arrow-l" data-iconpos="left">Anterior</button>
-         <button data-inline="true" data-icon="arrow-r" data-iconpos="right">Siguiente</button>
-       </div>
-       
-       
-     
-     </div>
-	 
-     <div data-role="footer" data-position="fixed" data-id="footerPPal">
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Necesita ayuda</td>
+          <td>Necesita ayuda para algunas de las
+actividades previas.</td>
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita ser alimentado.</td>
+            </tr>
+		</tbody>
+        </table>
+  	<table data-role="table"  class="ui-responsive ui-shadow" id="baño">
+      <thead>
+        <tr>
+          <th data-priority="1" colspan="3">Baño</th>
+
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Es capaz de bañarse o ducharse,
+incluyendo salir o entrar de la bañera
+y secarse.</td>
+                <td rowspan="2"><fieldset data-role="controlgroup" id="opcion_baño">
+           
+            
+            <input type="radio" name="opcion_baño" id="opcion_baño_1" value="5" />
+            <label for="opcion_baño_1">5</label>
+            <input type="radio" name="opcion_baño" id="opcion_baño_2" value="0" />
+            <label for="opcion_baño_2">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita alguna ayuda.</td>
+            </tr>
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="vestirse">
+      <thead>
+        <tr>
+          <th data-priority="1">Vestirse</th>
+          <th data-priority="2"></th>
+          <th data-priority="3"></th>
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Es capaz de ponerse, quitarse y
+colgar la ropa, atarse los cordones,
+abrocharse botones o utilizar
+cremalleras (o braguero o corsé). Se
+excluye la utilización de sujetador.</td>
+                <td rowspan="3"><fieldset data-role="controlgroup">
+           
+            <input type="radio" name="opcion_vestirse" id="opcion_vestirse_0" value="10" />
+            <label for="opcion_vestirse_0">10</label>
+            <input type="radio" name="opcion_vestirse" id="opcion_vestirse_1" value="5" />
+            <label for="opcion_vestirse_1">5</label>
+            <input type="radio" name="opcion_vestirse" id="opcion_vestirse_2" value="0" />
+            <label for="opcion_vestirse_2">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Necesita ayuda</td>
+          <td>Necesita ayuda para al menos la mitad
+del trabajo de estas actividades. Debe
+de hacerlo en un tiempo razonable.</td>
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td></td>
+            </tr>
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="arreglarse">
+      <thead>
+        <tr>
+          <th colspan="3">Arreglarse</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Es capaz de lavarse las manos y cara,
+peinarse, maquillarse, limpiarse los
+dientes y afeitarse.</td>
+                <td rowspan="3"><fieldset data-role="controlgroup">
+           
+            
+            <input type="radio" name="opcion_arreglarse" id="opcion_arreglarse_1" value="5" />
+            <label for="opcion_arreglarse_1">5</label>
+            <input type="radio" name="opcion_arreglarse" id="opcion_arreglarse_2" value="0" />
+            <label for="opcion_arreglarse_2">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita alguna ayuda.</td>
+            </tr>
+           
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="deposiciones">
+      <thead>
+        <tr>
+          <th data-priority="1">Deposiciones</th>
+          <th data-priority="2"></th>
+          <th data-priority="3"></th>
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Continente</td>
+          <td>Es capaz de controlar deposiciones.
+Es capaz de colocarse un supositorio
+o un enema.</td>
+                <td rowspan="3"><fieldset data-role="controlgroup">
+           
+            <input type="radio" name="opcion_deposiciones" id="opcion_deposiciones_0" value="10" />
+            <label for="opcion_deposiciones_0">10</label>
+            <input type="radio" name="opcion_deposiciones" id="opcion_deposiciones_1" value="5" />
+            <label for="opcion_deposiciones_1">5</label>
+            <input type="radio" name="opcion_deposiciones" id="opcion_deposiciones_2" value="0" />
+            <label for="opcion_deposiciones_2">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Incontinencia
+ocasional</td>
+          <td>Tiene incontinencia ocasional o
+requiere ayuda para supositorio o
+enema.</td>
+            </tr>
+            <tr>
+                <td>Incontinente</td>
+          <td></td>
+            </tr>
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="miccion">
+      <thead>
+        <tr>
+          <th colspan="3" data-priority="1">Micción</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Continente</td>
+          <td>Es capaz de controlar micción día y
+noche. Es capaz de cuidar la sonda y
+cambiar la bolsa de orina.</td>
+                <td rowspan="3"><fieldset data-role="controlgroup">
+           
+            <input type="radio" name="opcion_miccion" id="opcion_miccion_0" value="10" />
+            <label for="opcion_miccion_0">10</label>
+            <input type="radio" name="opcion_miccion" id="opcion_miccion_1" value="5" />
+            <label for="opcion_miccion_1">5</label>
+            <input type="radio" name="opcion_miccion" id="opcion_miccion_2" value="0" />
+            <label for="opcion_miccion_2">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Incontinencia
+ocasional</td>
+          <td>Tiene incontinencia ocasional o no le
+da tiempo a llegar al baño o necesita
+ayuda ocasional para cuidar la sonda
+uretral.</td>
+            </tr>
+            <tr>
+                <td>Incontinente</td>
+          <td></td>
+            </tr>
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="retrete">
+      <thead>
+        <tr>
+          <th colspan="3" data-priority="1">Retrete</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Es capaz de bajarse y subirse la
+ropa, de no mancharla, sentarse
+y levantarse de la taza, de usar
+papel higiénico. Si lo requiere
+puede apoyarse sobre una barra. Si
+requiere cuña, debe ser capaz de
+colocarla, vaciarla y limpiarla.</td>
+                <td rowspan="3"><fieldset data-role="controlgroup">
+           
+            <input type="radio" name="opcion_retrete" id="opcion_retrete_0" value="10" />
+            <label for="opcion_retrete_0">10</label>
+            <input type="radio" name="opcion_retrete" id="opcion_retrete_1" value="5" />
+            <label for="opcion_retrete_1">5</label>
+            <input type="radio" name="opcion_retrete" id="opcion_retrete_2" value="0" />
+            <label for="opcion_retrete_2">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Necesita ayuda</td>
+          <td>Necesita ayuda para guardar el
+equilibrio, en el manejo de la ropa o
+en la utilización del papel higiénico.</td>
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td></td>
+            </tr>
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="movilidad">
+      <thead>
+        <tr>
+           <th colspan="3" data-priority="1">Trasladarse desde la cama al sillón o a la silla de ruedas</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Es capaz de realizar con seguridad, el
+traslado del sillón a la cama, tanto con
+andador o silla de ruedas —levantando
+reposapiés, cerrando la silla—, conseguir
+sentarse o tumbarse en la cama, e
+igualmente volver de la cama al sillón.</td>
+                <td rowspan="4"><fieldset data-role="controlgroup">
+           
+            <input type="radio" name="opcion_movilidad" id="opcion_movilidad_0" value="15" />
+            <label for="opcion_movilidad_0">15</label>
+			 <input type="radio" name="opcion_movilidad" id="opcion_movilidad_1" value="10" />
+            <label for="opcion_movilidad_1">10</label>
+            <input type="radio" name="opcion_movilidad" id="opcion_movilidad_2" value="5" />
+            <label for="opcion_movilidad_2">5</label>
+            <input type="radio" name="opcion_movilidad" id="opcion_movilidad_3" value="0" />
+            <label for="opcion_movilidad_3">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Mínimas ayuda</td>
+          <td>Necesita ayuda mínima para algún
+paso de esta actividad o ser
+supervisado física o verbalmente en
+los distintos pasos.</td>
+            </tr>
+            <tr>
+                <td>Gran ayuda</td>
+          <td>Necesita gran ayuda para levantarse
+de la cama o para trasladarse al sillón.
+Puede permanecer sentado sin ayuda.</td>
+            </tr>
+			<tr>
+                <td>Dependiente</td>
+          <td></td>
+            </tr>
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="deambular">
+      <thead>
+        <tr>
+          <th colspan="3" data-priority="1">Deambular</th>
+         
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Puede caminar 45 metros sin ayuda o
+supervisión, espontáneamente o con
+muletas (no andador). Si utiliza prótesis
+es capaz de ponérsela y quitársela solo.</td>
+                <td rowspan="4"><fieldset data-role="controlgroup">
+           
+            <input type="radio" name="opcion_deambular" id="opcion_deambular_0" value="15" />
+            <label for="opcion_deambular_0">15</label>
+			<input type="radio" name="opcion_deambular" id="opcion_deambular_1" value="10" />
+            <label for="opcion_deambular_1">10</label>
+            <input type="radio" name="opcion_deambular" id="opcion_deambular_2" value="5" />
+            <label for="opcion_deambular_2">5</label>
+            <input type="radio" name="opcion_deambular" id="opcion_deambular_3" value="0" />
+            <label for="opcion_deambular_3">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Necesita ayuda</td>
+          <td>Necesita ayuda o supervisión para
+caminar 45 metros. Deambula con
+andador.</td>
+            </tr>
+            <tr>
+                <td>En silla de ruedas</td>
+          <td>Puede empujar la silla 45 metros y
+manejarla con soltura (doblar esquinas,
+girar, maniobrarla por la casa, etc.).</td>
+            </tr>
+			
+                <td>Dependientes</td>
+          <td>Camina menos de 45 metros. Si utiliza
+silla de ruedas debe ser empujada por
+otra persona.</td>
+            </tr>
+		</tbody>
+        </table>
+		 	<table data-role="table"  class="ui-responsive ui-shadow" id="escaleras">
+      <thead>
+        <tr>
+          <th colspan="3" data-priority="1">Subir y bajar escaleras</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Es capaz de subir y bajar un piso
+sin ayuda ni supervisión. Puede usar
+bastones o muletas o apoyarse en la
+barandilla.</td>
+                <td rowspan="3"><fieldset data-role="controlgroup">
+           
+            <input type="radio" name="opcion_escaleras" id="opcion_escaleras_0" value="10" />
+            <label for="opcion_escaleras_0">10</label>
+            <input type="radio" name="opcion_escaleras" id="opcion_escaleras_1" value="5" />
+            <label for="opcion_escaleras_1">5</label>
+            <input type="radio" name="opcion_escaleras" id="opcion_escaleras_2" value="0" />
+            <label for="opcion_escaleras_2">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Necesita ayuda</td>
+          <td>Necesita ayuda física o verbal.</td>
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td></td>
+            </tr>
+		</tbody>
+        </table>
+  </div>
+  <!--
+  <div data-role="footer" data-position="absolute" data-id="footerPPal">
 		<div data-role="navbar">
         	<ul>
             <li><button data-inline="true" data-icon="arrow-l" data-iconpos="left">Anterior</button></li>
@@ -89,14 +436,22 @@ actividades previas.</td>
         </div>
         
 	</div>
+   -->
    
+<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a data-role="button" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaBarthel()"  data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
     
-    
-    </div>
-  
-  	
-  </div>
-  
+</div>
+
+
+
 </div>
 
 </body>

@@ -12,52 +12,231 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
    <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
-   <script type="text/javascript"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
    <title>UbuNurse</title>
 </head>
 
 <body >
-<!--Página inicial-->
-<div data-role="page" id="page_inicio" data-theme="a">
-  <div data-role="header">
-    <h1>UbuNurse</h1>
+<div data-role="page" id="page_login" data-theme="a" data-url="page_login">
+<!-- /header --> 
+   <div data-role="header" data-theme="a">
+        <h1>UbuNurse</h1>
+        <a href="#page_help" data-role="button" data-icon="info" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
+       </div>
+	   <!-- /content -->
+    <div data-role="content" data-theme="a" id="contenidoPrincipal">
+	<div align="center">
+  	<img src="images/portada.png" width="310" height="312" alt=""/>
   </div>
-  <div data-role="content" data-theme="a">
-  	<a href="#page_initTest" data-role="button">INICIAR TEST</a>
-  <a href="#page_histTest" data-role="button">HISTORIAL TEST</a>
- <a href="#page_help" data-role="button">AYUDA</a>	
+  <form id="formulario" >
+      
+      			<label> Usuario </label>
+      			<input type="text" id="nombredeusuario" name="nombredeusuario">
+      
+      			<label> Password </label>
+     			<input type="password" id="clave" name="clave" >
+
+      			<!--<input type="submit" value="Login" id="botonLogin">-->
+					
+    		</form>	
+<a href="#page_inicio" data-role="button">Login</a>	
   </div>
-  <div data-role="footer" data-position="fixed" >
+	<!-- /footer-->
+    <div data-role="footer" data-position="fixed" >
     <h4>Copyright@2017 <a href="#page_contact" data-role="link">Contacto</a> </h4>
   </div>
 </div>
-<!--Página inicio test-->
+<div data-role="page" id="page_inicio" data-theme="a" data-url="page_inicio">
+   <!-- /header --> 
+   <div data-role="header" data-theme="a">
+        <h1>UbuNurse</h1>
+        <a href="#left-panel" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
+       </div>
+	   <!-- /content -->
+	   
+    <div data-role="content" data-theme="a" id="contenidoPrincipal">
+	<div class="ui-grid-a">
+    <div class="ui-block-a"><div class="ui-bar ui-bar-e" ><a href="#page_initTest">
+                <img src="images/tratamiento.png">
+                
+                <p>TEST</p>
+                
+            </a></div></div>
+    <div class="ui-block-b"><div class="ui-bar ui-bar-e" ><a href="#page_histTest">
+                <img src="images/historial.ico">
+                
+                <p>HISTORIAL</p>
+                
+            </a></div></div>
+			 
+</div>
+
+<!-- /grid-a -->
+	
+  
+
+  </div>
+	   
+	<!-- /panel -->  
+    <div data-role="panel" id="left-panel" data-theme="a">
+	
+	    <div data-role="collapsible" data-collapsed="true">
+      <h3>Idioma</h3>
+      <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup">
+          
+          <div class="ui-field-contain" id="theme-selector">
+				<fieldset data-role="controlgroup" data-type="inline">
+					
+					<label for="español">Español</label>
+					<input type="radio" name="idioma" id="español" checked>
+					<label for="ingles">Inlges</label>
+					<input type="radio" name="idioma" id="ingles">
+					<label for="catalan">Catalan</label>
+					<input type="radio" name="idioma" id="catalan">
+				</fieldset>
+			</div>
+        </fieldset>
+          
+      </div>
+	   
+    </div>
+        	
+		<div data-role="collapsible" data-collapsed="true">
+      <h3>Tema</h3>
+           
+      <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup">
+          
+          <div class="ui-field-contain" id="theme-selector">
+				<fieldset data-role="controlgroup" data-type="inline">
+					
+					<label for="a">Verdes</label>
+					<input type="radio" name="theme" id="a" checked>
+					<label for="b">Azules</label>
+					<input type="radio" name="theme" id="b">
+					<label for="c">Amarillo</label>
+					<input type="radio" name="theme" id="c">
+				</fieldset>
+			</div>
+        </fieldset>
+          
+      </div>
+      
+    </div>
+		<a href="#page_help" data-role="button"  data-icon="info" data-iconpos="left" data-transition="slidefade" >Ayuda</a>
+        <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="left">Cerrar</a>
+    </div>
+	<!-- /footer-->
+	
+    <footer>
+    <div data-role="footer">
+	<h4>Copyright@2017 <a href="#page_contact" data-role="link">Contacto</a> </h4>
+    </div> 
+  </footer>
+</div>
+ <!--Página inicio Test: Paciente-->
 <div data-role="page" id="page_initTest" data-theme="a">
   <div data-role="header">
     <a href="#page_inicio" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
      
-    <h1>INICIO TEST</h1>
+    <h1>PACIENTE</h1>
   </div>
   <div data-role="content">
   <!--Datos del paciente-->
-   PACIENTE
-  <label for="search">Buscar paciente:</label>
-  <input type="search" name="search" id="search_paciente" value="" placeholder="Buscar..." />
-  <div data-role="fieldcontain">
-    <label for="textarea">Nombre:</label>
+  
+ <ul id="paciente" data-role="listview" data-filter="true" data-filter-placeholder="Buscar paciente..." data-split-icon="edit" data-split-theme="d" data-autodividers="true" data-filter="true" data-inset="true">
+	  
+    <a href="#page_editPaciente">
+                <img src="images/add-user.png">
+                
+                
+                
+            </a>
+	
+	
+	<li><a href="#page_selecTest">
+        <h2>BERZOSA MOLINILLO, ÁLVARO</h2>
+        <p id="txtPaciente"><ul >
+    <li>CIP: CYL1234567890</li>
+    <li>Fecha de Nacimiento: 17/03/2017</li>
+    <li>Domicilio: C/ Centro, Nº15</li>
+    <li>Ciudad: Burgos</li>
+    <li>C.P.: 09001</li>
+	</ul>
+	</p>
+		
+    </a><a href="#page_editPaciente">Editar Paciente</a></li>
+	<li><a href="#page_selecTest">
+        <h2>PEDROSA GOMEZ, ÁLVARO</h2>
+        <p id="txtPaciente"><ul >
+    <li>CIP: CYL1234567890</li>
+    <li>Fecha de Nacimiento: 17/03/2017</li>
+    <li>Domicilio: C/ Centro, Nº15</li>
+    <li>Ciudad: Burgos</li>
+    <li>C.P.: 09001</li>
+	</ul>
+	</p>
+		
+    </a><a href="#page_editPaciente">Editar Paciente</a></li>
+<li><a href="#page_selecTest">
+        <h2>PÉREZ SANTAMARÍA, ÁLVARO</h2>
+        <p id="txtPaciente"><ul >
+    <li>CIP: CYL1234567890</li>
+    <li>Fecha de Nacimiento: 17/03/2017</li>
+    <li>Domicilio: C/ Centro, Nº15</li>
+    <li>Ciudad: Burgos</li>
+    <li>C.P.: 09001</li>
+	</ul>
+	</p>
+		
+    </a><a href="#page_editPaciente">Editar Paciente</a></li>
+</ul>
+
+
+ <div data-role="page" id="page_login" data-theme="a" data-url="page_login"> 
+<div data-role="fieldcontain" class="oculto" id="nuevoPaciente">
+  <label for="textarea">Nombre:</label>
     <textarea cols="40" rows="1" name="textarea" id="name"></textarea>
     <label for="textarea">CIP:</label>
     <textarea cols="40" rows="1" name="textarea" id="cip"></textarea>
+</div>
+ </div> 
+  
+</div>
+</div>
+<!-- Pagina editar_nuevo Paciente -->
+<div data-role="page" id="page_editPaciente" data-theme="a">
+<div data-role="header">
+    <a href="#page_initTest" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+     
+    <h1>DATOS PACIENTE</h1>
   </div>
-  TEST
-<!--Buscar Test-->
-  <div data-role="fieldcontain">
-    <label for="search">Buscar test:</label>
-    <input type="search" name="search" id="search_test" value="" placeholder="Buscar..." />
-    
+  <input type="text" name="nombre" id="nombre" value="" placeholder="Nombre..">
+  <input type="text" name="apellidos" id="apellidos" value="" placeholder="Apellidos..">
+  <input type="text" name="cip" id="cip" value="" placeholder="CIP..">
+  <input type="date" name="fechaNacimiento" value="2013-01-01">
+  <input type="text" name="direccion" id="direccion" value="" placeholder="Calle...Ej:C/ Ubunurse, N4 1B">
+  <input type="text" name="ciudad" id="ciudad" value="" placeholder="Ciudad..">
+  
+  <input type="number" name="cp" pattern="[0-9]*" id="cp" value="" placeholder="Código Postal..">
+  
+  <p align="center">
+  
+  <a href="#page_initTest" data-role="button" data-icon="delete" data-iconpos="left"data-inline="true">Cancelar</a>
+ <a href="#page_initTest" data-role="button" data-icon="action" data-iconpos="left" data-inline="true">Guardar</a>
+ </p>
+</div>
+<!-- Pagina inicio Test: Seleccion Test-->
+<div data-role="page" id="page_selecTest" data-theme="a">
+<div data-role="header">
+    <a href="#page_initTest" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+     
+    <h1>TEST</h1>
   </div>
+
   <!--Seleccionar Test-->
-  <div data-role="collapsible-set">
+  <div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Buscar test..">
     <div data-role="collapsible">
       <h3>Percepción</h3>
       <p>
@@ -70,24 +249,37 @@
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Eliminación</h3>
-      <p>Contenido</p>
+      
     </div>
     <div data-role="collapsible" data-collapsed="true">
-      <h3>Actividad</h3>
-      <p>      
-      <div data-role="fieldcontain">
-        <fieldset data-role="controlgroup">
-          
-          <input type="radio" name="radio_actividad" id="radio_actividad_0" value="" />
-          <label for="radio_actividad_0">Barthel</label>
-          <input type="radio" name="radio_actividad" id="radio_actividad_1" value="" />
-          <label for="radio_actividad_1">Indice de Katz</label>
-          <input type="radio" name="radio_actividad" id="radio_actividad_2" value="" />
-          <label for="radio_actividad_2">Indice de Lawton y Brody</label>
-        </fieldset>
-      </div>
-      </p>
+      <h3>Actividad </h3>
+      <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+	  
+    <li><a href="barthel.html">
+       
+        <h2>Barthel</h2>
+        
+        <a href="#infoBarthel" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
+		
+    </li>
+    
+</ul>
+
+	 <div data-role="popup" id="infoBarthel" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Barthel</strong></h3>
+    <p>
+		<ul >
+    <li>Valorar la autonomía de la persona para realizar las
+actividades básicas e imprescindibles de la vida diaria tales como comer,
+lavarse, vestirse, arreglarse, trasladarse del sillón o silla de ruedas a la
+cama, subir y bajar escaleras, etc.</li>
+    <li>Tiempo estimado de administración: 5 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
     </div>
+	
     <div data-role="collapsible" data-collapsed="true">
       <h3>Sueño</h3>
       <p>Contenido</p>
@@ -117,28 +309,10 @@
       <p>Contenido</p>
     </div>
   </div>
-  <!--Boton inicio-->
   
-  <div data-role="controlgroup" data-type="horizontal">
- 
-  <input type="reset" value="Restablecer" />
-  <a href="barthel.html" data-role="button">Iniciar</a>
-   
-  </div>
   
   
   </div>
-</div>
-<!--Página test-->
-<div data-role="page" id="page_test">
-  <div data-role="header">
-   <a href="#page_initTest" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
-    <h1>Nombre Test</h1>
-  </div>
-  <div data-role="content">
-  
-  
- </div>
 </div>
 <!--Página historial test-->
 <div data-role="page" id="page_histTest" data-theme="b">
@@ -148,14 +322,24 @@
   </div>
   <div data-role="content">
   
-  <input type="search" name="search" id="search_histTest" value=""  placeholder="Buscar..." />
+  
   <!--Tabla con el historial test realizado-->
+  <div data-role="fieldcontain">
+    <fieldset data-role="controlgroup" data-type="horizontal"">
+      <legend>Busqueda por: </legend>
+      <input type="radio" name="busquedaHistorial" id="busquedaHistorial_0" value="CIP" />
+      <label for="busquedaHistorial_0">CIP</label>
+      <input type="radio" name="busquedaHistorial" id="busquedaHistorial_1" value="Nombre" />
+      <label for="busquedaHistorial_1" >Nombre</label>
+    </fieldset>
+  </div>
  
-  <table data-role="table"  class="ui-responsive ui-shadow" id="myTable" >
+  <table data-role="table" data-filter="true" data-filter-placeholder="Buscar paciente.." class="ui-responsive ui-shadow" id="tablaHistorial" >
+
       <thead>
         <tr>
-          <th data-priority="1">CIP</th>
-          <th data-priority="2">Nombre</th>
+          <th data-priority="1" id="historialCIP">CIP</th>
+          <th data-priority="2" id="historialNombre">Nombre</th>
           <th data-priority="3">Test</th>
           <th data-priority="4">Fecha</th>
           <th data-priority="5">Ver</th>
@@ -168,11 +352,11 @@
           <td>Ávaro Pérez</td>
           <td>Barthel</td>
           <td>17/03/2017</td>
-          <td><a href="#" data-role="button" data-icon="search" data-iconpos="notext">Botón</a></td>
+          <td><a href="#infoResultado" data-rel="popup" data-role="button" data-icon="eye" data-iconpos="notext" data-position-to="window">Botón</a></td>
           <td><div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
               
-              <input type="checkbox" name="checkbox_CYL11" id="checkbox_paciente_1" class="custom" value="" />
+              <input type="checkbox" name="checkbox_CYL11" id="checkbox_Hpaciente_1" class="custom" value="" />
               
             </fieldset>
           </div></td>
@@ -184,11 +368,11 @@
           <td>Junjo Pedrosa</td>
           <td>Indice de Katz</td>
           <td>16/03/2017</td>
-          <td><a href="#page_resultado" data-role="button" data-icon="search" data-iconpos="notext">Botón</a></td>
+          <td><a href="#infoResultado" data-rel="popup" data-role="button" data-icon="eye" data-iconpos="notext" data-position-to="window">Botón</a></td>
           <td><div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
               
-              <input type="checkbox" name="checkbox_CYL12" id="checkbox_paciente_2" class="custom" value="" />
+              <input type="checkbox" name="checkbox_CYL12" id="checkbox_Hpaciente_2" class="custom" value="" />
               
             </fieldset>
           </div></td>
@@ -198,8 +382,25 @@
         
       </tbody>
     </table>
-  <input type="submit" value="Eliminar" />
+	<p align=right>
+	 <a href="#infoEliminar" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop" data-role="button" data-icon="delete" data-inline="true">Eliminar</a>
+	</p>
+		
 
+<div data-role="popup" id="infoEliminar" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas borrar?</strong></h3>
+    <p align="center">
+	<a data-role="button" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+  <div data-role="popup" id="infoResultado" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Resultado del test</strong></h3>
+    
+    <a href="grafico.html" data-role="link">Resultados anteriores</a>
+</div>
   
   </div>
   </div>  
@@ -207,20 +408,38 @@
 <!--Página ayuda-->
 <div data-role="page" id="page_help" data-theme="c">
   <div data-role="header">
-  <a href="#page_inicio" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+  
+  <button data-icon="back" data-iconpos="notext" onClick="onBackKeyDown()">Atrás</button>
     <h1>AYUDA</h1>
   </div>
   <div data-role="content">
-	
-	</div>
+    <div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Bucar..">
+      <div data-role="collapsible">
+        <h3>Test</h3>
+        <p>Contenido</p>
+      </div>
+      <div data-role="collapsible" data-collapsed="true">
+        <h3>Historial</h3>
+        <p>Contenido</p>
+      </div>
+      <div data-role="collapsible" data-collapsed="true">
+        <h3>Configuracion</h3>
+        <p>Contenido</p>
+      </div>
+    </div>
+  </div>
+  
+
+
+  
   <div data-role="footer" data-position="fixed">
-     <h4>Copyright@2017 <a href="#page_contact" data-role="link">Contacto</a> </h4>
+     <h4>Copyright@2017 <a href="#page_contact" data-icon="mail" data-role="link">Contacto</a> </h4>
   </div>
 </div>
 <!--Página Contacto --> 
 <div data-role="page" id="page_contact" data-theme="d">
   <div data-role="header">
-	<a href="#page_inicio" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+	<button data-icon="back" data-iconpos="notext" onClick="onBackKeyDown()">Atrás</button>
     <h1>FORMULARIO DE CONTACTO</h1>
   </div>
   <div data-role="content">
@@ -232,8 +451,6 @@
         </div>
         <button id="btn_enviar_mail">Enviar</button>
   </div>
-  </div>
- 
 </body>
 
 </html>

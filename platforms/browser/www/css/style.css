@@ -1,7 +1,7 @@
 
 
 th {
-	background: #ABABAB;
+	background: #68b2ee;
     border-bottom: 3px solid #0D0D0D;
 	align-content: center;
 	
@@ -9,6 +9,17 @@ th {
 }
 
 tr:nth-child(even) {
-    background: #C9E1E7;
+    background: #b8dfff;
 	border-radius: 12px;
+}
+
+.oculto{
+	display: none;
+}
+img {
+    max-width:100%;
+}
+@media (max-width: 300px) {
+  .txtPaciente{
+font-size: 3px }
 }

@@ -10,4 +10,5 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="icon.png" />
+    <gap:splash gap:platform="android" src="icon.png" />
 </widget>
