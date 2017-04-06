@@ -12,4 +12,6 @@
 	<icon src="icon.png"/>
 	<plugin name="cordova-plugin-splashscreen" />
 	<gap:splash src="icon.png"       gap:platform="android"  />
+	<preference name="Fullscreen" value="true" />
+	<preference name="Orientation" value="landscape" />
 </widget>

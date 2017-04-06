@@ -11,4 +11,6 @@
     <access origin="*" />
     <icon src="icon.png" />
     <gap:splash gap:platform="android" src="icon.png" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="Orientation" value="landscape" />
 </widget>
