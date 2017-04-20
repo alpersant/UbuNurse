@@ -1,0 +1,27 @@
+if(results.rows.length!=0){
+			 
+            for(var i=0;i<results.rows.length;i++){  
+           var paciente=results.rows.item(i);  
+           var selector = $("#lista_pacientes ul");
+		   selector.append('<li id="li_'+ paciente.cip +'"><a href="#page_selecTest" data-uid='+persona.cip+' class="linkTest">'+ 
+		'<h2>'+paciente.apellidos+','+paciente.nombre+'</h2>'+
+		'<p id="txtPaciente"><ul >' +
+		'<li>CIP: '+ paciente.cip+'</li>'+
+		'<li>Fecha de Nacimiento: '+paciente.fechaNacimiento+'</li>'+
+		'<li>Domicilio: '+paciente.direccion+'</li>' +
+		'<li>Ciudad: '+paciente.ciudad+'</li> '+
+		'<li>C.P.: '+paciente.cp+'</li>' +
+	    '<li>Telefono: '+paciente.telefono+'</li>' +
+	    '</ul>' +
+	    '</p>' +
+		'</a><a href="#page_editPaciente" data-uid='+persona.cip+' class="linkEditar">Editar Paciente</a></li>').listview('refresh');
+		
+         }  
+          $(".linkTest").click(function(e){
+		$.cip = $(this).data("uid");
+	});
+	
+	$(".linkEditar").click(function(e){
+		$.cip= $(this).data("uid");
+	});
+         } else{

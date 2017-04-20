@@ -23,3 +23,6 @@ img {
   .txtPaciente{
 font-size: 3px }
 }
+#eliminarPaciente{
+	display:none;
+}
