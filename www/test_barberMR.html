@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Barber para Medio Rural</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioBarberMR" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Barber para Medio Rural</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+  
+    
+ <table data-role="table"  class="ui-responsive ui-shadow" id="barberMR">
+      <thead>
+        <tr>
+          <th>Pregunta</th>
+          <th>Respuesta</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>¿Vive sólo/a?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_vida">
+    
+    <input type="radio" name="opcion_vida" id="opcion_vida_0" value=1>
+    <label for="opcion_vida_0">Si</label>
+    <input type="radio" name="opcion_vida" id="opcion_vida_1" value=0>
+    <label for="opcion_vida_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+            <tr>
+				 <td>¿Le falta alguien que le pueda ayudar si lo necesita?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_ayuda">
+    
+    <input type="radio" name="opcion_ayuda" id="opcion_ayuda_0" value=1>
+    <label for="opcion_ayuda_0">Si</label>
+    <input type="radio" name="opcion_ayuda" id="opcion_ayuda_1" value=0>
+    <label for="opcion_ayuda_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+			<tr>
+				 <td>¿Depende de alguien para sus necesidades diarias?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_necesidades">
+    
+    <input type="radio" name="opcion_necesidades" id="opcion_necesidades_0" value=1>
+    <label for="opcion_necesidades_0">Si</label>
+    <input type="radio" name="opcion_necesidades" id="opcion_necesidades_1" value=0>
+    <label for="opcion_necesidades_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+			<tr>
+				 <td>¿Hay días en que no consigue comer algo caliente?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_comer">
+    
+    <input type="radio" name="opcion_comer" id="opcion_comer_0" value=1>
+    <label for="opcion_comer_0">Si</label>
+    <input type="radio" name="opcion_comer" id="opcion_comer_1" value=0>
+    <label for="opcion_comer_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+			<tr>
+				 <td>¿No puede salir de casa por alguna enfermedad?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_salir">
+    
+    <input type="radio" name="opcion_salir" id="opcion_salir_0" value=1>
+    <label for="opcion_salir_0">Si</label>
+    <input type="radio" name="opcion_salir" id="opcion_salir_1" value=0>
+    <label for="opcion_salir_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+			<tr>
+				 <td>¿Tiene mala salud?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_salud">
+    
+    <input type="radio" name="opcion_salud" id="opcion_salud_0" value=1>
+    <label for="opcion_salud_0">Si</label>
+    <input type="radio" name="opcion_salud" id="opcion_salud_1" value=0>
+    <label for="opcion_salud_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+			<tr>
+				 <td>¿Tiene problemas de visión?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_vision">
+    
+    <input type="radio" name="opcion_vision" id="opcion_vision_0" value=1>
+    <label for="opcion_vision_0">Si</label>
+    <input type="radio" name="opcion_vision" id="opcion_vision_1" value=0>
+    <label for="opcion_vision_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+			<tr>
+				 <td>¿Tiene problemas de oído?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_oido">
+    
+    <input type="radio" name="opcion_oido" id="opcion_oido_0" value=1>
+    <label for="opcion_oido_0">Si</label>
+    <input type="radio" name="opcion_oido" id="opcion_oido_1" value=0>
+    <label for="opcion_oido_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+			<tr>
+				 <td>¿Ha estado hospitalizado este último año?</td>
+          <td colspan="2" ><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_hospital">
+    
+    <input type="radio" name="opcion_hospital" id="opcion_hospital_0" value=1>
+    <label for="opcion_hospital_0">Si</label>
+    <input type="radio" name="opcion_hospital" id="opcion_hospital_1" value=0>
+    <label for="opcion_hospital_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+		</tbody>
+        </table>
+
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaBarberMR()"  data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

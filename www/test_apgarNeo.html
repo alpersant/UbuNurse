@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Apgar Neonatal</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioApgarNeo" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Apgar Neonatal</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+  
+   <table data-role="table"  class="ui-responsive ui-shadow" id="corazon">
+      <thead>
+        <tr>
+          <th colspan="3">Ritmo cardiaco</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Ausencia de ritmo cardíaco</td>
+          
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_corazon" >
+           
+            <input type="radio" name="opcion_corazon" id="opcion_corazon_0" value=0 />
+            <label for="opcion_corazon_0">0</label>
+            <input type="radio" name="opcion_corazon" id="opcion_corazon_1" value=1 />
+            <label for="opcion_corazon_1">1</label>
+            <input type="radio" name="opcion_corazon" id="opcion_corazon_2" value=2 />
+            <label for="opcion_corazon_2">2</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Ritmo cardíaco lento (menos de 100 latidos por minuto)</td>
+          
+            </tr>
+            <tr>
+                <td>Ritmo cardíaco adecuado (más de 100 latidos por minuto)</td>
+            </tr>
+		</tbody>
+        </table>
+  	   <table data-role="table"  class="ui-responsive ui-shadow" id="respiracion">
+      <thead>
+        <tr>
+          <th colspan="3">Respiración</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>No respira</td>
+          
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_respiracion" >
+           
+            <input type="radio" name="opcion_respiracion" id="opcion_respiracion_0" value=0 />
+            <label for="opcion_respiracion_0">0</label>
+            <input type="radio" name="opcion_respiracion" id="opcion_respiracion_1" value=1 />
+            <label for="opcion_respiracion_1">1</label>
+            <input type="radio" name="opcion_respiracion" id="opcion_respiracion_2" value=2 />
+            <label for="opcion_respiracion_2">2</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Llanto débil, respiración irregular</td>
+          
+            </tr>
+            <tr>
+                <td>Llanto fuerte</td>
+            </tr>
+		</tbody>
+        </table>
+		<table data-role="table"  class="ui-responsive ui-shadow" id="musculos">
+      <thead>
+        <tr>
+          <th colspan="3">Tono muscular</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Flojo, flácido</td>
+          
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_musculos" >
+           
+            <input type="radio" name="opcion_musculos" id="opcion_musculos_0" value=0 />
+            <label for="opcion_musculos_0">0</label>
+            <input type="radio" name="opcion_musculos" id="opcion_musculos_1" value=1 />
+            <label for="opcion_musculos_1">1</label>
+            <input type="radio" name="opcion_musculos" id="opcion_musculos_2" value=2 />
+            <label for="opcion_musculos_2">2</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Algo de flexibilidad o doblez</td>
+          
+            </tr>
+            <tr>
+                <td>Movimiento activo</td>
+            </tr>
+		</tbody>
+        </table>
+		<table data-role="table"  class="ui-responsive ui-shadow" id="estimulos">
+      <thead>
+        <tr>
+          <th colspan="3">Respuesta ante estímulos(también llamada irritabilidad refleja)</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Ninguna respuesta</td>
+          
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_estimulos" >
+           
+            <input type="radio" name="opcion_estimulos" id="opcion_estimulos_0" value=0 />
+            <label for="opcion_estimulos_0">0</label>
+            <input type="radio" name="opcion_estimulos" id="opcion_estimulos_1" value=1 />
+            <label for="opcion_estimulos_1">1</label>
+            <input type="radio" name="opcion_estimulos" id="opcion_estimulos_2" value=2 />
+            <label for="opcion_estimulos_2">2</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Mueca</td>
+          
+            </tr>
+            <tr>
+                <td>Llanto o retraimiento vigoroso</td>
+            </tr>
+		</tbody>
+        </table>
+		<table data-role="table"  class="ui-responsive ui-shadow" id="color">
+      <thead>
+        <tr>
+          <th colspan="3">Color</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Pálido o azul</td>
+          
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_color" >
+           
+            <input type="radio" name="opcion_color" id="opcion_color_0" value=0 />
+            <label for="opcion_color_0">0</label>
+            <input type="radio" name="opcion_color" id="opcion_color_1" value=1 />
+            <label for="opcion_color_1">1</label>
+            <input type="radio" name="opcion_color" id="opcion_color_2" value=2 />
+            <label for="opcion_color_2">2</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                <td>Color del cuerpo normal, pero extremidades azules</td>
+          
+            </tr>
+            <tr>
+                <td>Color normal</td>
+            </tr>
+		</tbody>
+        </table>
+   
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaApgarNeo()"   data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

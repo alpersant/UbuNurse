@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Mini Evaluación Nutricional(MNA)</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioMNA" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Mini Evaluación Nutricional(MNA)</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+     <table data-role="table"  class="ui-responsive ui-shadow" id="cribaje" display="block">
+      <thead>
+        <tr>
+          <th colspan="2">TEST DE CRIBAJE</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>¿Ha perdido el apetito?<br> ¿Ha comido
+menos por falta de apetito, problemas
+digestivos, dificultades de masticación o
+deglución en los últimos 3 meses?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_apetito" >
+           
+            <input type="radio" name="opcion_apetito" id="opcion_apetito_0" value=0 />
+            <label for="opcion_apetito_0">Anorexia grave</label>
+            <input type="radio" name="opcion_apetito" id="opcion_apetito_1" value=1 />
+            <label for="opcion_apetito_1">Anorexia moderada</label>
+			<input type="radio" name="opcion_apetito" id="opcion_apetito_2" value=2 />
+            <label for="opcion_apetito_2">Sin anorexia</label>
+            
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Pérdida reciente de peso (< 3 meses)</td>
+		  <td><fieldset data-role="controlgroup" id="opcion_peso" >
+           
+            <input type="radio" name="opcion_peso" id="opcion_peso_0" value=0 />
+            <label for="opcion_peso_0">Pérdida de peso > 3 kg</label>
+            <input type="radio" name="opcion_" id="opcion_peso_1" value=1 />
+            <label for="opcion_peso_1">No lo sabe</label>
+			<input type="radio" name="opcion_peso" id="opcion_peso_2" value=2 />
+            <label for="opcion_peso_2">Pérdida de peso entre 1 y 3kg</label>
+			<input type="radio" name="opcion_peso" id="opcion_peso_3" value=3 />
+            <label for="opcion_peso_3">No ha habido pérdida de peso</label>
+            
+          </fieldset></td>
+             <tr>
+                
+          <td>Movilidad</td>
+		  <td><fieldset data-role="controlgroup" id="opcion_movilidad" >
+           
+            <input type="radio" name="opcion_movilidad" id="opcion_movilidad_0" value=0 />
+            <label for="opcion_movilidad_0">De la cama al sillón</label>
+            <input type="radio" name="opcion_" id="opcion_movilidad_1" value=1 />
+            <label for="opcion_movilidad_1">Autonomía en el interior</label>
+			<input type="radio" name="opcion_movilidad" id="opcion_movilidad_2" value=2 />
+            <label for="opcion_movilidad_2">Sale del domicilio</label>
+			
+            
+          </fieldset></td>
+            </tr>
+			 <tr>
+                
+          <td>¿Ha tenido una enfermedad aguda o 0 Sí
+situación de estrés psicológico en los
+últimos tres meses?</td>
+		  <td><fieldset data-role="controlgroup" id="opcion_enfermedad" >
+           
+            <input type="radio" name="opcion_enfermedad" id="opcion_enfermedad_0" value=0 />
+            <label for="opcion_enfermedad_0">Si</label>
+            <input type="radio" name="opcion_" id="opcion_enfermedad_1" value=1 />
+            <label for="opcion_enfermedad_1">No</label>
+			
+            
+          </fieldset></td>
+            </tr>
+			 <tr>
+                
+          <td>Problemas neuropsicológicos</td>
+		  <td><fieldset data-role="controlgroup" id="opcion_neuro" >
+           
+            <input type="radio" name="opcion_neuro" id="opcion_neuro_0" value=0 />
+            <label for="opcion_neuro_0">Demencia o depresión grave</label>
+            <input type="radio" name="opcion_" id="opcion_neuro_1" value=1 />
+            <label for="opcion_neuro_1">Demencia o depresión moderada</label>
+			<input type="radio" name="opcion_neuro" id="opcion_neuro_2" value=2 />
+            <label for="opcion_neuro_2">Sin problemas psicológicos</label>
+			
+            
+          </fieldset></td>
+            </tr>
+			 <tr>
+                
+          <td>Índice de masa corporal (IMC = peso /
+(talla)2 en kg/m2)</td>
+		  <td><fieldset data-role="controlgroup" id="opcion_imc" >
+           
+            <input type="radio" name="opcion_imc" id="opcion_imc_0" value=0 />
+            <label for="opcion_imc_0">IMC < 19</label>
+            <input type="radio" name="opcion_" id="opcion_imc_1" value=1 />
+            <label for="opcion_imc_1">19 < ó = IMC < 21</label>
+			<input type="radio" name="opcion_imc" id="opcion_imc_2" value=2 />
+            <label for="opcion_imc_2">21 < ó = IMC < 23</label>
+			<input type="radio" name="opcion_imc" id="opcion_imc_3" value=3 />
+            <label for="opcion_imc_3">IMC > ó = 23</label>
+            
+          </fieldset></td>
+            </tr>
+		</tbody>
+        </table>
+<table data-role="table"  class="ui-responsive ui-shadow" id="evaluacion">
+      <thead>
+        <tr>
+          <th colspan="2">TEST DE EVALUACIÓN</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>¿El paciente vive independiente en su domicilio?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_vivir" >
+           
+            <input type="radio" name="opcion_vivir" id="opcion_vivir_0" value=1 />
+            <label for="opcion_vivir_0">SI</label>
+            <input type="radio" name="opcion_vivir" id="opcion_vivir_1" value=0 />
+            <label for="opcion_vivir_1">NO</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Toma más de 3 medicamentos al día?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_medicacion" >
+           
+            <input type="radio" name="opcion_medicacion" id="opcion_medicacion_0" value=0 />
+            <label for="opcion_medicacion_0">SI</label>
+            <input type="radio" name="opcion_medicacion" id="opcion_medicacion_1" value=1 />
+            <label for="opcion_medicacion_1">NO</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Úlceras o lesiones cutáneas?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_ulceras" >
+           
+            <input type="radio" name="opcion_ulceras" id="opcion_ulceras_0" value=0 />
+            <label for="opcion_ulceras_0">SI</label>
+            <input type="radio" name="opcion_ulceras" id="opcion_ulceras_1" value=1 />
+            <label for="opcion_ulceras_1">NO</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Cuántas comidas completas toma al día?<br>
+(Equivalentes a dos platos y postre)</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_comida" >
+           
+            <input type="radio" name="opcion_comida" id="opcion_comida_0" value=0 />
+            <label for="opcion_comida_0">1 comida</label>
+            <input type="radio" name="opcion_comida" id="opcion_comida_1" value=1 />
+            <label for="opcion_comida_1">2 comidas</label>
+			<input type="radio" name="opcion_comida" id="opcion_comida_2" value=2 />
+            <label for="opcion_comida_2">3 comidas</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Consume el paciente...(Sí o no)<br>
+• productos lácteos al menos una vez al día?<br>
+• huevos o legumbres 1 ó 2 veces a la semana?<br>
+• carne, pescado o aves, diariamente?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_consumicion" >
+           
+            <input type="radio" name="opcion_consumicion" id="opcion_consumicion_0" value=0 />
+            <label for="opcion_consumicion_0">0 ó 1 Síes</label>
+            <input type="radio" name="opcion_consumicion" id="opcion_consumicion_1" value=0.5 />
+            <label for="opcion_consumicion_1">2 Síes</label>
+			<input type="radio" name="opcion_consumicion" id="opcion_consumicion_2" value=1 />
+            <label for="opcion_consumicion_2">3 Síes</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Consume frutas o verduras al menos 2 veces al día?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_frutas" >
+           
+            <input type="radio" name="opcion_frutas" id="opcion_frutas_0" value=1 />
+            <label for="opcion_frutas_0">SI</label>
+            <input type="radio" name="opcion_frutas" id="opcion_frutas_1" value=0 />
+            <label for="opcion_frutas_1">NO</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Cuántos vasos de agua u otros líquidos toma al día? (Agua, zumo, café, té, leche, vino, cerveza</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_agua" >
+           
+            <input type="radio" name="opcion_agua" id="opcion_agua_0" value=0 />
+            <label for="opcion_agua_0">Menos de 3 vasos</label>
+            <input type="radio" name="opcion_agua" id="opcion_agua_1" value=0.5 />
+            <label for="opcion_agua_1">De 3 a 5 vasos</label> 
+			<input type="radio" name="opcion_agua" id="opcion_agua_2" value=1 />
+            <label for="opcion_agua_2">Más de 5 vasos</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>Forma de alimentarse</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_alimentacion" >
+           
+            <input type="radio" name="opcion_alimentacion" id="opcion_alimentacion_0" value=0 />
+            <label for="opcion_alimentacion_0">Necesita ayuda</label>
+            <input type="radio" name="opcion_alimentacion" id="opcion_alimentacion_1" value=1 />
+            <label for="opcion_alimentacion_1">Se alimenta solo con dificultad</label>
+			<input type="radio" name="opcion_alimentacion" id="opcion_alimentacion_2" value=2 />
+            <label for="opcion_alimentacion_2">Se alimenta solo sin dificultad</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Considera el paciente que está bien nutrido?(problemas nutricionales)</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_nutricion" >
+           
+            <input type="radio" name="opcion_nutricion" id="opcion_nutricion_0" value=0 />
+            <label for="opcion_nutricion_0">Malnutrición grave</label>
+            <input type="radio" name="opcion_nutricion" id="opcion_nutricion_1" value=1 />
+            <label for="opcion_nutricion_1">No lo sabe o malnutrición moderada</label>
+			<input type="radio" name="opcion_nutricion" id="opcion_nutricion_2" value=2 />
+            <label for="opcion_nutricion_2">Sin problemas de nutrición</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>En comparación con las personas de su edad,¿cómo encuentra el paciente su estado de salud?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_salud" >
+           
+            <input type="radio" name="opcion_salud" id="opcion_salud_0" value=0 />
+            <label for="opcion_salud_0">Peor</label>
+            <input type="radio" name="opcion_salud" id="opcion_salud_1" value=0.5 />
+            <label for="opcion_salud_1">No lo sabe</label>
+			<input type="radio" name="opcion_salud" id="opcion_salud_2" value=1 />
+            <label for="opcion_salud_2">Igual</label>
+			<input type="radio" name="opcion_salud" id="opcion_salud_3" value=2 />
+            <label for="opcion_salud_3">Mejor</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>Circunferencia braquial (CB en cm)</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_branquio" >
+           
+            <input type="radio" name="opcion_branquio" id="opcion_branquio_0" value=0 />
+            <label for="opcion_branquio_0">CB < 21</label>
+            <input type="radio" name="opcion_branquio" id="opcion_branquio_1" value=0.5 />
+            <label for="opcion_branquio_1">21 ≤ CB ≤ 22</label>
+			<input type="radio" name="opcion_branquio" id="opcion_branquio_2" value=1 />
+            <label for="opcion_branquio_2">CB > 22</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>Circunferencia de la pantorrilla (CP en cm)</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_pantorrilla" >
+           
+            <input type="radio" name="opcion_pantorrilla" id="opcion_pantorrilla_0" value=0 />
+            <label for="opcion_pantorrilla_0">CP < 31</label>
+            <input type="radio" name="opcion_pantorrilla" id="opcion_pantorrilla_1" value=1 />
+            <label for="opcion_pantorrilla_1">CP ≥ 31</label>
+			
+            
+          </fieldset></td>
+               
+          
+            </tr>
+            
+		</tbody>
+        </table>
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaMNA()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	<!----> 
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

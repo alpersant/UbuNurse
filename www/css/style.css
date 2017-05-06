@@ -13,7 +13,7 @@ tr:nth-child(even) {
 	border-radius: 12px;
 }
 
-.oculto{
+#evaluacion{
 	display: none;
 }
 img {
@@ -26,3 +26,38 @@ font-size: 3px }
 #eliminarPaciente{
 	display:none;
 }
+p.circuloPuntuacion {
+  
+  height: 100px;
+  width: 100px;
+  display: table-cell;
+  text-align: center;
+  font-size:36px;
+  vertical-align: middle;
+  border-radius: 50%;
+ background: #D133FF;
+ color:white;
+  -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+ 
+}
+#txtResultado{
+	color:#FF333F;
+}
+td.opcionKatz{
+	text-align:center;
+}
+td.opcionPfeiffer{
+	text-align:center;
+}
+td.centrado{
+	text-align:center;
+}
+th.derecha{
+	text-align:right;
+}
+th.centro{
+	text-align:left;
+}
+

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+  
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   
+
+   <title>Riesgo de UPP de Braden</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioUppBraden" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Riesgo de UPP de Braden</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+   <table data-role="table"  class="ui-responsive ui-shadow" id="sensorial">
+      <thead>
+        <tr>
+		
+          <th class="centro"><a href="#infoSensorial"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Percepción sensorial</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="opcion_sensorial">
+    
+    <input type="radio" name="opcion_sensorial" id="opcion_sensorial_0" value=1>
+    <label for="opcion_sensorial_0">Completamente limitada</label>
+    <input type="radio" name="opcion_sensorial" id="opcion_sensorial_1" value=2>
+    <label for="opcion_sensorial_1">Muy limitada</label>
+	<input type="radio" name="opcion_sensorial" id="opcion_sensorial_2" value=3>
+    <label for="opcion_sensorial_2">Levemente limitada</label>
+	<input type="radio" name="opcion_sensorial" id="opcion_sensorial_3" value=4>
+    <label for="opcion_sensorial_3">No alterada</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+  <table data-role="table"  class="ui-responsive ui-shadow" id="humedad">
+      <thead>
+        <tr>
+		
+          <th class="centro"><a href="#infoHumedad"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Humedad</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="opcion_humedad">
+    
+    <input type="radio" name="opcion_humedad" id="opcion_humedad_0" value=1>
+    <label for="opcion_humedad_0">Constantemente húmeda</label>
+    <input type="radio" name="opcion_humedad" id="opcion_humedad_1" value=2>
+    <label for="opcion_humedad_1">Muy húmeda</label>
+	<input type="radio" name="opcion_humedad" id="opcion_humedad_2" value=3>
+    <label for="opcion_humedad_2">Ocasionalmente húmeda</label>
+	<input type="radio" name="opcion_humedad" id="opcion_humedad_3" value=4>
+    <label for="opcion_humedad_3">Raramente húmeda</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table><table data-role="table"  class="ui-responsive ui-shadow" id="actividad">
+      <thead>
+        <tr>
+		
+          <th class="centro"><a href="#infoActividad"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Actividad</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="opcion_actividad">
+    
+    <input type="radio" name="opcion_actividad" id="opcion_actividad_0" value=1>
+    <label for="opcion_actividad_0">En cama</label>
+    <input type="radio" name="opcion_actividad" id="opcion_actividad_1" value=2>
+    <label for="opcion_actividad_1">En silla</label>
+	<input type="radio" name="opcion_actividad" id="opcion_actividad_2" value=3>
+    <label for="opcion_actividad_2">Camina ocasionalmente</label>
+	<input type="radio" name="opcion_actividad" id="opcion_actividad_3" value=4>
+    <label for="opcion_actividad_3">Camina con frecuencia</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table><table data-role="table"  class="ui-responsive ui-shadow" id="movilidad">
+      <thead>
+        <tr>
+		
+          <th class="centro"><a href="#infoMovilidad"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Movilidad</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="opcion_movilidad">
+    
+    <input type="radio" name="opcion_movilidad" id="opcion_movilidad_0" value=1>
+    <label for="opcion_movilidad_0">Completamente inmóvil</label>
+    <input type="radio" name="opcion_movilidad" id="opcion_movilidad_1" value=2>
+    <label for="opcion_movilidad_1">Muy limitada</label>
+	<input type="radio" name="opcion_movilidad" id="opcion_movilidad_2" value=3>
+    <label for="opcion_movilidad_2">Ligeramente limitada</label>
+	<input type="radio" name="opcion_movilidad" id="opcion_movilidad_3" value=4>
+    <label for="opcion_movilidad_3">Sin limitaciones</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table><table data-role="table"  class="ui-responsive ui-shadow" id="nutricion">
+      <thead>
+        <tr>
+		
+          <th class="centro"><a href="#infoNutricion"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Nutrición</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="opcion_nutricion">
+    
+    <input type="radio" name="opcion_nutricion" id="opcion_nutricion_0" value=1>
+    <label for="opcion_nutricion_0">Muy pobre</label>
+    <input type="radio" name="opcion_nutricion" id="opcion_nutricion_1" value=2>
+    <label for="opcion_nutricion_1">Probablemente inadecuada</label>
+	<input type="radio" name="opcion_nutricion" id="opcion_nutricion_2" value=3>
+    <label for="opcion_nutricion_2">Adecuada</label>
+	<input type="radio" name="opcion_nutricion" id="opcion_nutricion_3" value=4>
+    <label for="opcion_nutricion_3">Excelente</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table><table data-role="table"  class="ui-responsive ui-shadow" id="friccion">
+      <thead>
+        <tr>
+		
+          <th class="centro"><a href="#infoFriccion"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Fricción y deslizamiento</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="opcion_friccion">
+    
+    <input type="radio" name="opcion_friccion" id="opcion_friccion_0" value=1>
+    <label for="opcion_friccion_0">Es un problema</label>
+    <input type="radio" name="opcion_friccion" id="opcion_friccion_1" value=2>
+    <label for="opcion_friccion_1">Es un problema potencial</label>
+	<input type="radio" name="opcion_friccion" id="opcion_friccion_2" value=3>
+    <label for="opcion_friccion_2">Sin problema aparente</label>
+	
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+  	
+		
+		
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+		
+  </div>
+ <div data-role="popup" id="infoSensorial" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Percepción sensorial</strong></h3>
+    <p>
+		<ul >
+    <li><strong>Completamente limitada:</strong><br>No responde (no
+se queja, no se defiende ni se agarra) ante estímulos
+dolorosos, por un nivel disminuido de conciencia o
+sedación o capacidad limitada para sentir dolor sobre
+la mayoría de la superficie corporal.</li>
+<li><strong>Muy limitada:</strong><br>Responde solamente a
+estímulos dolorosos. No puede comunicar el disconfor
+excepto por quejido o agitación o tiene un deterioro
+sensorial que limita la capacidad para sentir dolor o
+disconfor sobre la mitad del cuerpo.</li>
+<li><strong>Levemente limitada:</strong><br>Responde a órdenes
+verbales pero no siempre puede comunicar el
+disconfor o la necesidad de ser volteado o tiene
+alguna alteración sensorial que limita la capacidad
+para sentir dolor o disconfor en una o dos
+extremidades.</li>
+<li><strong>No alterada:</strong><br>Responde a órdenes verbales. No
+tiene déficit sensorial que limite la capacidad de sentir
+o manifestar dolor o disconfort.</li>
+</ul></p>  
+</div>
+ <div data-role="popup" id="infoHumedad" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Humedad</strong></h3>
+    <p>
+		<ul >
+    <li><strong>Constantemente húmeda:</strong><br>La piel
+permanece húmeda casi constantemente por
+sudoración, orina o líquidos corporales. Cada vez que
+es movilizado o girado, se encuentra mojado.</li>
+<li><strong>Muy húmeda:</strong><br>La piel está frecuentemente
+húmeda, las sábanas deben cambiarse por lo menos
+una vez en el turno (cada ocho horas).</li>
+<li><strong>Ocasionalmente húmeda:</strong><br>La piel está
+ocasionalmente húmeda, requiere un cambio extra de
+sábanas aproximadamente una vez al día (cada 12
+horas).</li>
+<li><strong>Rara vez húmeda:</strong><br>La piel está usualmente
+seca, las sábanas requieren cambio con intervalos de
+rutina (cada 24 horas).</li>
+</ul></p>  
+</div>
+ <div data-role="popup" id="infoActividad" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Actividad</strong></h3>
+    <p>
+		<ul >
+    <li><strong>En cama:</strong><br>Confinado a la cama</li>
+<li><strong>En silla:</strong><br>Capacidad para caminar severamente
+limitada o inexistente. No puede soportar su propio
+peso o debe ser asistido en la silla común o silla de
+ruedas.</li>
+<li><strong>Camina ocasionalmente:</strong><br>Camina
+ocasionalmente durante el día pero muy cortas
+distancias con o sin asistencia. Pasa la mayor parte
+del turno (8 horas) en la silla o en la cama.</li>
+<li><strong>Camina con frecuencia:</strong><br>Camina fuera del
+cuarto por lo menos dos veces en el día y dentro de él
+por lo menos una vez cada dos horas.</li>
+</ul></p>  
+</div>
+ <div data-role="popup" id="infoMovilidad" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Movilidad</strong></h3>
+    <p>
+		<ul >
+    <li><strong>Completamente inmóvil:</strong><br>No realiza ni ligeros
+cambios en la posición del cuerpo o las extremidades
+sin asistencia.</li>
+<li><strong>Muy limitada.:</strong><br>Realiza cambios mínimos y
+ocasionales de la posición del cuerpo o las
+extremidades, pero es incapaz de realizar en forma
+independiente, cambios frecuentes o significativos.</li>
+<li><strong>Ligeramente limitada:</strong><br>Realiza frecuentes
+aunque ligeros cambios en la posición del cuerpo o de
+las extremidades en forma independiente.</li>
+<li><strong>Sin limitaciones:</strong><br>Realiza cambios mayores y
+frecuentes en la posición sin asistencia.</li>
+</ul></p>  
+</div>
+ <div data-role="popup" id="infoNutricion" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Nutrición</strong></h3>
+    <p>
+		<ul >
+    <li><strong>Muy pobre.:</strong><br>Nunca come una comida completa.
+Rara vez come más de un tercio de cualquier comida
+ofrecida. Come dos porciones o menos de proteínas
+(carne o lácteos) por día. Toma poco líquido. No toma
+un suplemento alimenticio líquido o está sin vía oral o
+con dieta líquida clara o intravenosa por más de cinco
+días.</li>
+<li><strong>Probablemente inadecuada:</strong><br>Responde solamente a
+estímulos dolorosos. No puede comunicar el disconfor
+excepto por quejido o agitación o tiene un deterioro
+sensorial que limita la capacidad para sentir dolor o
+disconfor sobre la mitad del cuerpo.</li>
+<li><strong>Levemente limitada:</strong><br>Responde a órdenes
+verbales pero no siempre puede comunicar el
+disconfor o la necesidad de ser volteado o tiene
+alguna alteración sensorial que limita la capacidad
+para sentir dolor o disconfor en una o dos
+extremidades.</li>
+<li><strong>No alterada:</strong><br>Responde a órdenes verbales. No
+tiene déficit sensorial que limite la capacidad de sentir
+o manifestar dolor o disconfort.</li>
+</ul></p>  
+</div>
+ <div data-role="popup" id="infoFriccion" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Fricción y deslizamiento</strong></h3>
+    <p>
+		<ul >
+    <li><strong>Es un problema.:</strong><br>Requiere asistencia de
+moderada a máxima al movilizarlo. Levantarlo
+completamente sin deslizarlo sobre las sábanas es
+imposible. Frecuentemente se desliza en la cama o en
+la silla y requiere constantes cambios de posición con
+un máximo de asistencia. La espasticidad y
+contracturas llevan a fricción casi constante.</li>
+<li><strong>Es un problema potencial:</strong><br>Se mueve
+torpemente o requiere mínima asistencia. Durante un
+movimiento, la piel probablemente se desliza en algún
+grado contra las sábanas, la silla o los objetos de
+restricción. Mantiene relativamente buena posición en la
+silla o en la cama la mayoría del tiempo, pero
+ocasionalmente se desliza hacia abajo.</li>
+<li><strong>Sin problema aparente:</strong><br>Se mueve en la
+cama o en la silla y tiene suficiente fuerza muscular para
+sostenerse completamente durante el movimiento.
+Mantiene buena posición en la cama o en la silla en todo
+momento.</li>
+</ul></p>  
+</div>
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaBraden()" href="resultado.html" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

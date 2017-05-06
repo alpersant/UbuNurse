@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Katz</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioKatz" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Katz</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+  
+   <table data-role="table"  class="ui-responsive ui-shadow" id="baño">
+      <thead>
+        <tr>
+          <th colspan="2">Baño</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Se baña enteramente solo o necesita ayuda sólo para
+lavar una zona (como la espalda o una extremidad con
+minusvalía)</td>
+                
+               
+          
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita ayuda para algunas de las
+actividades previas.</td>
+            </tr>
+           <tr>
+				<td colspan="2" align="center" class="opcionKatz"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_baño">
+    
+    <input type="radio" name="opcion_baño" id="opcion_baño_0" value=0>
+    <label for="opcion_baño_0">Independiente</label>
+    <input type="radio" name="opcion_baño" id="opcion_baño_1" value=1>
+    <label for="opcion_baño_1">Dependiente</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+ <table data-role="table"  class="ui-responsive ui-shadow" id="vestido">
+      <thead>
+        <tr>
+          <th colspan="2">Vestido</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Se baña enteramente solo o necesita ayuda sólo para
+lavar una zona (como la espalda o una extremidad con
+minusvalía)</td>
+                
+               
+          
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita ayuda para algunas de las
+actividades previas.</td>
+            </tr>
+           <tr>
+				<td colspan="2" align="center" class="opcionKatz"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_vestido">
+    
+    <input type="radio" name="opcion_vestido" id="opcion_vestido_0" value=0>
+    <label for="opcion_vestido_0">Independiente</label>
+    <input type="radio" name="opcion_vestido" id="opcion_vestido_1" value=1>
+    <label for="opcion_vestido_1">Dependiente</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+ <table data-role="table"  class="ui-responsive ui-shadow" id="wc">
+      <thead>
+        <tr>
+          <th colspan="2">Uso del W.C.</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Se baña enteramente solo o necesita ayuda sólo para
+lavar una zona (como la espalda o una extremidad con
+minusvalía)</td>
+                
+               
+          
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita ayuda para algunas de las
+actividades previas.</td>
+            </tr>
+           <tr>
+				<td colspan="2" align="center" class="opcionKatz"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_wc">
+    
+    <input type="radio" name="opcion_wc" id="opcion_wc_0" value=0>
+    <label for="opcion_wc_0">Independiente</label>
+    <input type="radio" name="opcion_" id="opcion_wc_1" value=1>
+    <label for="opcion_wc_1">Dependiente</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+ <table data-role="table"  class="ui-responsive ui-shadow" id="movilidad">
+      <thead>
+        <tr>
+          <th colspan="2">Movilidad</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Se baña enteramente solo o necesita ayuda sólo para
+lavar una zona (como la espalda o una extremidad con
+minusvalía)</td>
+                
+               
+          
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita ayuda para algunas de las
+actividades previas.</td>
+            </tr>
+           <tr>
+				<td colspan="2" align="center" class="opcionKatz"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_movilidad">
+    
+    <input type="radio" name="opcion_movilidad" id="opcion_movilidad_0" value=0>
+    <label for="opcion_movilidad_0">Independiente</label>
+    <input type="radio" name="opcion_movilidad" id="opcion_movilidad_1" value=1>
+    <label for="opcion_movilidad_1">Dependiente</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+ <table data-role="table"  class="ui-responsive ui-shadow" id="continencia">
+      <thead>
+        <tr>
+          <th colspan="2">Continencia</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Se baña enteramente solo o necesita ayuda sólo para
+lavar una zona (como la espalda o una extremidad con
+minusvalía)</td>
+                
+               
+          
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita ayuda para algunas de las
+actividades previas.</td>
+            </tr>
+           <tr>
+				<td colspan="2" align="center" class="opcionKatz"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_continencia">
+    
+    <input type="radio" name="opcion_continencia" id="opcion_continencia_0" value=0>
+    <label for="opcion_continencia_0">Independiente</label>
+    <input type="radio" name="opcion_continencia" id="opcion_continencia_1" value=1>
+    <label for="opcion_continencia_1">Dependiente</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+ <table data-role="table"  class="ui-responsive ui-shadow" id="alimentacion">
+      <thead>
+        <tr>
+          <th colspan="2">Alimentacion</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>Independiente</td>
+          <td>Se baña enteramente solo o necesita ayuda sólo para
+lavar una zona (como la espalda o una extremidad con
+minusvalía)</td>
+                
+               
+          
+            </tr>
+            <tr>
+                <td>Dependiente</td>
+          <td>Necesita ayuda para algunas de las
+actividades previas.</td>
+            </tr>
+           <tr>
+				<td colspan="2" align="center" class="opcionKatz"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_alimentacion">
+    
+    <input type="radio" name="opcion_alimentacion" id="opcion_alimentacion_0" value=0>
+    <label for="opcion_alimentacion_0">Independiente</label>
+    <input type="radio" name="opcion_alimentacion" id="opcion_alimentacion_1" value=1>
+    <label for="opcion_alimentacion_1">Dependiente</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>		
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaKatz()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

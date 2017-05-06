@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Yesavage</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioYesavage" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Yesavage</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+  
+    
+ <table data-role="table"  class="ui-responsive ui-shadow" id="versionReducida">
+      <thead>
+        <tr>
+          <th colspan="2">Versión reducida</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 <td>¿En general está satisfecho/a con su vida?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_vida">
+    
+    <input type="radio" name="opcion_vida" id="opcion_vida_0" value=0>
+    <label for="opcion_vida_0">Si</label>
+    <input type="radio" name="opcion_vida" id="opcion_vida_1" value=1>
+    <label for="opcion_vida_1">No</label>
+   
+</fieldset></td>
+            
+            </tr>
+            <tr>
+                <td>¿Ha abandonado muchas de sus tareas habituales y aficiones?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_abandoTareas">
+    
+    <input type="radio" name="opcion_abandoTareas" id="opcion_abandoTareas_0" value=1>
+    <label for="opcion_abandoTareas_0">Si</label>
+    <input type="radio" name="opcion_abandoTareas" id="opcion_abandoTareas_1" value=0>
+    <label for="opcion_abandoTareas_1">No</label>
+   
+</fieldset></td>
+            </tr>
+             <tr>
+                <td>¿Siente que su vida está vacía?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_vidaVacia">
+    
+    <input type="radio" name="opcion_vidaVacia" id="opcion_vidaVacia_0" value=1>
+    <label for="opcion_vidaVacia_0">Si</label>
+    <input type="radio" name="opcion_vidaVacia" id="opcion_vidaVacia_1" value=0>
+    <label for="opcion_vidaVacia_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Se siente con frecuencia aburrido/a?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_aburrido">
+    
+    <input type="radio" name="opcion_aburrido" id="opcion_aburrido_0" value=1>
+    <label for="opcion_aburrido_0">Si</label>
+    <input type="radio" name="opcion_aburrido" id="opcion_aburrido_1" value=0>
+    <label for="opcion_aburrido_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Se encuentra de buen humor la mayor parte del tiempo?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_humor">
+    
+    <input type="radio" name="opcion_humor" id="opcion_humor_0" value=0>
+    <label for="opcion_humor_0">Si</label>
+    <input type="radio" name="opcion_humor" id="opcion_humor_1" value=1>
+    <label for="opcion_humor_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Teme que algo malo pueda ocurrirle?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_malo">
+    
+    <input type="radio" name="opcion_malo" id="opcion_malo_0" value=1>
+    <label for="opcion_malo_0">Si</label>
+    <input type="radio" name="opcion_malo" id="opcion_malo_1" value=0>
+    <label for="opcion_malo_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Se siente feliz la mayor parte del tiempo?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_feliz">
+    
+    <input type="radio" name="opcion_feliz" id="opcion_feliz_0" value=0>
+    <label for="opcion_feliz_0">Si</label>
+    <input type="radio" name="opcion_feliz" id="opcion_feliz_1" value=1>
+    <label for="opcion_feliz_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Con frecuencia se siente desamparado/a, desprotegido/a?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_desamparado">
+    
+    <input type="radio" name="opcion_desamparado" id="opcion_desamparado_0" value=1>
+    <label for="opcion_desamparado_0">Si</label>
+    <input type="radio" name="opcion_desamparado" id="opcion_desamparado_1" value=0>
+    <label for="opcion_desamparado_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Prefiere quedarse en casa más que salir y hacer cosas nuevas?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_salir">
+    
+    <input type="radio" name="opcion_salir" id="opcion_salir_0" value=1>
+    <label for="opcion_salir_0">Si</label>
+    <input type="radio" name="opcion_salir" id="opcion_salir_1" value=0>
+    <label for="opcion_salir_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Cree que tiene más problemas que la mayoría de la gente?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_problemas">
+    
+    <input type="radio" name="opcion_problemas" id="opcion_problemas_0" value=1>
+    <label for="opcion_problemas_0">Si</label>
+    <input type="radio" name="opcion_problemas" id="opcion_problemas_1" value=0>
+    <label for="opcion_problemas_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿En este momento, piensa que es estupendo estar vivo?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_vivo">
+    
+    <input type="radio" name="opcion_vivo" id="opcion_vivo_0" value=0>
+    <label for="opcion_vivo_0">Si</label>
+    <input type="radio" name="opcion_vivo" id="opcion_vivo_1" value=1>
+    <label for="opcion_vivo_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Actualmente se siente un/a inútil?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_inutil">
+    
+    <input type="radio" name="opcion_inutil" id="opcion_inutil_0" value=1>
+    <label for="opcion_inutil_0">Si</label>
+    <input type="radio" name="opcion_inutil" id="opcion_inutil_1" value=0>
+    <label for="opcion_inutil_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Piensa que su situación es desesperada?<br>
+					¿Se siente sin esperanza en este momento?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_esperanza">
+    
+    <input type="radio" name="opcion_esperanza" id="opcion_esperanza_0" value=1>
+    <label for="opcion_esperanza_0">Si</label>
+    <input type="radio" name="opcion_esperanza" id="opcion_esperanza_1" value=0>
+    <label for="opcion_esperanza_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Se siente lleno/a de energía?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_energia">
+    
+    <input type="radio" name="opcion_energia" id="opcion_energia_0" value=0>
+    <label for="opcion_energia_0">Si</label>
+    <input type="radio" name="opcion_energia" id="opcion_energia_1" value=1>
+    <label for="opcion_energia_1">No</label>
+   
+</fieldset></td>
+            </tr>
+			  <tr>
+                <td>¿Cree que la mayoría de la gente está en mejor situación que Vd?</td>
+          <td colspan="2" align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_gente">
+    
+    <input type="radio" name="opcion_gente" id="opcion_gente_0" value=1>
+    <label for="opcion_gente_0">Si</label>
+    <input type="radio" name="opcion_gente" id="opcion_gente_1" value=0>
+    <label for="opcion_gente_1">No</label>
+   
+</fieldset></td>
+            </tr>
+		</tbody>
+        </table>
+
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaYesavage()" href="resultado.html" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

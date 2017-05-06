@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Katz</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioPfeiffer" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Pfeiffer</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+  
+    <table data-role="table"  class="ui-responsive ui-shadow" id="dia">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a>¿Qué día es hoy? (día del mes, mes, año)</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"> <span id="fechaActual">Fecha Actual</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_dia">
+    
+    <input type="radio" name="opcion_dia" id="opcion_dia_0" value=0>
+    <label for="opcion_dia_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_dia" id="opcion_dia_1" value=1>
+    <label for="opcion_dia_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="dia_semana">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a>¿Qué día de semana es hoy?</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"> <span id="diaActual">Fecha Actual</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_dia_semana">
+    
+    <input type="radio" name="opcion_dia_semana" id="opcion_dia_semana_0" value=0>
+    <label for="opcion_dia_semana_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_dia_semana" id="opcion_dia_semana_1" value=1>
+    <label for="opcion_dia_semana_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="localizacion">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="location" data-iconpos="notext" data-inline="true"> </a>¿Dónde estamos ahora? </th>
+     
+        </tr>
+      </thead>
+      <tbody>
+			<tr>
+				 
+          <td align="center" class="opcionPfeiffer"> <span id="user_ciudad">Ciudad</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_localizacion">
+    
+    <input type="radio" name="opcion_localizacion" id="opcion_localizacion_0" value=0>
+    <label for="opcion_localizacion_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_localizacion" id="opcion_localizacion_1" value=1>
+    <label for="opcion_localizacion_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="telefono">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"> </a>
+		  ¿Cuál es su numero de teléfono? O ¿cuál es su dirección?(si no tiene teléfono)</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"> <span id="user_telefono">Telefono</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_telefono">
+    
+    <input type="radio" name="opcion_telefono" id="opcion_telefono_0" value=0>
+    <label for="opcion_telefono_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_telefono" id="opcion_telefono_1" value=1>
+    <label for="opcion_telefono_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="edad">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"> </a>
+		  ¿Cuántos años tiene?</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"><span id="edadPaciente">EdadPaciente</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_edad">
+    
+    <input type="radio" name="opcion_edad" id="opcion_edad_0" value=0>
+    <label for="opcion_edad_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_edad" id="opcion_edad_1" value=1>
+    <label for="opcion_edad_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="fechaNacimiento">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"> </a>
+		  ¿Cuál es la fecha de su nacimiento? (día, mes, año)</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"><span id="user_nacimiento">Nacimiento</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_fechaNacimiento">
+    
+    <input type="radio" name="opcion_fechaNacimiento" id="opcion_fechaNacimiento_0" value=0>
+    <label for="opcion_fechaNacimiento_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_fechaNacimiento" id="opcion_fechaNacimiento_1" value=1>
+    <label for="opcion_fechaNacimiento_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="presidente_actual">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"> </a>
+		  ¿Quién es ahora el presidente del Gobierno?</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"> </a><span id="presidenteActual">PresidenteActual</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_presidente_actual">
+    
+    <input type="radio" name="opcion_presidente_actual" id="opcion_presidente_actual_0" value=0>
+    <label for="opcion_presidente_actual_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_presidente_actual" id="opcion_presidente_actual_1" value=1>
+    <label for="opcion_presidente_actual_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="presidente_anterior">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"> </a>
+		  ¿Quién fue el anterior presidente del Gobierno?</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"><span id="presidenteAnterior">PresidenteAnterior</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_presidente_anterior">
+    
+    <input type="radio" name="opcion_presidente_anterior" id="opcion_presidente_anterior_0" value=0>
+    <label for="opcion_presidente_anterior_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_presidente_anterior" id="opcion_presidente_anterior_1" value=1>
+    <label for="opcion_presidente_anterior_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="apellidos_madre">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"> </a>
+		  ¿Cuáles son los 2 apellidos de su madre?</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_apellidos_madre">
+    
+    <input type="radio" name="opcion_apellidos_madre" id="opcion_apellidos_madre_0" value=0>
+    <label for="opcion_apellidos_madre_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_apellidos_madre" id="opcion_apellidos_madre_1" value=1>
+    <label for="opcion_apellidos_madre_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		   <table data-role="table"  class="ui-responsive ui-shadow" id="resta">
+      <thead>
+        <tr>
+          <th colspan="2" ><a data-role="button" data-icon="minus" data-iconpos="notext" data-inline="true"> </a>
+		  Restar de 3 en 3 al numero 20 hasta llegar al 0</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td align="center" class="opcionPfeiffer"> <span id="calculoResta">Resta</span></td>
+                
+               
+          
+            </tr>
+           
+           <tr>
+				<td colspan="2" align="center" class="opcionPfeiffer"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_resta">
+    
+    <input type="radio" name="opcion_resta" id="opcion_resta_0" value=0>
+    <label for="opcion_resta_0"> <img src="images/check.png"> </label>
+    <input type="radio" name="opcion_resta" id="opcion_resta_1" value=1>
+    <label for="opcion_resta_1" ><img src="images/error.png"></label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaPfeiffer()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

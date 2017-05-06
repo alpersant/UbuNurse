@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+  
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   
+
+   <title>Mini examen cognitivo(Lobo)</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioLobo" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Mini examen cognitivo(Lobo)</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+   <table data-role="table"  class="ui-responsive ui-shadow" id="orientacion_temporal">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a>Orientación temporal (cada respuesta vale 1 punto)</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>¿Sabe en que año estamos?<br>¿En que época del año?<br>
+		  ¿En que mes estamos?<br>¿Qué día de la semana es hoy?<br>
+		  ¿Qué día del mes es hoy?</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosTemporal">Fecha Actual</span></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_temporal">
+    
+    <input type="radio" name="opcion_temporal" id="opcion_temporal_0" value=0>
+    <label for="opcion_temporal_0">0</label>
+    <input type="radio" name="opcion_temporal" id="opcion_temporal_1" value=1>
+    <label for="opcion_temporal_1">1</label>
+	<input type="radio" name="opcion_temporal" id="opcion_temporal_2" value=2>
+    <label for="opcion_temporal_2">2</label>
+	<input type="radio" name="opcion_temporal" id="opcion_temporal_3" value=3>
+    <label for="opcion_temporal_3">3</label>
+	<input type="radio" name="opcion_temporal" id="opcion_temporal_4" value=4>
+    <label for="opcion_temporal_4">4</label>
+	<input type="radio" name="opcion_temporal" id="opcion_temporal_5" value=5>
+    <label for="opcion_temporal_5">5</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+  
+  	<!--Orientacion espacial-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="orientacion_espacial">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="location" data-iconpos="notext" data-inline="true"></a>
+		  Orientación espacial (pueden sustituirse los lugares originales por los alternativos)</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>¿Me puede decir en que país estamos?<br> ¿Sabe en que provincia
+estamos? (o comunidad autónoma)<br> ¿Y en que ciudad (pueblo)
+estamos?<br> ¿Sabe dónde estamos ahora? (hospital/clínica/casa:
+nombre de la calle)<br>¿Y en que planta (piso)? (Casa: piso o número
+de la calle)</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosEspacial">Lugar Actual</span></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_espacial">
+    
+    <input type="radio" name="opcion_espacial" id="opcion_espacial_0" value=0>
+    <label for="opcion_espacial_0">0</label>
+    <input type="radio" name="opcion_espacial" id="opcion_espacial_1" value=1>
+    <label for="opcion_espacial_1">1</label>
+	<input type="radio" name="opcion_espacial" id="opcion_espacial_2" value=2>
+    <label for="opcion_espacial_2">2</label>
+	<input type="radio" name="opcion_espacial" id="opcion_espacial_3" value=3>
+    <label for="opcion_espacial_3">3</label>
+	<input type="radio" name="opcion_espacial" id="opcion_espacial_4" value=4>
+    <label for="opcion_espacial_4">4</label>
+	<input type="radio" name="opcion_espacial" id="opcion_espacial_5" value=5>
+    <label for="opcion_espacial_5">5</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+  
+  	<!--Memoria de fijación-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="memoriaFijacion">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a>
+		  Memoria de fijación</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Repita las siguientes tres palabras:<strong>peseta-caballo-manzana</strong><br>
+*(acuérdese de ellas porque se las preguntaré dentro de un rato)<br>
+**(Un punto por palabra)</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosMemoriaFija"></span></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_memoria">
+    
+    <input type="radio" name="opcion_memoria" id="opcion_memoria_0" value=0>
+    <label for="opcion_memoria_0">0</label>
+    <input type="radio" name="opcion_memoria" id="opcion_memoria_1" value=1>
+    <label for="opcion_memoria_1">1</label>
+	<input type="radio" name="opcion_memoria" id="opcion_memoria_2" value=2>
+    <label for="opcion_memoria_2">2</label>
+	<input type="radio" name="opcion_memoria" id="opcion_memoria_3" value=3>
+    <label for="opcion_memoria_3">3</label>
+
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+<!--Concentración y cálculo-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="calculo">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a>
+		  Concentración y cálculo</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Si tiene 30 pesetas y me las va dando de 3 en 3,
+¿cuántas le van quedando?</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosCalculo"><strong>Respuesta: </strong>27 - 24 - 21 -18 -15</span></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_calculo">
+    
+    <input type="radio" name="opcion_calculo" id="opcion_calculo_0" value=0>
+    <label for="opcion_calculo_0">0</label>
+    <input type="radio" name="opcion_calculo" id="opcion_calculo_1" value=1>
+    <label for="opcion_calculo_1">1</label>
+	<input type="radio" name="opcion_calculo" id="opcion_calculo_2" value=2>
+    <label for="opcion_calculo_2">2</label>
+	<input type="radio" name="opcion_calculo" id="opcion_calculo_3" value=3>
+    <label for="opcion_calculo_3">3</label>
+	<input type="radio" name="opcion_calculo" id="opcion_calculo_4" value=4>
+    <label for="opcion_calculo_4">4</label>
+	<input type="radio" name="opcion_calculo" id="opcion_calculo_5" value=5>
+    <label for="opcion_calculo_5">5</label>
+
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table> 
+		
+<!--Memoria diferida-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="memoria_diferida">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a>
+		  Memoria diferida</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>¿Recuerda las tres palabras que le han dicho antes?</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosmememoriaDiferida"><strong>Respuesta: </strong>peseta-caballo-manzana</span></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_memoriaDiferida">
+    
+    <input type="radio" name="opcion_memoriaDiferida" id="opcion_memoriaDiferida_0" value=0>
+    <label for="opcion_memoriaDiferida_0">0</label>
+    <input type="radio" name="opcion_memoriaDiferida" id="opcion_memoriaDiferida_1" value=1>
+    <label for="opcion_memoriaDiferida_1">1</label>
+	<input type="radio" name="opcion_memoriaDiferida" id="opcion_memoriaDiferida_2" value=2>
+    <label for="opcion_memoriaDiferida_2">2</label>
+	<input type="radio" name="opcion_memoriaDiferida" id="opcion_memoriaDiferida_3" value=3>
+    <label for="opcion_memoriaDiferida_3">3</label>
+	
+
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		
+<!--Nominacion-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="nominacion">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a>
+		  Nominación</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>¿Qué es esto?<a href="#boligrafo" data-rel="popup" data-position-to="window" data-transition="fade" data-role="button" data-icon="eye" data-iconpos="notext"></a>
+		 ¿Qué es esto?<a href="#reloj" data-rel="popup" data-position-to="window" data-transition="fade" data-role="button" data-icon="eye" data-iconpos="notext"></a>
+		 </td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosNominacion"></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_nominacion">
+    
+    <input type="radio" name="opcion_nominacion" id="opcion_nominacion_0" value=0>
+    <label for="opcion_nominacion_0">0</label>
+    <input type="radio" name="opcion_nominacion" id="opcion_nominacion_1" value=1>
+    <label for="opcion_nominacion_1">1</label>
+	<input type="radio" name="opcion_nominacion" id="opcion_nominacion_2" value=2>
+    <label for="opcion_nominacion_2">2</label>
+		
+
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		
+<!--Repeticion-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="repeticion">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="audio" data-iconpos="notext" data-inline="true"></a>
+		  Repeticion</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Le voy a pedir que repita esta frase ¿preparado?</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosRepeticion"><strong>Frase: </strong>"En un trigal había cinco perros."</span></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_repeticion">
+    
+    <input type="radio" name="opcion_repeticion" id="opcion_repeticion_0" value=0>
+    <label for="opcion_repeticion_0">0</label>
+    <input type="radio" name="opcion_repeticion" id="opcion_repeticion_1" value=1>
+    <label for="opcion_repeticion_1">1</label>
+	
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+
+<!--Comprensión-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="comprension">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a>
+		  Comprensión</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Escuche atentamente, voy a pedirle que haga algo.<br>
+		  Coja este papel con la mano derecha (pausa) dóblelo por la mitad (pausa) y póngalo en la
+		 mesa (o en el suelo).<br>Cogerlo con la mano derecha, doblarlo por la mitad, ponerlo en el suelo</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosComprension"></span></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_comprension">
+    
+    <input type="radio" name="opcion_comprension" id="opcion_comprension_0" value=0>
+    <label for="opcion_comprension_0">0</label>
+    <input type="radio" name="opcion_comprension" id="opcion_comprension_1" value=1>
+    <label for="opcion_comprension_1">1</label>
+	<input type="radio" name="opcion_comprension" id="opcion_comprension_2" value=2>
+    <label for="opcion_comprension_2">2</label>
+	<input type="radio" name="opcion_comprension" id="opcion_comprension_3" value=3>
+    <label for="opcion_comprension_3">3</label>
+
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+
+<!--Lectura-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="lectura">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a>
+		  Lectura</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Por favor, lea esto y haga lo que dice ahí:<a href="#lecturaTxt" data-rel="popup" data-position-to="window" data-transition="fade" data-role="button" data-icon="eye" data-iconpos="notext"></a>
+		 </td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosLectura"></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_lectura">
+    
+    <input type="radio" name="opcion_lectura" id="opcion_lectura_0" value=0>
+    <label for="opcion_lectura_0">0</label>
+    <input type="radio" name="opcion_lectura" id="opcion_lectura_1" value=1>
+    <label for="opcion_lectura_1">1</label>
+  
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		
+<!--Escritura-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="escritura">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="edit" data-iconpos="notext" data-inline="true"></a>
+		  Escritura</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Por favor escriba una frase… algo que tenga sentido</td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosEscritura"><textarea cols="40" rows="10" name="notas" id="escrituraTxt" placeholder="Escriba..."></textarea></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_escritura">
+    
+    <input type="radio" name="opcion_escritura" id="opcion_escritura_0" value=0>
+    <label for="opcion_escritura_0">0</label>
+    <input type="radio" name="opcion_escritura" id="opcion_escritura_1" value=1>
+    <label for="opcion_escritura_1">1</label>
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+<!--Dibujo-->
+	   <table data-role="table"  class="ui-responsive ui-shadow" id="dibujo">
+      <thead>
+        <tr>
+          <th ><a data-role="button" data-icon="edit" data-iconpos="notext" data-inline="true"></a>
+		  Dibujo</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Por favor, copie este dibujo:<a href="#dibujoFigura" data-rel="popup" data-position-to="window" data-transition="fade" data-role="button" data-icon="eye" data-iconpos="notext"></a>
+		 </td>
+			</tr>
+			<tr>
+				 
+          <td><span id="datosDibujo"></td>
+			</tr>
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_dibujo">
+    
+    <input type="radio" name="opcion_dibujo" id="opcion_dibujo_0" value=0>
+    <label for="opcion_dibujo_0">0</label>
+    <input type="radio" name="opcion_dibujo" id="opcion_dibujo_1" value=1>
+    <label for="opcion_dibujo_1">1</label>
+  
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		
+		
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+ <div data-role="popup" id="boligrafo" data-overlay-theme="a" data-theme="d" data-corners="false">
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+	<img class="popphoto" src="images/boligrafo.jpg" style="max-height:512px;">
+</div>
+    <div data-role="popup" id="reloj" data-overlay-theme="a" data-theme="d" data-corners="false">
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+	<img class="popphoto" src="images/reloj.jpg" style="max-height:512px;">
+</div>
+<div data-role="popup" id="lecturaTxt" data-overlay-theme="a" data-theme="d" data-corners="false">
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+	<img class="popphoto" src="images/lecturaTxt.jpg" style="max-height:512px;">
+</div>
+<div data-role="popup" id="dibujoFigura" data-overlay-theme="a" data-theme="d" data-corners="false">
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+	<img class="popphoto" src="images/dibujoFigura.jpg" style="max-height:512px;">
+</div>
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaLobo()"  data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

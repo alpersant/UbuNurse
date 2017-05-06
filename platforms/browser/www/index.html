@@ -32,17 +32,12 @@
   	<img src="images/portada.png" width="310" height="312" alt=""/>
   </div>
   <form id="formulario" >
-      
-      			<label> Usuario </label>
-      			<input type="text" id="nombredeusuario" name="nombredeusuario">
-      
-      			<label> Password </label>
-     			<input type="password" id="clave" name="clave" >
-
-      			<!--<input type="submit" value="Login" id="botonLogin">-->
-					
-    		</form>	
-<a href="#page_inicio" data-role="button">Login</a>	
+		<input type="text" id="nombredeusuario" name="nombredeusuario" value="" placeholder="Usuario.."><br>
+     	<input type="password" id="clave" name="clave" value="" placeholder="Contraseña...">
+      	<!--<input type="submit" value="Login" id="botonLogin">-->
+   </form>	
+			<!--href="#page_inicio"--> 
+<a onclick="login()" data-role="button"  data-transition="slide">Login</a>	
   </div>
 	<!-- /footer-->
     <div data-role="footer" data-position="fixed" >
@@ -71,7 +66,7 @@
                 <p>HISTORIAL</p>
                 
             </a></div></div>
-			 
+		 
 </div>
 
 <!-- /grid-a -->
@@ -93,10 +88,10 @@
 					
 					<label for="español">Español</label>
 					<input type="radio" name="idioma" id="español" checked>
-					<label for="ingles">Inlges</label>
+					<!--<label for="ingles">Inlges</label>
 					<input type="radio" name="idioma" id="ingles">
 					<label for="catalan">Catalan</label>
-					<input type="radio" name="idioma" id="catalan">
+					<input type="radio" name="idioma" id="catalan">-->
 				</fieldset>
 			</div>
         </fieldset>
@@ -116,10 +111,10 @@
 					
 					<label for="a">Verdes</label>
 					<input type="radio" name="theme" id="a" checked>
-					<label for="b">Azules</label>
+					<!--<label for="b">Azules</label>
 					<input type="radio" name="theme" id="b">
 					<label for="c">Amarillo</label>
-					<input type="radio" name="theme" id="c">
+					<input type="radio" name="theme" id="c">-->
 				</fieldset>
 			</div>
         </fieldset>
@@ -128,8 +123,18 @@
       
     </div>
 		<a href="#page_help" data-role="button"  data-icon="info" data-iconpos="left" data-transition="slidefade" >Ayuda</a>
-        <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="left">Cerrar</a>
+		<a href="#page_logout" data-rel="popup" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="left" data-transition="slide">Cerrar sesión</a>
+       
     </div>
+	<div data-role="popup" id="page_logout" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas salir?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="logout()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
 	<!-- /footer-->
 	
     <footer>
@@ -175,7 +180,7 @@
   </div>
   <input type="text" name="nombre" id="detalle_nombre" value="" placeholder="Nombre..">
   <input type="text" name="apellidos" id="detalle_apellidos" value="" placeholder="Apellidos..">
-  <input type="text" name="cip" id="detalle_cip" value="" placeholder="CIP..">
+  <input type="text" name="cip" id="detalle_cip" value="" placeholder="CIP.." >
   <input type="date" name="detalle_fechaNacimiento" id="detalle_fechaNacimiento" value="2013-01-01">
   <input type="text" name="direccion" id="detalle_direccion" value="" placeholder="Calle...Ej:C/ Ubunurse, N4 1B">
   <input type="text" name="ciudad" id="detalle_ciudad" value="" placeholder="Ciudad..">
@@ -213,31 +218,171 @@
     <div data-role="collapsible">
       <h3>Percepción</h3>
       <p>
-      
+       <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+	  
+    <li><a href="test_apgarNeo.html">
+       
+        <h2>Apgar Neonatal</h2>
+        
+        <a href="#infoapgarNeo" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 <li><a href="test_barberMR.html">
+       
+        <h2>Barber para Medio Rural</h2>
+        
+        <a href="#infobarberMR" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 
+    
+</ul>
       </p>
+	  <div data-role="popup" id="infoapgarNeo" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Apgar Neonatal</strong></h3>
+    <p>
+		<ul >
+    <li>Permite la evolución de un recién nacido. </li>
+	<li>Se realiza al primer y quinto minuto después del nacimiento del bebé.En el minuto 1 se determina qué tan bien toleró el bebé el proceso de nacimiento.
+	En el minuto 5 permite indicar qué tan bien está evolucionando el bebé por fuera del vientre materno.</li>
+    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
+<div data-role="popup" id="infobarberMR" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Barber para Medio Rural</strong></h3>
+    <p>
+		<ul >
+    <li>Permite detectar a personas ancianas susceptibles que puedan tener algún nivel de dependencia en zonas rurales. </li>
+    <li>Tiempo estimado de administración:  5 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Nutricional</h3>
-      <p>Contenido</p>
+      <p>
+	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+	  
+    <li><a href="test_uppBraden.html">
+       
+        <h2>Riesgo de UPP de Braden</h2>
+        
+        <a href="#infouppBraden" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 <li><a href="test_monitorizacionUPP.html">
+       
+        <h2>Monitorizacion de UPP</h2>
+        
+        <a href="#infomonitorizacionUPP" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	<li><a href="test_MNA.html">
+       
+        <h2>Mini Evaluación Nutricional(MNA)</h2>
+        
+        <a href="#infoMNA" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 
+</ul>  
+	  
+	  </p>
+	  <div data-role="popup" id="infouppBraden" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Riesgo de UPP de Braden</strong></h3>
+    <p>
+		<ul >
+    <li>Evalúa el riesgo de desarrollar úlceras por presión en base a la sensibilidad y humedad de la piel, la fricción del cuerpo con las sábanas,
+	la movilidad, actividad y nutrición del paciente. </li>
+    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
+<div data-role="popup" id="infomonitorizacionUPP" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Monitorizacion de UPP</strong></h3>
+    <p>
+		<ul >
+    <li>Permite valorar la evolución de las úlceras por presión. </li>
+    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
+<div data-role="popup" id="infoMNA" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Mini Evaluación Nutricional(MNA)</strong></h3>
+    <p>
+		<ul >
+    <li>Permite evaluar el estado nutricional de la población geriátrica. Permite detectar problemas de malnutrición
+	y/o descartar patologías debidas a la alteración de este patrón </li>
+    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Eliminación</h3>
-      
+      <p> No hay test disponibles </p>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Actividad </h3>
       <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
 	  
-    <li><a href="barthel.html">
+    <li><a href="test_barthel.html">
        
         <h2>Barthel</h2>
         
-        <a href="#infoBarthel" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
+        <a href="#infoBarthel" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 <li><a href="test_ikatz.html">
+       
+        <h2>Indice de Katz</h2>
+        
+        <a href="#infoKatz" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 <li><a href="test_iLwBdy.html">
+       
+        <h2>Indice de Lawton y Brody</h2>
+        
+        <a href="#infoiLwBdy" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	<li><a href="test_caidasMultiples.html">
+       
+        <h2>Riesgo de caídas múltiples</h2>
+        
+        <a href="#infoCaidas" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
 		
     </li>
     
 </ul>
-
+<div data-role="popup" id="infoCaidas" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Riesgo de caídas múltiples</strong></h3>
+    <p>
+		<ul >
+    <li>Permite valorar el riesgo de caídas, incontinencia urinaria, problemas visuales y limitación funcional.</li>
+    <li>Tiempo estimado de administración: 5 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
+	 <div data-role="popup" id="infoKatz" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Katz</strong></h3>
+    <p>
+		<ul >
+    <li>Valoración de las actividades de la vida
+diaria de la población general.</li>
+    <li>Tiempo estimado de administración: 5 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
 	 <div data-role="popup" id="infoBarthel" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
     <h3><strong>Barthel</strong></h3>
     <p>
@@ -251,35 +396,152 @@ cama, subir y bajar escaleras, etc.</li>
 		</ul></p>
     
 </div>
+ <div data-role="popup" id="infoiLwBdy" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Indice de Lawton y Brody</strong></h3>
+    <p>
+		<ul >
+    <li>Permite valorar la capacidad de la persona para realizar las
+actividades instrumentales necesarias para vivir de manera independiente
+en la comunidad.</li>
+    <li>Tiempo estimado de administración: 5-10 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
     </div>
 	
     <div data-role="collapsible" data-collapsed="true">
       <h3>Sueño</h3>
-      <p>Contenido</p>
+      <p>No hay test disponibles</p>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Cognitivo</h3>
-      <p>Contenido</p>
+      <p>
+	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+	  
+    <li><a href="test_Pfeiffer.html">
+       
+        <h2>Pfeiffer</h2>
+        
+        <a href="#infopfeiffer" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 <li><a href="test_lobo.html">
+       
+        <h2>Mini examen cognitivo(Lobo)</h2>
+        
+        <a href="#infoLobo" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 
+    
+</ul>
+ <div data-role="popup" id="infopfeiffer" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Pfeiffer</strong></h3>
+    <p>
+		<ul >
+    <li>Permite valorar la capacidad mental de cualquier persona y detectar un deterioro cognitivo.</li>
+    <li>Tiempo estimado de administración: 5 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
+<div data-role="popup" id="infoLobo" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Mini examen cognitivo(Lobo)</strong></h3>
+    <p>
+		<ul >
+    <li>Permite valorar detectar un deterioro cognitivo así como el diagnostico de demencias.</li>
+    <li>Tiempo estimado de administración: 10 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
+	  </p>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Autopercepción</h3>
-      <p>Contenido</p>
+      <p>
+	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+	  
+    <li><a href="test_yesavage.html">
+       
+        <h2>Yesavage</h2>
+        
+        <a href="#infoYesavage" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+    
+</ul>
+</p>
+<div data-role="popup" id="infoYesavage" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Yesavage</strong></h3>
+    <p>
+		<ul >
+    <li>Permite el estado afectivo de los ancianos y el diagnostico diferencial con una posible demencia de inicio.</li>
+    <li>Tiempo estimado de administración: 5 - 8 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Rol-Relaciones</h3>
-      <p>Contenido</p>
+      <p>
+	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+	  
+    <li><a href="test_apgar.html">
+       
+        <h2>Apgar</h2>
+        
+        <a href="#infoApgar" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+	 <li><a href="test_gijon.html">
+       
+        <h2>Valoracion sociofamiliar de Gijón</h2>
+        
+        <a href="#infoGijon" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+		
+    </li>
+    
+</ul>
+	  </p>
+	   <div data-role="popup" id="infoGijon" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Valoracion sociofamiliar de Gijón</strong></h3>
+    <p>
+		<ul >
+    <li>Permite la detección de situaciones de riesgo
+o problemática social, siendo útil como un instrumento especifico de medición
+de la situación social.</li>
+    <li>Tiempo estimado de administración: 5 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
+<div data-role="popup" id="infoApgar" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>Apgar</strong></h3>
+    <p>
+		<ul >
+    <li>Permite evidenciar la forma en que una persona percibe el funcionamiento de su familia en un momento determinado</li>
+	 <li>Determinar una primera aproximación para la identificación de aquellas familias con problemas de conflictos o
+		disfunciones familiares</li>
+    <li>Tiempo estimado de administración: 5 minutos.</</li>
+    
+		</ul></p>
+    
+</div>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Sexualidad</h3>
-      <p>Contenido</p>
+      <p>No hay test disponibles</p>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Adaptación</h3>
-      <p>Contenido</p>
+      <p>No hay test disponibles</p>
     </div>
     <div data-role="collapsible" data-collapsed="true">
       <h3>Creencias</h3>
-      <p>Contenido</p>
+      <p>No hay test disponibles</p>
     </div>
   </div>
   
@@ -290,7 +552,7 @@ cama, subir y bajar escaleras, etc.</li>
 <!--Página historial test-->
 <div data-role="page" id="page_histTest" data-theme="b">
   <div data-role="header">
-	<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+	<a onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
     <h1>HISTORIAL</h1>
   </div>
   <div data-role="content" data-theme="b">
@@ -298,28 +560,27 @@ cama, subir y bajar escaleras, etc.</li>
   
   <!--Tabla con el historial test realizado-->
   
- 
+  
+	 <a href="#infoEliminar" class="linkEliminarTodos"  data-rel="popup" data-role="button" data-position-to="window" data-transition="pop" data-role="button" data-icon="delete" data-inline="true" display="none">Eliminar todos</a>
+
   <ul id="historial" data-theme="b" data-role="listview" data-filter="true" data-filter-placeholder="Buscar en el historial..." data-split-icon="delete" data-split-theme="b" data-autodividers="true" data-inset="true">
-	
-    
 	
 	
 	
 </ul>
-	<p align=right>
-	 <a href="#infoEliminar" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop" data-role="button" data-icon="delete" data-inline="true">Eliminar todos</a>
-	</p>
+	
 		
 
 <div data-role="popup" id="infoEliminar" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
     <h3><strong>¿Estas seguro que deseas eliminar?</strong></h3>
     <p align="center">
 	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
-	<a onClick="pruebaBoton()"data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	<a onClick="eliminarTestHistorial()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
 	
 		</p>
     
 </div>
+<!--
   <div data-role="popup" id="infoResultado" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
     <h3><strong>Resultado del test</strong></h3>
     <div id="resultadosTest">
@@ -328,10 +589,71 @@ cama, subir y bajar escaleras, etc.</li>
 	</div>
    <a href="#" data-role="button" data-rel="back" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
 </div>
-  
+ --> 
   </div>
   </div>  
+ <div data-role="page" id="page_resultado" data-theme="b">
+    <div data-role="header"> <!--data-rel="back"--> 
+	<a onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1 id="nombreTest"></h1>
+  </div>
+  <div data-role="content" data-theme="b">
   
+    <table id="tablePacienteResultado"  class="ui-responsive table-stroke">
+    <tr>
+      <td><div id="datosPaciente" align="left">
+	  <a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"></a><span id="nombreResultadoPaciente">Apellidos,nombre</span><br>
+	   <a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a><span id="cipResultadoPaciente">CIP</span><br>
+	    <a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a><span id="fechaResultadoPaciente">Fecha Nacimiento</span><br>
+		 <a data-role="button" data-icon="home" data-iconpos="notext" data-inline="true"></a><span id="domicilioResultadoPaciente">Domicilio,Ciudad,CP</span><br>
+		  <a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"></a><span id="telefonoResultadoPaciente">Telefono</span><br>
+	</div></td>
+      <td><div align="center">
+	<h2 id="txtResultado"></h2><!--class="circuloPuntuacion"-->
+    <p id="resultadoCiculoTest" class="circuloPuntuacion">
+
+	</p>
+	 </div>
+	</td>
+    
+    </tr>
+	</table>
+	<table id="notasTestHistorial"  class="ui-responsive table-stroke">  
+	<tr>
+      <td coldspan="2">
+	  <h2 align="center">Notas</h2>
+	<p id="notasResultado" align="left">
+	    
+	</p>
+	  </td>
+      
+     
+    </tr>
+	</table>
+	<table id="actuacionesTestHistorial"  class="ui-responsive table-stroke">
+    <tr>
+      <td coldspan="2">
+	  <h2 align="center">Actuaciones</h2>
+	  <p id="actuacionesTest" align="left">
+	    
+	</p>
+	  
+	  </td>
+      
+     
+    </tr>
+    </table>
+
+
+    
+   <a onclick="prueba()" href="index.html#page_inicio" data-role="link">Comparar resultados anteriores</a>
+  <a onclick="onBackKeyDown()" data-role="button" data-icon="check" >Salir</a>
+  
+
+	
+    
+</div>
+</div> 
 <!--Página ayuda-->
 <div data-role="page" id="page_help" data-theme="c">
   <div data-role="header">

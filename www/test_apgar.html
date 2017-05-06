@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Apgar Familiar</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioApgar" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Apgar Familiar</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+     <table data-role="table"  class="ui-responsive ui-shadow" id="apgarFamiliar">
+      <thead>
+        <tr>
+        <th colspan="2">Version hetereoadministrada</th>
+		
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Vive con la familia sin dependencia físico/psíquica</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_familia" data-type="horizontal" >
+           
+            <input type="radio" name="opcion_familia" id="opcion_familia_0" value=0 />
+            <label for="opcion_familia_0">Casi nunca</label>
+            <input type="radio" name="opcion_familia" id="opcion_familia_1" value=1 />
+            <label for="opcion_familia_1">A veces</label>
+			<input type="radio" name="opcion_familia" id="opcion_familia_2" value=2 />
+            <label for="opcion_familia_2">Casi siempre</label>
+            
+           
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+				 
+          <td>¿Conversan entre ustedes los problemas que tienen
+		       en casa?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_problemas" data-type="horizontal" >
+           
+            <input type="radio" name="opcion_problemas" id="opcion_problemas_0" value=0 />
+            <label for="opcion_problemas_0">Casi nunca</label>
+            <input type="radio" name="opcion_problemas" id="opcion_problemas_1" value=1 />
+            <label for="opcion_problemas_1">A veces</label>
+			<input type="radio" name="opcion_problemas" id="opcion_problemas_2" value=2 />
+            <label for="opcion_problemas_2">Casi siempre</label>
+            
+           
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Las decisiones importantes se toman en conjunto
+en la casa?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_decisiones" data-type="horizontal" >
+           
+            <input type="radio" name="opcion_decisiones" id="opcion_decisiones_0" value=0 />
+            <label for="opcion_decisiones_0">Casi nunca</label>
+            <input type="radio" name="opcion_decisiones" id="opcion_decisiones_1" value=1 />
+            <label for="opcion_decisiones_1">A veces</label>
+			<input type="radio" name="opcion_decisiones" id="opcion_decisiones_2" value=2 />
+            <label for="opcion_decisiones_2">Casi siempre</label>
+            
+           
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Está satisfecho con el tiempo que usted y su familia
+pasan juntos?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_tiempo" data-type="horizontal" >
+           
+            <input type="radio" name="opcion_tiempo" id="opcion_tiempo_0" value=0 />
+            <label for="opcion_tiempo_0">Casi nunca</label>
+            <input type="radio" name="opcion_tiempo" id="opcion_tiempo_1" value=1 />
+            <label for="opcion_tiempo_1">A veces</label>
+			<input type="radio" name="opcion_tiempo" id="opcion_tiempo_2" value=2 />
+            <label for="opcion_tiempo_2">Casi siempre</label>
+            
+           
+          </fieldset></td>
+               
+          
+            </tr>
+			<tr>
+				 
+          <td>¿Siente que su familia le quiere?</td>
+                <td ><fieldset data-role="controlgroup" id="opcion_amor" data-type="horizontal" >
+           
+            <input type="radio" name="opcion_amor" id="opcion_amor_0" value=0 />
+            <label for="opcion_amor_0">Casi nunca</label>
+            <input type="radio" name="opcion_amor" id="opcion_amor_1" value=1 />
+            <label for="opcion_amor_1">A veces</label>
+			<input type="radio" name="opcion_amor" id="opcion_amor_2" value=2 />
+            <label for="opcion_amor_2">Casi siempre</label>
+            
+           
+          </fieldset></td>
+               
+          
+            </tr>
+			
+		</tbody>
+        </table>
+		     
+		     
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaApgar()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

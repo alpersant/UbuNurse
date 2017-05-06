@@ -11,6 +11,6 @@
     <access origin="*" />
 	<icon src="icon.png"/>
 	<plugin name="cordova-plugin-splashscreen" />
-	<gap:splash src="icon.png"       gap:platform="android"  />
-	<preference name="Orientation" value="landscape" />
+	<gap:splash src="splash.png"       gap:platform="android"  />
+	
 </widget>

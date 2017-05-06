@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Riesgo de caídas múltiples</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioCaidasMultiples" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Riesgo de caídas múltiples</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+  		<table data-role="table"  class="ui-responsive ui-shadow" id="previas">
+      <thead>
+        <tr>
+          <th ></a>Caidas previas</th>
+    
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_previas">
+    
+    <input type="radio" name="opcion_previas" id="opcion_previas_0" value=0>
+    <label for="opcion_previas_0">0</label>
+    <input type="radio" name="opcion_previas" id="opcion_previas_1" value=1>
+    <label for="opcion_previas_1">1</label>
+	<input type="radio" name="opcion_previas" id="opcion_previas_2" value=2>
+    <label for="opcion_previas_2">2</label>
+	<input type="radio" name="opcion_previas" id="opcion_previas_3" value=3>
+    <label for="opcion_previas_3">3</label>
+	<input type="radio" name="opcion_previas" id="opcion_previas_4" value=4>
+    <label for="opcion_previas_4">4</label>
+	<input type="radio" name="opcion_previas" id="opcion_previas_5" value=5>
+    <label for="opcion_previas_5">5</label>
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		<table data-role="table"  class="ui-responsive ui-shadow" id="urinaria">
+      <thead>
+        <tr>
+          <th ></a>Incontinencia urinaria</th>
+    
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_urinaria">
+    
+    <input type="radio" name="opcion_urinaria" id="opcion_urinaria_0" value=0>
+    <label for="opcion_urinaria_0">0</label>
+    <input type="radio" name="opcion_urinaria" id="opcion_urinaria_1" value=1>
+    <label for="opcion_urinaria_1">1</label>
+	<input type="radio" name="opcion_urinaria" id="opcion_urinaria_2" value=2>
+    <label for="opcion_urinaria_2">2</label>
+	<input type="radio" name="opcion_urinaria" id="opcion_urinaria_3" value=3>
+    <label for="opcion_urinaria_3">3</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		<table data-role="table"  class="ui-responsive ui-shadow" id="visual">
+      <thead>
+        <tr>
+          <th ></a>Problemas visuales</th>
+    
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_visual">
+    
+    <input type="radio" name="opcion_visual" id="opcion_visual_0" value=0>
+    <label for="opcion_visual_0">0</label>
+    <input type="radio" name="opcion_visual" id="opcion_visual_1" value=1>
+    <label for="opcion_visual_1">1</label>
+	<input type="radio" name="opcion_visual" id="opcion_visual_2" value=2>
+    <label for="opcion_visual_2">2</label>
+	<input type="radio" name="opcion_visual" id="opcion_visual_3" value=3>
+    <label for="opcion_visual_3">3</label>
+	<input type="radio" name="opcion_visual" id="opcion_visual_4" value=4>
+    <label for="opcion_visual_4">4</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		<table data-role="table"  class="ui-responsive ui-shadow" id="funcional">
+      <thead>
+        <tr>
+          <th ></a>Limitación funcional</th>
+    
+     
+        </tr>
+      </thead>
+      <tbody>
+            
+			<tr>
+			<td align="center" class="centrado"><fieldset data-role="controlgroup" data-type="horizontal" id="opcion_funcional">
+    
+    <input type="radio" name="opcion_funcional" id="opcion_funcional_0" value=0>
+    <label for="opcion_funcional_0">0</label>
+    <input type="radio" name="opcion_funcional" id="opcion_funcional_1" value=1>
+    <label for="opcion_funcional_1">1</label>
+	<input type="radio" name="opcion_funcional" id="opcion_funcional_2" value=2>
+    <label for="opcion_funcional_2">2</label>
+	<input type="radio" name="opcion_funcional" id="opcion_funcional_3" value=3>
+    <label for="opcion_funcional_3">3</label>
+	
+   
+</fieldset></td>
+			</tr>
+		</tbody>
+        </table>
+		
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaCaidasMultiples()"   data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

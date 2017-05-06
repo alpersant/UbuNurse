@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Indice de Lawton y Brody</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioLowy" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Indice de Lawton y Brody</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+     <table data-role="table"  class="ui-responsive ui-shadow" id="telefono">
+      <thead>
+        <tr>
+          <th colspan="2">Capacidad de usar el teléfono</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Utiliza el teléfono por iniciativa propia</td>
+                <td rowspan="4"><fieldset data-role="controlgroup" id="opcion_telefono" >
+           
+            <input type="radio" name="opcion_telefono" id="opcion_telefono_0" value=1 />
+            <label for="opcion_telefono_0">1</label>
+            <input type="radio" name="opcion_telefono" id="opcion_telefono_1" value=1 />
+            <label for="opcion_telefono_1">1</label>
+			<input type="radio" name="opcion_telefono" id="opcion_telefono_2" value=1 />
+            <label for="opcion_telefono_2">1</label>
+            <input type="radio" name="opcion_telefono" id="opcion_telefono_3" value=0 />
+            <label for="opcion_telefono_3">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Es capaz de marcar bien algunos números familiares</td>
+            </tr>
+            <tr>
+                
+          <td>Es capaz de contestar al teléfono, pero no de marcar</td>
+            </tr>
+			 <tr>
+                
+          <td>No es capaz de usar el teléfono</td>
+            </tr>
+		</tbody>
+        </table>
+		     <table data-role="table"  class="ui-responsive ui-shadow" id="compras">
+      <thead>
+        <tr>
+          <th colspan="2">Hacer compras</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Realiza independientemente todas las compras necesarias</td>
+                <td rowspan="4"><fieldset data-role="controlgroup" id="opcion_compras" >
+           
+            <input type="radio" name="opcion_compras" id="opcion_compras_0" value=1 />
+            <label for="opcion_compras_0">1</label>
+            <input type="radio" name="opcion_compras" id="opcion_compras_1" value=0 />
+            <label for="opcion_compras_1">0</label>
+			<input type="radio" name="opcion_compras" id="opcion_compras_2" value=0 />
+            <label for="opcion_compras_2">0</label>
+            <input type="radio" name="opcion_compras" id="opcion_compras_3" value=0 />
+            <label for="opcion_compras_3">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Realiza independientemente pequeñas compras</td>
+            </tr>
+            <tr>
+                
+          <td>Necesita ir acompañado para hacer cualquier compra</td>
+            </tr>
+			 <tr>
+                
+          <td>Totalmente incapaz de comprar</td>
+            </tr>
+		</tbody>
+        </table>
+		     <table data-role="table"  class="ui-responsive ui-shadow" id="comida">
+      <thead>
+        <tr>
+          <th colspan="2">Preparación de la comida</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Organiza, prepara y sirve las comidas por sí solo adecuadamente</td>
+                <td rowspan="4"><fieldset data-role="controlgroup" id="opcion_comida" >
+           
+            <input type="radio" name="opcion_comida" id="opcion_comida_0" value=1 />
+            <label for="opcion_comida_0">1</label>
+            <input type="radio" name="opcion_comida" id="opcion_comida_1" value=0 />
+            <label for="opcion_comida_1">0</label>
+			<input type="radio" name="opcion_comida" id="opcion_comida_2" value=0 />
+            <label for="opcion_comida_2">0</label>
+            <input type="radio" name="opcion_comida" id="opcion_comida_3" value=0 />
+            <label for="opcion_comida_3">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Prepara adecuadamente las comidas si se le proporcionan los ingredientes</td>
+            </tr>
+            <tr>
+                
+          <td>Prepara, calienta y sirve las comidas, pero no sigue una dieta adecuada</td>
+            </tr>
+			 <tr>
+                
+          <td>Necesita que le preparen y le sirvan las comidas</td>
+            </tr>
+		</tbody>
+        </table>
+		     <table data-role="table"  class="ui-responsive ui-shadow" id="casa">
+      <thead>
+        <tr>
+          <th colspan="2">Cuidado de la Casa</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Mantiene la casa solo o con ayuda ocasional para trabajos pesados</td>
+                <td rowspan="5"><fieldset data-role="controlgroup" id="opcion_casa" >
+           
+            <input type="radio" name="opcion_casa" id="opcion_casa_0" value=1 />
+            <label for="opcion_casa_0">1</label>
+            <input type="radio" name="opcion_casa" id="opcion_casa_1" value=1 />
+            <label for="opcion_casa_1">1</label>
+			<input type="radio" name="opcion_casa" id="opcion_casa_2" value=1 />
+            <label for="opcion_casa_2">1</label>
+            <input type="radio" name="opcion_casa" id="opcion_casa_3" value=0 />
+            <label for="opcion_casa_3">0</label>
+			 <input type="radio" name="opcion_casa" id="opcion_casa_4" value=0 />
+            <label for="opcion_casa_4">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Realiza tareas ligeras, como lavar los platos o hacer las camas</td>
+            </tr>
+            <tr>
+                
+          <td>Realiza tareas ligeras, pero no puede mantener un adecuado nivel de limpieza</td>
+            </tr>
+			 <tr>
+                
+          <td>Necesita ayuda en todas las labores de la casa</td>
+            </tr>
+			<tr>
+                
+          <td>No participa en ninguna labor de la casa</td>
+            </tr>
+		</tbody>
+        </table>
+		     <table data-role="table"  class="ui-responsive ui-shadow" id="ropa">
+      <thead>
+        <tr>
+          <th colspan="2">Lavado de ropa</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Lava por sí solo toda su ropa</td>
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_ropa" >
+           
+            <input type="radio" name="opcion_ropa" id="opcion_ropa_0" value=1 />
+            <label for="opcion_ropa_0">1</label>
+            <input type="radio" name="opcion_ropa" id="opcion_ropa_1" value=1 />
+            <label for="opcion_ropa_1">1</label>
+			<input type="radio" name="opcion_ropa" id="opcion_ropa_2" value=1 />
+            <label for="opcion_ropa_2">0</label>
+           
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Lava por sí solo pequeñas prendas</td>
+            </tr>
+            <tr>
+                
+          <td>Todo el lavado de ropa debe ser realizado por otra persona</td>
+            </tr>
+			 
+		</tbody>
+        </table>
+		     <table data-role="table"  class="ui-responsive ui-shadow" id="transporte">
+      <thead>
+        <tr>
+          <th colspan="2">Uso de medios de transporte</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Viaja sólo en transporte publico o conduce su propio coche</td>
+                <td rowspan="5"><fieldset data-role="controlgroup" id="opcion_transporte" >
+           
+            <input type="radio" name="opcion_transporte" id="opcion_transporte_0" value=1 />
+            <label for="opcion_transporte_0">1</label>
+            <input type="radio" name="opcion_transporte" id="opcion_transporte_1" value=1 />
+            <label for="opcion_transporte_1">1</label>
+			<input type="radio" name="opcion_transporte" id="opcion_transporte_2" value=1 />
+            <label for="opcion_transporte_2">1</label>
+            <input type="radio" name="opcion_transporte" id="opcion_transporte_3" value=0 />
+            <label for="opcion_transporte_3">0</label>
+			<input type="radio" name="opcion_transporte" id="opcion_transporte_4" value=0 />
+            <label for="opcion_transporte_4">0</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Es capaz de coger un taxi, pero no usa otro medio de transporte</td>
+            </tr>
+            <tr>
+                
+          <td>Viaja en transporte publico cuando va acompañado por otra persona</td>
+            </tr>
+			 <tr>
+                
+          <td>Sólo utiliza el taxi o el automóvil con ayuda de otros</td>
+            </tr>
+			<tr>
+                
+          <td>No viaja</td>
+            </tr>
+		</tbody>
+        </table>
+		     <table data-role="table"  class="ui-responsive ui-shadow" id="medicacion">
+      <thead>
+        <tr>
+          <th colspan="2">Responsabilidad respecto a su medicación</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Es capaz de tomar su medicación a la hora y con la dosis correcta</td>
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_medicacion" >
+           
+            <input type="radio" name="opcion_medicacion" id="opcion_medicacion_0" value=1 />
+            <label for="opcion_medicacion_0">1</label>
+            <input type="radio" name="opcion_medicacion" id="opcion_medicacion_1" value=0 />
+            <label for="opcion_medicacion_1">0</label>
+			<input type="radio" name="opcion_medicacion" id="opcion_medicacion_2" value=0 />
+            <label for="opcion_medicacion_2">0</label>
+            
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Toma su medicación si la dosis le es preparada previamente</td>
+            </tr>
+            <tr>
+                
+          <td>No es capaz de administrarse su medicación</td>
+            </tr>
+			 
+		</tbody>
+        </table>
+		     <table data-role="table"  class="ui-responsive ui-shadow" id="economia">
+      <thead>
+        <tr>
+          <th colspan="2">Manejo de sus asuntos económicos</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Se encarga de sus asuntos económicos por sí solo</td>
+                <td rowspan="3"><fieldset data-role="controlgroup" id="opcion_economia" >
+           
+            <input type="radio" name="opcion_economia" id="opcion_economia_0" value=1 />
+            <label for="opcion_economia_0">1</label>
+            <input type="radio" name="opcion_" id="opcion_economia_1" value=1 />
+            <label for="opcion_economia_1">1</label>
+			<input type="radio" name="opcion_economia" id="opcion_economia_2" value=0 />
+            <label for="opcion_economia_2">0</label>
+            
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Realiza las compras de cada día, pero necesita ayuda en las grandes compras, bancos…</td>
+            </tr>
+            <tr>
+                
+          <td>Incapaz de manejar dinero</td>
+            </tr>
+			 
+		</tbody>
+        </table>
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+  
+   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaLowy()" href="resultado.html" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>

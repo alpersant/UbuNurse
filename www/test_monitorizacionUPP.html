@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/ubunurse.js"></script>
+   <title>Monitorizacion de UPP</title>
+</head>
+
+<body >
+<!--Página inicial-->
+<div data-role="page" id="page_inicioMonitorizacionUPP" data-theme="b">
+  <div data-role="header">
+	<a href="#" data-role="button" data-rel="back"data-icon="back" data-iconpos="notext">Atrás</a>
+    <h1>Monitorizacion de UPP</h1>
+  </div>
+  <div data-role="content" data-theme="b">
+     <table data-role="table"  class="ui-responsive ui-shadow" id="longitud">
+      <thead>
+        <tr>
+          <th colspan="2"><a href="#infoLongitud"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Longitud x Anchura(cm2)</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>0 cm2</td>
+                <td rowspan="11"><fieldset data-role="controlgroup" id="opcion_longitud" >
+           
+            <input type="radio" name="opcion_longitud" id="opcion_longitud_0" value=0 />
+            <label for="opcion_longitud_0">0</label>
+            <input type="radio" name="opcion_longitud" id="opcion_longitud_1" value=1 />
+            <label for="opcion_longitud_1">1</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_2" value=2 />
+            <label for="opcion_longitud_2">2</label>
+            <input type="radio" name="opcion_longitud" id="opcion_longitud_3" value=3 />
+            <label for="opcion_longitud_3">3</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_4" value=4 />
+            <label for="opcion_longitud_4">4</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_5" value=5 />
+            <label for="opcion_longitud_5">5</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_6" value=6 />
+            <label for="opcion_longitud_6">6</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_7" value=7 />
+            <label for="opcion_longitud_7">7</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_8" value=8 />
+            <label for="opcion_longitud_8">8</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_9" value=9 />
+            <label for="opcion_longitud_9">9</label>
+			<input type="radio" name="opcion_longitud" id="opcion_longitud_10" value=10 />
+            <label for="opcion_longitud_10">10</label>
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td><0,3 cm2</td>
+            </tr>
+            <tr>
+                
+          <td>0,3-0,6 cm2</td>
+            </tr>
+			 <tr>
+                
+          <td>0,7-1 cm2</td>
+            </tr>
+			<tr>
+                
+          <td>1,1-2 cm2</td>
+            </tr>
+			<tr>
+                
+          <td>2,1-3 cm2</td>
+            </tr>
+			<tr>
+                
+          <td>2,1-4 cm2</td>
+            </tr>
+			<tr>
+                
+          <td>4,1-8 cm2</td>
+            </tr>
+			<tr>
+                
+          <td>8,1-12 cm2</td>
+            </tr>
+			<tr>
+                
+          <td>12,1-24 cm2</td>
+            </tr>
+			<tr>
+                
+          <td>>24 cm2</td>
+            </tr>
+		</tbody>
+        </table>
+		
+<table data-role="table"  class="ui-responsive ui-shadow" id="tejido">
+      <thead>
+        <tr>
+          <th colspan="2"><a href="#infoTejido"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Tipo de tejido</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Cerrado</td>
+                <td rowspan="11"><fieldset data-role="controlgroup" id="opcion_tejido" >
+           
+            <input type="radio" name="opcion_tejido" id="opcion_tejido_0" value=0 />
+            <label for="opcion_tejido_0">0</label>
+            <input type="radio" name="opcion_tejido" id="opcion_tejido_1" value=1 />
+            <label for="opcion_tejido_1">1</label>
+			<input type="radio" name="opcion_tejido" id="opcion_tejido_2" value=2 />
+            <label for="opcion_tejido_2">2</label>
+            <input type="radio" name="opcion_tejido" id="opcion_tejido_3" value=3 />
+            <label for="opcion_tejido_3">3</label>
+			<input type="radio" name="opcion_tejido" id="opcion_tejido_4" value=4 />
+            <label for="opcion_tejido_4">4</label>
+			
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Tejido epitelial</td>
+            </tr>
+            <tr>
+                
+          <td>Tejido de granulación</td>
+            </tr>
+			 <tr>
+                
+          <td>Esfacelos</td>
+            </tr>
+			<tr>
+                
+          <td>Tejido necrótico</td>
+            </tr>
+
+		</tbody>
+        </table>
+<table data-role="table"  class="ui-responsive ui-shadow" id="exudado">
+      <thead>
+        <tr>
+          <th colspan="2"><a href="#infoExudado"data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="info" data-iconpos="notext" data-inline="true"></a>
+		  Cantidad de exudado</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+				 
+          <td>Ninguno</td>
+                <td rowspan="11"><fieldset data-role="controlgroup" id="opcion_exudado" >
+           
+            <input type="radio" name="opcion_exudado" id="opcion_exudado_0" value=0 />
+            <label for="opcion_exudado_0">0</label>
+            <input type="radio" name="opcion_exudado" id="opcion_exudado_1" value=1 />
+            <label for="opcion_exudado_1">1</label>
+			<input type="radio" name="opcion_exudado" id="opcion_exudado_2" value=2 />
+            <label for="opcion_exudado_2">2</label>
+            <input type="radio" name="opcion_exudado" id="opcion_exudado_3" value=3 />
+            <label for="opcion_exudado_3">3</label>
+			
+			
+          </fieldset></td>
+               
+          
+            </tr>
+            <tr>
+                
+          <td>Ligero</td>
+            </tr>
+            <tr>
+                
+          <td>Moderado</td>
+            </tr>
+			 <tr>
+                
+          <td>Abundante</td>
+            </tr>
+			
+
+		</tbody>
+        </table>		
+		 <div data-role="fieldcontain">
+          <textarea cols="40" rows="10" name="notas" id="notas" placeholder="Notas..."></textarea>
+        </div>
+		<a href="#infoFin" data-rel="popup" data-role="button" data-position-to="window" data-transition="pop">Finalizar</a>
+  </div>
+ <div data-role="popup" id="infoLongitud" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Longitud x anchura</strong></h3>
+    <p>
+		<ul >
+    <li>Medir la longitud mayor y la anchura mayor utilizando
+una regla en centímetros.</li>
+<li>Multiplicar las dos medidas para obtener la superficie
+aproximada en centímetros cuadrados.</li>
+<li>Las Heridas cavitadas deben puntuarse de
+igual forma, utilizando una regla en centímetros, y siempre utilizando el mismo
+sistema para medir la superficie (largo x ancho).</li>
+
+</ul></p>  
+</div>  
+ <div data-role="popup" id="infoExudado" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Cantidad de exudado</strong></h3>
+    <p>
+		<ul >
+    <li>Estimar la cantidad de exudado (drenaje) presente
+después de retirar el apósito y antes de aplicar cualquier agente tópico a la úlcera.
+Estimar el exudado como ninguno, ligero, moderado o abundante</li>
+
+
+</ul></p>  
+</div> 
+<div data-role="popup" id="infoTejido" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+ <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3><strong>Tipo de tejido</strong></h3>
+	Se refiere a los tipos de tejidos que están presentes en el
+lecho de la úlcera.<br>Así, la puntuación será la siguiente
+    <p>
+		<ul >
+    
+
+<li><strong>0. Cicatrizado/reepitelizado: </strong>La herida está completamente cubierta de
+epitelio.(la herida está cerrada)</li>
+<li><strong>1. Tejido epitelial: </strong>En úlceras superficiales nuevo tejido (o piel) rosado o
+brillante que crece de los bordes de la herida o en islotes en la superficie
+de la misma.(Herida superficial que se esté reepitelizando)</li>
+<li><strong>2. Tejido de granulación: </strong>Tejido rojo o rosáceo con una apariencia
+granular húmeda y brillante.(La herida está limpia y contiene tejido de granulación)</li>
+<li><strong>3. Esfacelos: </strong>Tejido amarillo o blanco que se adhiere al lecho de la úlcera
+en bandas de aspecto fibroso, bloques o en forma de tejido blando
+muciforme adherido.(Hay algún tipo de esfacelo presente y no hay tejido necrótico)</li>
+<li><strong>4. Tejido necrótico (Escara seca/húmeda): </strong>Tejido oscuro, negro o marrón
+que se adhiere firmemente al lecho o a los bordes de la herida que puede
+ser más fuerte o débil que la piel perilesional.(Hay algún tipo de tejido necrótico presente)</li>
+
+</ul></p>  
+</div>   
+
+
+<div data-role="popup" id="infoFin" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3><strong>¿Estas seguro que deseas finalizar?</strong></h3>
+    <p align="center">
+	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+	<a onClick="calculaUPP()"  data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+	
+		</p>
+    
+</div>
+
+
+
+</div>
+
+</body>
+
+</html>
