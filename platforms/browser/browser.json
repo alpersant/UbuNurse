@@ -4,10 +4,24 @@
         "uninstalled": []
     },
     "config_munge": {
-        "files": {}
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"EmailComposer\"><param name=\"browser-package\" value=\"de.appplant.cordova.emailcomposer.EmailComposer\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
     },
     "installed_plugins": {
         "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.phonegap.ubunurse"
+        },
+        "cordova-plugin-email-composer": {
             "PACKAGE_NAME": "com.phonegap.ubunurse"
         }
     },
@@ -26,9 +40,25 @@
             "id": "cordova-plugin-splashscreen.SplashScreenProxy",
             "pluginId": "cordova-plugin-splashscreen",
             "runs": true
+        },
+        {
+            "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
+            "id": "cordova-plugin-email-composer.EmailComposer",
+            "pluginId": "cordova-plugin-email-composer",
+            "clobbers": [
+                "cordova.plugins.email",
+                "plugin.email"
+            ]
+        },
+        {
+            "file": "plugins/cordova-plugin-email-composer/src/browser/EmailComposerProxy.js",
+            "id": "cordova-plugin-email-composer.EmailComposerProxy",
+            "pluginId": "cordova-plugin-email-composer",
+            "runs": true
         }
     ],
     "plugin_metadata": {
-        "cordova-plugin-splashscreen": "4.0.2"
+        "cordova-plugin-splashscreen": "4.0.2",
+        "cordova-plugin-email-composer": "0.8.3"
     }
 }

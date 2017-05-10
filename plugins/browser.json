@@ -9,6 +9,9 @@
     "installed_plugins": {
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.phonegap.ubunurse"
+        },
+        "cordova-plugin-email-composer": {
+            "PACKAGE_NAME": "com.phonegap.ubunurse"
         }
     },
     "dependent_plugins": {}

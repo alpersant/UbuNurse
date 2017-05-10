@@ -12,5 +12,7 @@
 	<icon src="icon.png"/>
 	<plugin name="cordova-plugin-splashscreen" />
 	<gap:splash src="splash.png"       gap:platform="android"  />
+	<gap:splash src="splash.png"       gap:platform="android"  />
+	<gap:plugin name="cordova-plugin-email-composer" version="0.8.3" source="npm" />
 	
 </widget>

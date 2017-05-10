@@ -11,4 +11,5 @@
     <access origin="*" />
     <icon src="icon.png" />
     <gap:splash gap:platform="android" src="splash.png" />
+    <gap:plugin name="cordova-plugin-email-composer" source="npm" version="0.8.3" />
 </widget>
