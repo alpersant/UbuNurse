@@ -16,12 +16,15 @@
 		<!--  esta es la página de entrada: el listado de contactos-->
 		<div data-role="page" id="resultado_home"  data-theme="a" >
 			<div data-role="header" data-theme="a">
-				<a onclick="onBackKeyDown()" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+				<a onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
 				
-				<h1>UbuNurse</h1>
+				<h1>Resultados anteriores</h1>
 			</div>
 			<div data-role="content" data-theme="a" id="contenidoPrincipal">
-				<canvas id="dibujo" width="auto" height="100"> hola</canvas>
+				<canvas id="graficoResultados" width="auto" height="auto">Erro al cargar gráfico</canvas>
+				<p align="center">
+				<a onclick="onBackKeyDown()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Salir</a>
+		        </p>	
 			</div>
 			
 		</div>

@@ -571,7 +571,8 @@ function cargarResultado(){
 				
 			}); 
 			
-		},errorDB,exitoDB); 	 
+		},errorDB,exitoDB); 
+		
 		
 	}
 	
@@ -617,12 +618,16 @@ function guardarActuacionesTest(){
 }
 
 function guardarActuaciones(){
+	var txtActuaciones=$("#actuacionesTxt").val();
+	if(txtActuaciones==""){
+		txtActuaciones="No se realizón ninguna acción";
+	}
 	
 	db.transaction(function(tx){ 
 		
 		tx.executeSql("UPDATE Test" + 
 		" SET actuacionesTest=? WHERE idTest=?;",
-		[$("#actuacionesTxt").val(),testMaxID]); 
+		[txtActuaciones,testMaxID]); 
 	},errorDB,exitoDB);
 }
 
@@ -1647,8 +1652,9 @@ function calculaMNA(){
 				
 				}else{
 				$(opcionesCribaje[opcion]).css("border","0px solid black");
+				indiceMNA+=parseInt($(opcionesCribaje[opcion]).find("input:checked").val());
 			}
-			indiceMNA+=parseInt($(opcionesCribaje[opcion]).find("input:checked").val());
+			
 			
 		}
 		if(error){
@@ -1697,8 +1703,9 @@ function calculaMNA(){
 				
 				}else{
 				$(opcionesEvaluacion[opcion]).css("border","0px solid black");
+				indiceMNA+=parseInt($(opcionesEvaluacion[opcion]).find("input:checked").val());
 			}
-			indiceMNA+=parseInt($(opcionesEvaluacion[opcion]).find("input:checked").val());
+			
 			
 		}
 		
@@ -1710,6 +1717,7 @@ function calculaMNA(){
 			$("#infoFin").popup('close');
 			
 			}else{
+			
 			if(indiceMNA<=16){
 				txtResultado="Malnutrición";
 				circuloResultado="#CF0202";
@@ -1726,17 +1734,17 @@ function calculaMNA(){
 		}
 	}
 }
-	function guardarMNA(){
-		idPagina=$.mobile.activePage.attr('id');
+function guardarMNA(){
+	idPagina=$.mobile.activePage.attr('id');
+	
+	resultadoTest=indiceMNA;
+	db.transaction(function(tx){  
 		
-		resultadoTest=indiceMNA;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Evaluación Nutricional(MNA)'," +
-			"'" + $.id + "'," +
-			"'" + indiceMNA + "'," +
-			"'" + circuloResultado + "'," +
+		tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
+		" VALUES('Evaluación Nutricional(MNA)'," +
+		"'" + $.id + "'," +
+		"'" + indiceMNA + "'," +
+		"'" + circuloResultado + "'," +
 		"'" + txtResultado + "'," +
 		"'" +  dia + "-" + mes + "-" + anno  + "'," +
 		"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
@@ -1746,7 +1754,7 @@ function calculaMNA(){
 //PAGINA CONTACTO
 /*function checkConnection() { 
     var networkState = navigator.connection.type; 
-
+	
     var states = {}; 
     states[Connection.UNKNOWN]  = 'Unknown connection'; 
     states[Connection.ETHERNET] = 'Ethernet connection'; 
@@ -1756,87 +1764,109 @@ function calculaMNA(){
     states[Connection.CELL_4G]  = 'Cell 4G connection'; 
     states[Connection.NONE]     = 'No network connection'; 
     if(Connection.NONE){
-	  $.mobile.changePage("#page_sin");
+	$.mobile.changePage("#page_sin");
 	}
     //alert('Connection type: ' + states[networkState]); 
-} 
-/*
-function sendMail(){
+	} 
+	/*
+	function sendMail(){
 	alert("mail");
 	cordova.plugins.email.isAvailable(
     function (isAvailable) {
-         alert('Service is not available');
-		 }
-);
-}
-
-
-*/
-
-$(document).on('pageshow', '#resultado_home', alertaCreadora);
-function alertaCreadora(){
-
-/*var canvas = document.getElementById("dibujo").getContext('2d');
-    
-    //Contorno triangulo
-    canvas.beginPath();
-    canvas.moveTo(100,50);
-    canvas.lineTo(150,150);
-    canvas.lineTo(50,150);
-    canvas.lineTo(100,50);
-    canvas.stroke();
-    
-    //Triangulo relleno
-    canvas.beginPath();
-    canvas.moveTo(250,50);
-    canvas.lineTo(350,200);
-    canvas.lineTo(150,200);
-    canvas.lineTo(250,50);
-    canvas.fill();
+	alert('Service is not available');
+	}
+	);
+	}
 	
-	//alert("creando chart");
-
-/**/
-   var ctx = document.getElementById("dibujo").getContext('2d');
-var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-        {
-            label: "My First dataset",
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40],
-            spanGaps: false,
-        }
-    ]
-};
-var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-  });
+	
+*/
+$(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
+var pacienteResultadosAnteriores;
+var nombreTestResultadosAnteriores;
+var fechasGrafico=[];
+var resultadosGrafico=[];
+function crearGrafico(){
+	
+	db.transaction(function(tx){ 
+		
+		tx.executeSql("SELECT idPaciente,nombreTest FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
+			
+			
+			var test=rs.rows.item(0);		
+			pacienteResultadosAnteriores=test.idPaciente;
+			nombreTestResultadosAnteriores=test.nombreTest; 
+		}); 
+	},errorDB,buscarDatosGrafico);
+	
+	
 }
- 
+
+function buscarDatosGrafico(){
+	alert("Entro buscar datos: " + pacienteResultadosAnteriores + " - " + nombreTestResultadosAnteriores)
+	db.transaction(function(tx){ 
+		
+		tx.executeSql("SELECT fechaTest,resultadoTest FROM Test WHERE (idPaciente=? AND nombreTest=?);",
+		[pacienteResultadosAnteriores,nombreTestResultadosAnteriores],function(tx,rs){
+			
+			for(var i=0;i<rs.rows.length;i++){  
+				
+				var test=rs.rows.item(i);
+				
+				fechasGrafico.push(test.fechaTest);
+				resultadosGrafico.push(test.resultadoTest);
+			}
+			
+			
+			
+			
+		}); 
+	
+	},errorDB,dibujarGrafico);
+	
+}
+
+function dibujarGrafico(){
+			
+		var ctx = document.getElementById("graficoResultados").getContext('2d');
+		var data = {
+		labels: fechasGrafico ,
+		datasets: [
+        {
+		label: "Valores anteriores",
+		fill: false,
+		lineTension: 0.1,
+		backgroundColor: "rgba(75,192,192,0.4)",
+		borderColor: "rgba(75,192,192,1)",
+		borderCapStyle: 'butt',
+		borderDash: [],
+		borderDashOffset: 0.0,
+		borderJoinStyle: 'miter',
+		pointBorderColor: "rgba(75,192,192,1)",
+		pointBackgroundColor: "#fff",
+		pointBorderWidth: 1,
+		pointHoverRadius: 5,
+		pointHoverBackgroundColor: "rgba(75,192,192,1)",
+		pointHoverBorderColor: "rgba(220,220,220,1)",
+		pointHoverBorderWidth: 2,
+		pointRadius: 1,
+		pointHitRadius: 10,
+		data: resultadosGrafico,
+		spanGaps: true,
+        }
+		]
+		};
+		var myLineChart = new Chart(ctx, {
+		type: 'line',
+		data: data,
+		options: {
+        scales: {
+		yAxes: [{
+		ticks: {
+		beginAtZero:true
+		}
+		}]
+        }
+		}
+	});
+	
+}
