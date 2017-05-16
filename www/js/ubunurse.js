@@ -25,6 +25,11 @@ var segundos;
 var dia_semana;
 var testMNA="cribaje";
 var error=false;
+var eliminar_cuestionarios=false;
+var pacienteResultadosAnteriores;
+var nombreTestResultadosAnteriores;
+var fechasGrafico=[];
+var resultadosGrafico=[];
 /*
 	* Carga inicial de la app
 */
@@ -473,13 +478,18 @@ function cargarHistorialTest(){
 }
 
 //Eliminar Historial
-
-function eliminarTestHistorial(){
-	if($.id_Test=='0'){
+function eliminarTodos(){
+	eliminar_cuestionarios=true;
+}
+function eliminarTestHistorial(test){
+	
+	if($.id_Test=='0' || typeof $.id_Test == "undefined" || eliminar_cuestionarios==true){
+	    eliminar_cuestionarios==false;
 		db.transaction(function(tx){  
 			tx.executeSql("DELETE FROM Test;");  
 		},errorDB,exitoDB);
 		}else{
+		
 		db.transaction(function(tx){  
 			tx.executeSql("DELETE FROM Test WHERE idTest=? ;",[$.id_Test]);  
 		},errorDB,restaurarIDTest);
@@ -1781,10 +1791,7 @@ function guardarMNA(){
 	
 */
 $(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
-var pacienteResultadosAnteriores;
-var nombreTestResultadosAnteriores;
-var fechasGrafico=[];
-var resultadosGrafico=[];
+
 function crearGrafico(){
 	
 	db.transaction(function(tx){ 
@@ -1802,7 +1809,8 @@ function crearGrafico(){
 }
 
 function buscarDatosGrafico(){
-	alert("Entro buscar datos: " + pacienteResultadosAnteriores + " - " + nombreTestResultadosAnteriores)
+	fechasGrafico.length=0;
+	resultadosGrafico.length=0;
 	db.transaction(function(tx){ 
 		
 		tx.executeSql("SELECT fechaTest,resultadoTest FROM Test WHERE (idPaciente=? AND nombreTest=?);",
@@ -1828,6 +1836,7 @@ function buscarDatosGrafico(){
 function dibujarGrafico(){
 			
 		var ctx = document.getElementById("graficoResultados").getContext('2d');
+		
 		var data = {
 		labels: fechasGrafico ,
 		datasets: [
