@@ -299,6 +299,7 @@ function logout(){
 
 $(document).on('pagebeforeshow', '#page_initTest', cargarPacientes);
 function cargarPacientes(){
+	$.id="";
 	db.transaction(function(tx){  
 		tx.executeSql("SELECT * FROM Pacientes ORDER BY apellidos;",[],function(tx,rs){
 			$("#pacientes li").remove();
@@ -444,7 +445,8 @@ function cargarHistorialTest(){
 	var queryPacienteTest="SELECT * " +
 	"FROM Pacientes " +
 	"INNER JOIN Test " +
-	"ON Pacientes.cip=Test.idPaciente;";
+	"ON Pacientes.cip=Test.idPaciente " +
+	"ORDER BY Pacientes.apellidos;";
 	db.transaction(function(tx){  
 		tx.executeSql(queryPacienteTest,[],function(tx,rs){
 			
@@ -585,7 +587,7 @@ function cargarResultado(){
 			}); 
 			
 		},errorDB,exitoDB); 
-				db.transaction(function(tx){ 
+		db.transaction(function(tx){ 
 			tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=?;",[pacienteTest,nombreTest],function(tx,rs){
 				
 				
@@ -595,7 +597,7 @@ function cargarResultado(){
 					disponibleBotonResultados(true);
 					}else{
 					disponibleBotonResultados(false);
-					}
+				}
 				
 			}); 
 			
@@ -613,7 +615,7 @@ function disponibleBotonResultados(visible){
 		}else{
 		
 		$("#btn_resultados").css("display", "none");
-		}
+	}
 	
 	
 }
@@ -680,7 +682,12 @@ function calculaBarthel(){
 	"#opcion_escaleras"];
 	
 	getFechaHora();
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
+	
 	for (opcion = 0; opcion < opcionesBarthel.length; opcion++) { 
 		if(typeof $(opcionesBarthel[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesBarthel[opcion]).css("border","2px solid red");
@@ -737,7 +744,7 @@ function calculaBarthel(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -753,7 +760,11 @@ function calculaKatz(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesKatz.length; opcion++) { 
 		if(typeof $(opcionesKatz[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesKatz[opcion]).css("border","2px solid red");
@@ -804,7 +815,7 @@ function calculaKatz(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 	
@@ -823,7 +834,11 @@ function calculaLowy(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesLowy.length; opcion++) {  
 		if(typeof $(opcionesLowy[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesLowy[opcion]).css("border","2px solid red");
@@ -879,7 +894,7 @@ function calculaLowy(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -954,7 +969,11 @@ function calculaPfeiffer(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesPfeiffer.length; opcion++) { 
 		if(typeof $(opcionesPfeiffer[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesPfeiffer[opcion]).css("border","2px solid red");
@@ -1011,7 +1030,7 @@ function calculaPfeiffer(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1049,7 +1068,11 @@ function calculaLobo(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesLobo.length; opcion++) { 
 		if(typeof $(opcionesLobo[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesLobo[opcion]).css("border","2px solid red");
@@ -1111,7 +1134,7 @@ function calculaLobo(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1136,7 +1159,11 @@ function calculaYesavage(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesYesavage.length; opcion++) { 
 		if(typeof $(opcionesYesavage[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesYesavage[opcion]).css("border","2px solid red");
@@ -1188,7 +1215,7 @@ function calculaYesavage(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1203,7 +1230,11 @@ function calculaGijon(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesGijon.length; opcion++) { 
 		if(typeof $(opcionesGijon[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesGijon[opcion]).css("border","2px solid red");
@@ -1255,7 +1286,7 @@ function calculaGijon(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1270,7 +1301,11 @@ function calculaApgar(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesApgar.length; opcion++) { 
 		if(typeof $(opcionesApgar[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesApgar[opcion]).css("border","2px solid red");
@@ -1322,7 +1357,7 @@ function calculaApgar(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1337,7 +1372,11 @@ function calculaApgarNeo(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesApgarNeo.length; opcion++) { 
 		if(typeof $(opcionesApgarNeo[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesApgarNeo[opcion]).css("border","2px solid red");
@@ -1389,7 +1428,7 @@ function calculaApgarNeo(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1408,7 +1447,11 @@ function calculaBarberMR(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesBarberMR.length; opcion++) { 
 		if(typeof $(opcionesBarberMR[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesBarberMR[opcion]).css("border","2px solid red");
@@ -1454,7 +1497,7 @@ function calculaBarberMR(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1473,7 +1516,11 @@ function calculaBraden(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesBraden.length; opcion++) { 
 		if(typeof $(opcionesBraden[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesBraden[opcion]).css("border","2px solid red");
@@ -1529,7 +1576,7 @@ function calculaBraden(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1543,7 +1590,11 @@ function calculaUPP(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesUPP.length; opcion++) { 
 		if(typeof $(opcionesUPP[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesUPP[opcion]).css("border","2px solid red");
@@ -1566,13 +1617,7 @@ function calculaUPP(){
 		}else{
 		txtResultado="Evaluacion de la UPP";
 		circuloResultado="#6ED0F2";
-		
-		
-		
-		
-		
-		
-		idPagina=$.mobile.activePage.attr('id');
+	    idPagina=$.mobile.activePage.attr('id');
 		
 		resultadoTest=indiceUPP;
 		db.transaction(function(tx){  
@@ -1585,7 +1630,7 @@ function calculaUPP(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1601,7 +1646,11 @@ function calculaCaidasMultiples(){
 	
 	getFechaHora();
 	
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	for (opcion = 0; opcion < opcionesCaida.length; opcion++) { 
 		if(typeof $(opcionesCaida[opcion]).find("input:checked").val() == "undefined"){
 			$(opcionesCaida[opcion]).css("border","2px solid red");
@@ -1649,7 +1698,7 @@ function calculaCaidasMultiples(){
 			"'" + txtResultado + "'," +
 			"'" +  dia + "-" + mes + "-" + anno  + "'," +
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + $("#notas").val() + "');");  
+			"'" + notasTest + "');");  
 		},errorDB,exitoTest); 
 	}
 }
@@ -1663,7 +1712,11 @@ var indiceMNA=0;
 function calculaMNA(){
 	
 	getFechaHora();
-	notasTest=$("#notas").val();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	
 	if(testMNA=="cribaje"){
 		
@@ -1767,6 +1820,12 @@ function calculaMNA(){
 	}
 }
 function guardarMNA(){
+	var notasTest;
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
 	idPagina=$.mobile.activePage.attr('id');
 	
 	resultadoTest=indiceMNA;
@@ -1780,7 +1839,7 @@ function guardarMNA(){
 		"'" + txtResultado + "'," +
 		"'" +  dia + "-" + mes + "-" + anno  + "'," +
 		"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-		"'" + $("#notas").val() + "');");  
+		"'" + notasTest + "');");  
 	},errorDB,exitoDB);
 }
 //PAGINA CONTACTO
