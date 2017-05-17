@@ -30,6 +30,7 @@ var pacienteResultadosAnteriores;
 var nombreTestResultadosAnteriores;
 var fechasGrafico=[];
 var resultadosGrafico=[];
+var coloresGrafico=[];
 /*
 	* Carga inicial de la app
 */
@@ -545,6 +546,7 @@ function cargarResultado(){
 		$("#notasResultado").html('');
 		$("#actuacionesTest").html('');
 		var pacienteTest;
+		var nombreTest;
 		db.transaction(function(tx){ 
 			
 			tx.executeSql("SELECT * FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
@@ -561,6 +563,7 @@ function cargarResultado(){
 				$("#txtResultado").css("color", test.resultadoColorTest);
 				
 				pacienteTest=test.idPaciente;
+				nombreTest=test.nombreTest;
 				
 			}); 
 			
@@ -582,6 +585,21 @@ function cargarResultado(){
 			}); 
 			
 		},errorDB,exitoDB); 
+				db.transaction(function(tx){ 
+			tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=?;",[pacienteTest,nombreTest],function(tx,rs){
+				
+				
+				var cantidad=rs.rows.item(0);
+				
+				if(cantidad.cantidadTest>=2){
+					disponibleBotonResultados(true);
+					}else{
+					disponibleBotonResultados(false);
+					}
+				
+			}); 
+			
+		},errorDB,exitoDB); 
 		
 		
 	}
@@ -589,9 +607,13 @@ function cargarResultado(){
 	
 	
 }
-
-function añadirDatosPaciente(paciente_test){
-	
+function disponibleBotonResultados(visible){
+	if(visible){
+		$("#btn_resultados").css("display", "block");
+		}else{
+		
+		$("#btn_resultados").css("display", "none");
+		}
 	
 	
 }
@@ -1790,6 +1812,7 @@ function guardarMNA(){
 	
 	
 */
+//PAGINA GRAFICO
 $(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
 
 function crearGrafico(){
@@ -1811,70 +1834,73 @@ function crearGrafico(){
 function buscarDatosGrafico(){
 	fechasGrafico.length=0;
 	resultadosGrafico.length=0;
+	coloresGrafico.length=0;
 	db.transaction(function(tx){ 
 		
-		tx.executeSql("SELECT fechaTest,resultadoTest FROM Test WHERE (idPaciente=? AND nombreTest=?);",
+		tx.executeSql("SELECT fechaTest,horaTest,resultadoTest,resultadoColorTest FROM Test WHERE (idPaciente=? AND nombreTest=?);",
 		[pacienteResultadosAnteriores,nombreTestResultadosAnteriores],function(tx,rs){
+			var fechaHoraGrafico;
 			
 			for(var i=0;i<rs.rows.length;i++){  
 				
 				var test=rs.rows.item(i);
-				
-				fechasGrafico.push(test.fechaTest);
+				var fechaHoraGrafico=test.fechaTest+" "+test.horaTest +"h";
+				fechasGrafico.push(fechaHoraGrafico);
 				resultadosGrafico.push(test.resultadoTest);
+				coloresGrafico.push(test.resultadoColorTest);
 			}
 			
 			
 			
 			
 		}); 
-	
+		
 	},errorDB,dibujarGrafico);
 	
 }
 
 function dibujarGrafico(){
-			
-		var ctx = document.getElementById("graficoResultados").getContext('2d');
-		
-		var data = {
+	
+	var ctx = document.getElementById("graficoResultados").getContext('2d');
+	
+	var data = {
 		labels: fechasGrafico ,
 		datasets: [
-        {
-		label: "Valores anteriores",
-		fill: false,
-		lineTension: 0.1,
-		backgroundColor: "rgba(75,192,192,0.4)",
-		borderColor: "rgba(75,192,192,1)",
-		borderCapStyle: 'butt',
-		borderDash: [],
-		borderDashOffset: 0.0,
-		borderJoinStyle: 'miter',
-		pointBorderColor: "rgba(75,192,192,1)",
-		pointBackgroundColor: "#fff",
-		pointBorderWidth: 1,
-		pointHoverRadius: 5,
-		pointHoverBackgroundColor: "rgba(75,192,192,1)",
-		pointHoverBorderColor: "rgba(220,220,220,1)",
-		pointHoverBorderWidth: 2,
-		pointRadius: 1,
-		pointHitRadius: 10,
-		data: resultadosGrafico,
-		spanGaps: true,
-        }
+			{
+				label: "Valor",
+				fill: true,
+				lineTension: 0.1,
+				backgroundColor: "rgba(75,192,192,0.4)",
+				borderColor: "rgba(75,192,192,1)",
+				borderCapStyle: 'butt',
+				borderDash: [],
+				borderDashOffset: 0.0,
+				borderJoinStyle: 'round',
+				pointBorderColor: "rgba(75,192,192,1)",
+				pointBackgroundColor: coloresGrafico,
+				pointBorderWidth: 1,
+				pointHoverRadius: 5,
+				pointHoverBackgroundColor: coloresGrafico,
+				pointHoverBorderColor: "#fff",
+				pointHoverBorderWidth: 2,
+				pointRadius: 10,
+				pointHitRadius: 10,
+				data: resultadosGrafico,
+				spanGaps: true,
+			}
 		]
-		};
-		var myLineChart = new Chart(ctx, {
+	};
+	var myLineChart = new Chart(ctx, {
 		type: 'line',
 		data: data,
 		options: {
-        scales: {
-		yAxes: [{
-		ticks: {
-		beginAtZero:true
-		}
-		}]
-        }
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero:true
+					}
+				}]
+			}
 		}
 	});
 	

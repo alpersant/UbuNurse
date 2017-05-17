@@ -597,7 +597,7 @@ de la situación social.</li>
     <h1 id="nombreTest"></h1>
   </div>
   <div data-role="content" data-theme="b">
-  
+  <!--
     <table id="tablePacienteResultado"  class="ui-responsive table-stroke">
     <tr>
       <td><div id="datosPaciente" align="left">
@@ -608,8 +608,8 @@ de la situación social.</li>
 		  <a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"></a><span id="telefonoResultadoPaciente">Telefono</span><br>
 	</div></td>
       <td><div align="center">
-	<h2 id="txtResultado"></h2><!--class="circuloPuntuacion"-->
-    <p id="resultadoCiculoTest" class="circuloPuntuacion">
+	<h2 id="txtResultado"></h2>
+    <!--<p id="resultadoCiculoTest" class="circuloPuntuacion">
 
 	</p>
 	 </div>
@@ -617,6 +617,23 @@ de la situación social.</li>
     
     </tr>
 	</table>
+	-->
+	
+	<div class="ui-grid-a">
+    <div class="ui-block-a"><div class="datosPacienteResultado" ><a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"></a><span id="nombreResultadoPaciente">Apellidos,nombre</span><br>
+	   <a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a><span id="cipResultadoPaciente">CIP</span><br>
+	    <a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a><span id="fechaResultadoPaciente">Fecha Nacimiento</span><br>
+		 <a data-role="button" data-icon="home" data-iconpos="notext" data-inline="true"></a><span id="domicilioResultadoPaciente">Domicilio,Ciudad,CP</span><br>
+		  <a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"></a><span id="telefonoResultadoPaciente">Telefono</span><br>
+	</div></div>
+    <div class="ui-block-b"><div align="center">
+	<h2 id="txtResultado" class="datosPacienteResultado" ></h2>
+    <p id="resultadoCiculoTest" class="circuloPuntuacion">
+	</p>
+	</div></div>
+		 
+</div>	
+	
 	<table id="notasTestHistorial"  class="ui-responsive table-stroke">  
 	<tr>
       <td coldspan="2">
