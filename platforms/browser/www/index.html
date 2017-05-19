@@ -1,725 +1,848 @@
 <!DOCTYPE html>
 
 <html>
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-    <link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
-	<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
-	<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="css/style.css" />
-    <script type="text/javascript" src="cordova.js"></script>
-    <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
-   <script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
-   <script type="text/javascript" src="js/Chart.min.js"></script>
-   <script type="text/javascript" src="js/ubunurse.js"></script>
-   <script type="text/javascript">
-        app.initialize();
-    </script>
-   <title>UbuNurse</title>
-</head>
-
-<body >
-<div data-role="page" id="page_login" data-theme="a" data-url="page_login">
-<!-- /header --> 
-   <div data-role="header" data-theme="a">
-        <h1>UbuNurse</h1>
-        <a href="#page_help" data-role="button" data-icon="info" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
-       </div>
-	   <!-- /content -->
-    <div data-role="content" data-theme="a" id="contenidoPrincipal">
-	<div align="center">
-  	<img src="images/portada.png" width="310" height="312" alt=""/>
-  </div>
-  <form id="formulario" >
-		<input type="text" id="nombredeusuario" name="nombredeusuario" value="" placeholder="Usuario.."><br>
-     	<input type="password" id="clave" name="clave" value="" placeholder="Contraseña...">
-      	<!--<input type="submit" value="Login" id="botonLogin">-->
-   </form>	
-			<!--href="#page_inicio"--> 
-<a onclick="login()" data-role="button"  data-transition="slide">Login</a>	
-  </div>
-	<!-- /footer-->
-    <div data-role="footer" data-position="fixed" >
-    <h4>Copyright@2017 <a href="#page_contact" data-role="link">Contacto</a> </h4>
-  </div>
-</div>
-<div data-role="page" id="page_inicio" data-theme="a" data-url="page_inicio">
-   <!-- /header --> 
-   <div data-role="header" data-theme="a">
-        <h1>UbuNurse</h1>
-        <a href="#left-panel" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
-       </div>
-	   <!-- /content -->
-	   
-    <div data-role="content" data-theme="a" id="contenidoPrincipal">
-	<div class="ui-grid-a">
-    <div class="ui-block-a"><div class="ui-bar ui-bar-e" ><a href="#page_initTest">
-                <img src="images/tratamiento.png">
-                
-                <p>TEST</p>
-                
-            </a></div></div>
-    <div class="ui-block-b"><div class="ui-bar ui-bar-e" ><a href="#page_histTest">
-                <img src="images/historial.ico">
-                
-                <p>HISTORIAL</p>
-                
-            </a></div></div>
-		 
-</div>
-
-<!-- /grid-a -->
 	
-  </div>
-	   
-	<!-- /panel -->  
-    <div data-role="panel" id="left-panel" data-theme="a">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<link rel="stylesheet" href="jquery-mobile/UbuNurse3.0.min.css" />
+		<link rel="stylesheet" href="jquery-mobile/jquery.mobile.icons.min.css" />
+		<link href="jquery-mobile/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="css/style.css" />
+		<script type="text/javascript" src="cordova.js"></script>
+		<script src="jquery-mobile/jquery-1.11.1.min.js"></script>
+		<script src="jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="js/Chart.min.js"></script>
+		<script type="text/javascript" src="js/ubunurse.js"></script>
+		<script type="text/javascript">
+			app.initialize();
+		</script>
+		<title>UbuNurse</title>
+	</head>
 	
-	    <div data-role="collapsible" data-collapsed="true">
-      <h3>Idioma</h3>
-      <div data-role="fieldcontain">
-        <fieldset data-role="controlgroup">
-          
-          <div class="ui-field-contain" id="theme-selector">
-				<fieldset data-role="controlgroup" data-type="inline">
-					
-					<label for="español">Español</label>
-					<input type="radio" name="idioma" id="español" checked>
-					<!--<label for="ingles">Inlges</label>
-					<input type="radio" name="idioma" id="ingles">
-					<label for="catalan">Catalan</label>
-					<input type="radio" name="idioma" id="catalan">-->
-				</fieldset>
+	<body >
+		<div data-role="page" id="page_login" data-theme="a" data-url="page_login">
+			<!-- /header --> 
+			<div data-role="header" data-theme="a">
+				<h1>UbuNurse</h1>
+				<a href="#page_help" data-role="button" data-icon="info" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
 			</div>
-        </fieldset>
-          
-      </div>
-	   
-    </div>
-        	
-		<div data-role="collapsible" data-collapsed="true">
-      <h3>Tema</h3>
-           
-      <div data-role="fieldcontain">
-        <fieldset data-role="controlgroup">
-          
-          <div class="ui-field-contain" id="theme-selector">
-				<fieldset data-role="controlgroup" data-type="inline">
-					
-					<label for="a">Verdes</label>
-					<input type="radio" name="theme" id="a" checked>
-					<!--<label for="b">Azules</label>
-					<input type="radio" name="theme" id="b">
-					<label for="c">Amarillo</label>
-					<input type="radio" name="theme" id="c">-->
-				</fieldset>
+			<!-- /content -->
+			<div data-role="content" data-theme="a" id="contenidoPrincipal">
+				<div align="center">
+					<img src="images/portada.png" width="310" height="312" alt=""/>
+				</div>
+				<form id="formulario" >
+					<input type="text" id="nombredeusuario" name="nombredeusuario" value="" placeholder="Usuario.."><br>
+					<input type="password" id="clave" name="clave" value="" placeholder="Contraseña...">
+					<!--<input type="submit" value="Login" id="botonLogin">-->
+				</form>	
+				<!--href="#page_inicio"--> 
+				<a onclick="login()" data-role="button"  data-transition="slide">Login</a>	
 			</div>
-        </fieldset>
-          
-      </div>
-      
-    </div>
-		<a href="#page_help" data-role="button"  data-icon="info" data-iconpos="left" data-transition="slidefade" >Ayuda</a>
-		<a href="#page_logout" data-rel="popup" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="left" data-transition="slide">Cerrar sesión</a>
-       
-    </div>
-	<div data-role="popup" id="page_logout" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>¿Estas seguro que deseas salir?</strong></h3>
-    <p align="center">
-	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
-	<a onClick="logout()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
-	
-		</p>
-    
-</div>
-	<!-- /footer-->
-	
-    <footer>
-    <div data-role="footer">
-	<h4>Copyright@2017 <a href="#page_contact" data-role="link">Contacto</a> </h4>
-    </div> 
-  </footer>
-</div>
- <!--Página inicio Test: Paciente-->
-<div data-role="page" id="page_initTest" data-theme="a">
-  <div data-role="header">
-    <a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
-     
-    <h1>PACIENTE</h1>
-  </div>
-  <div id="lista_pacientes" data-role="content">
-  <!--Datos del paciente-->
-  
- <ul id="pacientes" data-role="listview" data-filter="true" data-filter-placeholder="Buscar paciente..." data-split-icon="edit" data-split-theme="d" data-autodividers="true" data-inset="true">
-	<a href="#page_editPaciente">
-                <img src="images/add-user.png">
-                
-                
-                
-            </a>  
-    
-	
-	
-	
-</ul>
-
-
-
-  
-</div>
-</div>
-<!-- Pagina editar_nuevo Paciente -->
-<div data-role="page" id="page_editPaciente" data-theme="a">
-<div data-role="header">
-    <a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
-     
-    <h1>DATOS PACIENTE</h1>
-  </div>
-  <input type="text" name="nombre" id="detalle_nombre" value="" placeholder="Nombre..">
-  <input type="text" name="apellidos" id="detalle_apellidos" value="" placeholder="Apellidos..">
-  <input type="text" name="cip" id="detalle_cip" value="" placeholder="CIP.." >
-  <input type="date" name="detalle_fechaNacimiento" id="detalle_fechaNacimiento" value="2013-01-01">
-  <input type="text" name="direccion" id="detalle_direccion" value="" placeholder="Calle...Ej:C/ Ubunurse, N4 1B">
-  <input type="text" name="ciudad" id="detalle_ciudad" value="" placeholder="Ciudad..">
-  
-  <input type="number" name="cp" pattern="[0-9]*" id="detalle_cp" value="" placeholder="Código Postal..">
-  <input type="number" name="telefono" pattern="[0-9]*" id="detalle_telefono" value="" placeholder="Telefono..">
-  <p id="botonesEdicion" align="center">
-  
-  <a id="eliminarPaciente" href="#page_eliminarPaciente" data-rel="popup" data-role="button" data-icon="delete" data-iconpos="left"data-inline="true">Eliminar</a>
-  <a onClick="guardarPaciente()"  data-role="button" data-icon="action" data-iconpos="left" data-inline="true">Guardar</a>
-
- </p>
- <div data-role="popup" id="page_eliminarPaciente" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>¿Estas seguro que deseas eliminar?</strong></h3>
-    <p align="center">
-	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
-	<a href="#page_initTest" onClick="deletePaciente()"data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
-	
-		</p>
-    
-</div>
- 
-</div>
-
-<!-- Pagina inicio Test: Seleccion Test-->
-<div data-role="page" id="page_selecTest" data-theme="a">
-<div data-role="header">
-    <a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
-     
-    <h1>TEST</h1>
-  </div>
-
-  <!--Seleccionar Test-->
-  <div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Buscar test..">
-    <div data-role="collapsible">
-      <h3>Percepción</h3>
-      <p>
-       <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
-	  
-    <li><a href="test_apgarNeo.html">
-       
-        <h2>Apgar Neonatal</h2>
-        
-        <a href="#infoapgarNeo" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+			<!-- /footer-->
+			<div data-role="footer" data-position="fixed" >
+				<h4>Copyright@2017 <a onclick="abrirNavegadorContacto()" data-role="link">Contacto</a> </h4>
+			</div>
+		</div>
+		<div data-role="page" id="page_inicio" data-theme="a" data-url="page_inicio">
+			<!-- /header --> 
+			<div data-role="header" data-theme="a">
+				<h1>UbuNurse</h1>
+				<a href="#left-panel" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
+			</div>
+			<!-- /content -->
+			
+			<div data-role="content" data-theme="a" id="contenidoPrincipal">
+				<div class="ui-grid-a">
+					<div class="ui-block-a"><div class="ui-bar ui-bar-e" ><a href="#page_initTest">
+						<img src="images/tratamiento.png">
+						
+						<p>TEST</p>
+						
+					</a></div></div>
+					<div class="ui-block-b"><div class="ui-bar ui-bar-e" ><a href="#page_histTest">
+						<img src="images/historial.ico">
+						
+						<p>HISTORIAL</p>
+						
+					</a></div></div>
+					
+				</div>
+				
+				<!-- /grid-a -->
+				
+			</div>
+			
+			<!-- /panel -->  
+			<div data-role="panel" id="left-panel" data-theme="a">
+				
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>Idioma</h3>
+					<div data-role="fieldcontain">
+						<fieldset data-role="controlgroup">
+							
+							<div class="ui-field-contain" id="theme-selector">
+								<fieldset data-role="controlgroup" data-type="inline">
+									
+									<label for="español">Español</label>
+									<input type="radio" name="idioma" id="español" checked>
+									<!--<label for="ingles">Inlges</label>
+										<input type="radio" name="idioma" id="ingles">
+										<label for="catalan">Catalan</label>
+									<input type="radio" name="idioma" id="catalan">-->
+								</fieldset>
+							</div>
+						</fieldset>
+						
+					</div>
+					
+				</div>
+				
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>Tema</h3>
+					
+					<div data-role="fieldcontain">
+						<fieldset data-role="controlgroup">
+							
+							<div class="ui-field-contain" id="theme-selector">
+								<fieldset data-role="controlgroup" data-type="inline">
+									
+									<label for="a">Verdes</label>
+									<input type="radio" name="theme" id="a" checked>
+									<!--<label for="b">Azules</label>
+										<input type="radio" name="theme" id="b">
+										<label for="c">Amarillo</label>
+									<input type="radio" name="theme" id="c">-->
+								</fieldset>
+							</div>
+						</fieldset>
+						
+					</div>
+					
+				</div>
+				<a href="#page_help" data-role="button"  data-icon="info" data-iconpos="left" data-transition="slidefade" >Ayuda</a>
+				<a href="#page_logout" data-rel="popup" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="left" data-transition="slide">Cerrar sesión</a>
+				
+			</div>
+			<div data-role="popup" id="page_logout" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+				<h3><strong>¿Estas seguro que deseas salir?</strong></h3>
+				<p align="center">
+					<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+					<a onClick="logout()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+					
+				</p>
+				
+			</div>
+			<!-- /footer-->
+			
+			<footer>
+				<div data-role="footer">
+					<h4>Copyright@2017 <a onclick="abrirNavegadorContacto()" data-role="link">Contacto</a> </h4>
+				</div> 
+			</footer>
+		</div>
+		<!--Página inicio Test: Paciente-->
+		<div data-role="page" id="page_initTest" data-theme="a">
+			<div data-role="header">
+				<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+				
+				<h1>PACIENTE</h1>
+			</div>
+			<div id="lista_pacientes" data-role="content">
+				<!--Datos del paciente-->
+				
+				<ul id="pacientes" data-role="listview" data-filter="true" data-filter-placeholder="Buscar paciente..." data-split-icon="edit" data-split-theme="d" data-autodividers="true" data-inset="true">
+					<a href="#page_editPaciente">
+						<img src="images/add-user.png">
+						
+						
+						
+					</a>  
+					
+					
+					
+					
+				</ul>
+				
+				
+				
+				
+			</div>
+		</div>
+		<!-- Pagina editar_nuevo Paciente -->
+		<div data-role="page" id="page_editPaciente" data-theme="a">
+			<div data-role="header">
+				<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+				
+				<h1>DATOS PACIENTE</h1>
+			</div>
+			<input type="text" name="nombre" id="detalle_nombre" value="" placeholder="Nombre..">
+			<input type="text" name="apellidos" id="detalle_apellidos" value="" placeholder="Apellidos..">
+			<input type="text" name="cip" id="detalle_cip" value="" placeholder="CIP.." >
+			<input type="date" name="detalle_fechaNacimiento" id="detalle_fechaNacimiento" value="2013-01-01">
+			<input type="text" name="direccion" id="detalle_direccion" value="" placeholder="Calle...Ej:C/ Ubunurse, N4 1B">
+			<input type="text" name="ciudad" id="detalle_ciudad" value="" placeholder="Ciudad..">
+			
+			<input type="number" name="cp" pattern="[0-9]*" id="detalle_cp" value="" placeholder="Código Postal..">
+			<input type="number" name="telefono" pattern="[0-9]*" id="detalle_telefono" value="" placeholder="Telefono..">
+			<p id="botonesEdicion" align="center">
+				
+				<a id="eliminarPaciente" href="#page_eliminarPaciente" data-rel="popup" data-role="button" data-icon="delete" data-iconpos="left"data-inline="true">Eliminar</a>
+				<a onClick="guardarPaciente()"  data-role="button" data-icon="action" data-iconpos="left" data-inline="true">Guardar</a>
+				
+			</p>
+			<div data-role="popup" id="page_eliminarPaciente" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+				<h3><strong>¿Estas seguro que deseas eliminar?</strong></h3>
+				<p align="center">
+					<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+					<a href="#page_initTest" onClick="deletePaciente()"data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+					
+				</p>
+				
+			</div>
+			
+		</div>
 		
-    </li>
-	 <li><a href="test_barberMR.html">
-       
-        <h2>Barber para Medio Rural</h2>
-        
-        <a href="#infobarberMR" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 
-    
-</ul>
-      </p>
-	  <div data-role="popup" id="infoapgarNeo" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Apgar Neonatal</strong></h3>
-    <p>
-		<ul >
-    <li>Permite la evolución de un recién nacido. </li>
-	<li>Se realiza al primer y quinto minuto después del nacimiento del bebé.En el minuto 1 se determina qué tan bien toleró el bebé el proceso de nacimiento.
-	En el minuto 5 permite indicar qué tan bien está evolucionando el bebé por fuera del vientre materno.</li>
-    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-<div data-role="popup" id="infobarberMR" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Barber para Medio Rural</strong></h3>
-    <p>
-		<ul >
-    <li>Permite detectar a personas ancianas susceptibles que puedan tener algún nivel de dependencia en zonas rurales. </li>
-    <li>Tiempo estimado de administración:  5 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Nutricional</h3>
-      <p>
-	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
-	  
-    <li><a href="test_uppBraden.html">
-       
-        <h2>Riesgo de UPP de Braden</h2>
-        
-        <a href="#infouppBraden" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 <li><a href="test_monitorizacionUPP.html">
-       
-        <h2>Monitorizacion de UPP</h2>
-        
-        <a href="#infomonitorizacionUPP" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	<li><a href="test_MNA.html">
-       
-        <h2>Mini Evaluación Nutricional(MNA)</h2>
-        
-        <a href="#infoMNA" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 
-</ul>  
-	  
-	  </p>
-	  <div data-role="popup" id="infouppBraden" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Riesgo de UPP de Braden</strong></h3>
-    <p>
-		<ul >
-    <li>Evalúa el riesgo de desarrollar úlceras por presión en base a la sensibilidad y humedad de la piel, la fricción del cuerpo con las sábanas,
-	la movilidad, actividad y nutrición del paciente. </li>
-    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-<div data-role="popup" id="infomonitorizacionUPP" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Monitorizacion de UPP</strong></h3>
-    <p>
-		<ul >
-    <li>Permite valorar la evolución de las úlceras por presión. </li>
-    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-<div data-role="popup" id="infoMNA" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Mini Evaluación Nutricional(MNA)</strong></h3>
-    <p>
-		<ul >
-    <li>Permite evaluar el estado nutricional de la población geriátrica. Permite detectar problemas de malnutrición
-	y/o descartar patologías debidas a la alteración de este patrón </li>
-    <li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Eliminación</h3>
-      <p> No hay test disponibles </p>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Actividad </h3>
-      <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
-	  
-    <li><a href="test_barthel.html">
-       
-        <h2>Barthel</h2>
-        
-        <a href="#infoBarthel" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 <li><a href="test_ikatz.html">
-       
-        <h2>Indice de Katz</h2>
-        
-        <a href="#infoKatz" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 <li><a href="test_iLwBdy.html">
-       
-        <h2>Indice de Lawton y Brody</h2>
-        
-        <a href="#infoiLwBdy" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	<li><a href="test_caidasMultiples.html">
-       
-        <h2>Riesgo de caídas múltiples</h2>
-        
-        <a href="#infoCaidas" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-    
-</ul>
-<div data-role="popup" id="infoCaidas" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Riesgo de caídas múltiples</strong></h3>
-    <p>
-		<ul >
-    <li>Permite valorar el riesgo de caídas, incontinencia urinaria, problemas visuales y limitación funcional.</li>
-    <li>Tiempo estimado de administración: 5 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-	 <div data-role="popup" id="infoKatz" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Katz</strong></h3>
-    <p>
-		<ul >
-    <li>Valoración de las actividades de la vida
-diaria de la población general.</li>
-    <li>Tiempo estimado de administración: 5 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-	 <div data-role="popup" id="infoBarthel" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Barthel</strong></h3>
-    <p>
-		<ul >
-    <li>Valorar la autonomía de la persona para realizar las
-actividades básicas e imprescindibles de la vida diaria tales como comer,
-lavarse, vestirse, arreglarse, trasladarse del sillón o silla de ruedas a la
-cama, subir y bajar escaleras, etc.</li>
-    <li>Tiempo estimado de administración: 5 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
- <div data-role="popup" id="infoiLwBdy" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Indice de Lawton y Brody</strong></h3>
-    <p>
-		<ul >
-    <li>Permite valorar la capacidad de la persona para realizar las
-actividades instrumentales necesarias para vivir de manera independiente
-en la comunidad.</li>
-    <li>Tiempo estimado de administración: 5-10 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-    </div>
-	
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Sueño</h3>
-      <p>No hay test disponibles</p>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Cognitivo</h3>
-      <p>
-	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
-	  
-    <li><a href="test_Pfeiffer.html">
-       
-        <h2>Pfeiffer</h2>
-        
-        <a href="#infopfeiffer" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 <li><a href="test_lobo.html">
-       
-        <h2>Mini examen cognitivo(Lobo)</h2>
-        
-        <a href="#infoLobo" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 
-    
-</ul>
- <div data-role="popup" id="infopfeiffer" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Pfeiffer</strong></h3>
-    <p>
-		<ul >
-    <li>Permite valorar la capacidad mental de cualquier persona y detectar un deterioro cognitivo.</li>
-    <li>Tiempo estimado de administración: 5 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-<div data-role="popup" id="infoLobo" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Mini examen cognitivo(Lobo)</strong></h3>
-    <p>
-		<ul >
-    <li>Permite valorar detectar un deterioro cognitivo así como el diagnostico de demencias.</li>
-    <li>Tiempo estimado de administración: 10 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-	  </p>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Autopercepción</h3>
-      <p>
-	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
-	  
-    <li><a href="test_yesavage.html">
-       
-        <h2>Yesavage</h2>
-        
-        <a href="#infoYesavage" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-    
-</ul>
-</p>
-<div data-role="popup" id="infoYesavage" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Yesavage</strong></h3>
-    <p>
-		<ul >
-    <li>Permite el estado afectivo de los ancianos y el diagnostico diferencial con una posible demencia de inicio.</li>
-    <li>Tiempo estimado de administración: 5 - 8 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Rol-Relaciones</h3>
-      <p>
-	   <ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
-	  
-    <li><a href="test_apgar.html">
-       
-        <h2>Apgar</h2>
-        
-        <a href="#infoApgar" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-	 <li><a href="test_gijon.html">
-       
-        <h2>Valoracion sociofamiliar de Gijón</h2>
-        
-        <a href="#infoGijon" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
-		
-    </li>
-    
-</ul>
-	  </p>
-	   <div data-role="popup" id="infoGijon" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Valoracion sociofamiliar de Gijón</strong></h3>
-    <p>
-		<ul >
-    <li>Permite la detección de situaciones de riesgo
-o problemática social, siendo útil como un instrumento especifico de medición
-de la situación social.</li>
-    <li>Tiempo estimado de administración: 5 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-<div data-role="popup" id="infoApgar" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Apgar</strong></h3>
-    <p>
-		<ul >
-    <li>Permite evidenciar la forma en que una persona percibe el funcionamiento de su familia en un momento determinado</li>
-	 <li>Determinar una primera aproximación para la identificación de aquellas familias con problemas de conflictos o
-		disfunciones familiares</li>
-    <li>Tiempo estimado de administración: 5 minutos.</</li>
-    
-		</ul></p>
-    
-</div>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Sexualidad</h3>
-      <p>No hay test disponibles</p>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Adaptación</h3>
-      <p>No hay test disponibles</p>
-    </div>
-    <div data-role="collapsible" data-collapsed="true">
-      <h3>Creencias</h3>
-      <p>No hay test disponibles</p>
-    </div>
-  </div>
-  
-  
-  
-  </div>
-</div>
-<!--Página historial test-->
-<div data-role="page" id="page_histTest" data-theme="b">
-  <div data-role="header">
-	<a onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
-    <h1>HISTORIAL</h1>
-  </div>
-  <div data-role="content" data-theme="b">
-  
-  
-  <!--Tabla con el historial test realizado-->
-  
-  
-	 <a href="#infoEliminar" onclick="eliminarTodos()" class="linkEliminarTodos"  data-rel="popup" data-role="button" data-position-to="window" data-transition="pop" data-role="button" data-icon="delete" data-inline="true" display="none">Eliminar todos</a>
-
-  <ul id="historial" data-theme="b" data-role="listview" data-filter="true" data-filter-placeholder="Buscar en el historial..." data-split-icon="delete" data-split-theme="b" data-autodividers="true" data-inset="true">
-	
-	
-	
-</ul>
-	
-		
-
-<div data-role="popup" id="infoEliminar" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>¿Estas seguro que deseas eliminar?</strong></h3>
-    <p align="center">
-	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
-	<a onClick="eliminarTestHistorial()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
-	
-		</p>
-    
-</div>
-<!--
-  <div data-role="popup" id="infoResultado" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3><strong>Resultado del test</strong></h3>
-    <div id="resultadosTest">
-	    Div con el resultado
-	
-	</div>
-   <a href="#" data-role="button" data-rel="back" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
-</div>
- --> 
-  </div>
-  </div>  
- <div data-role="page" id="page_resultado" data-theme="b">
-    <div data-role="header"> <!--data-rel="back"--> 
-	<a onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
-    <h1 id="nombreTest"></h1>
-  </div>
-  <div data-role="content" data-theme="b">
-  <!--
-    <table id="tablePacienteResultado"  class="ui-responsive table-stroke">
-    <tr>
-      <td><div id="datosPaciente" align="left">
-	  <a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"></a><span id="nombreResultadoPaciente">Apellidos,nombre</span><br>
-	   <a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a><span id="cipResultadoPaciente">CIP</span><br>
-	    <a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a><span id="fechaResultadoPaciente">Fecha Nacimiento</span><br>
-		 <a data-role="button" data-icon="home" data-iconpos="notext" data-inline="true"></a><span id="domicilioResultadoPaciente">Domicilio,Ciudad,CP</span><br>
-		  <a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"></a><span id="telefonoResultadoPaciente">Telefono</span><br>
-	</div></td>
-      <td><div align="center">
-	<h2 id="txtResultado"></h2>
-    <!--<p id="resultadoCiculoTest" class="circuloPuntuacion">
-
-	</p>
-	 </div>
-	</td>
-    
-    </tr>
-	</table>
-	-->
-	
-	<div class="ui-grid-a">
-    <div class="ui-block-a"><div class="datosPacienteResultado" ><a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"></a><span id="nombreResultadoPaciente">Apellidos,nombre</span><br>
-	   <a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a><span id="cipResultadoPaciente">CIP</span><br>
-	    <a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a><span id="fechaResultadoPaciente">Fecha Nacimiento</span><br>
-		 <a data-role="button" data-icon="home" data-iconpos="notext" data-inline="true"></a><span id="domicilioResultadoPaciente">Domicilio,Ciudad,CP</span><br>
-		  <a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"></a><span id="telefonoResultadoPaciente">Telefono</span><br>
-	</div></div>
-    <div class="ui-block-b"><div align="center">
-	<h2 id="txtResultado" class="datosPacienteResultado" ></h2>
-    <p id="resultadoCiculoTest" class="circuloPuntuacion">
-	</p>
-	</div></div>
-		 
-</div>	
-	
-	<table id="notasTestHistorial"  class="ui-responsive table-stroke">  
-	<tr>
-      <td coldspan="2">
-	  <h2 align="center">Notas</h2>
-	<p id="notasResultado" align="left">
-	    
-	</p>
-	  </td>
-      
-     
-    </tr>
-	</table>
-	<table id="actuacionesTestHistorial"  class="ui-responsive table-stroke">
-    <tr>
-      <td coldspan="2">
-	  <h2 align="center">Actuaciones</h2>
-	  <p id="actuacionesTest" align="left">
-	    
-	</p>
-	  
-	  </td>
-      
-     
-    </tr>
-    </table>
-
-
-  <p align="center">
-    <a href="grafico.html" id="btn_resultados" data-role="button" data-icon="search" data-iconpos="left" data-inline="true">Ver resultados anteriores</a>
-  </p>
-  
-  <a onclick="onBackKeyDown()" data-role="button" data-icon="check" >Salir</a>
-  
-
-	
-    
-</div>
-</div> 
-<!--Página ayuda-->
-<div data-role="page" id="page_help" data-theme="c">
-  <div data-role="header">
-  
-  <a href="#" data-role="button" data-inline="true" data-icon="back" data-iconpos="notext" data-rel="back">Volver</a>
-    <h1>AYUDA</h1>
-  </div>
-  <div data-role="content">
-    <div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Bucar..">
-      <div data-role="collapsible">
-        <h3>Test</h3>
-        <p>Contenido</p>
-      </div>
-      <div data-role="collapsible" data-collapsed="true">
-        <h3>Historial</h3>
-        <p>Contenido</p>
-      </div>
-      <div data-role="collapsible" data-collapsed="true">
-        <h3>Configuracion</h3>
-        <p>Contenido</p>
-      </div>
-    </div>
-  </div>
-  
-
-
-  
-  <div data-role="footer" data-position="fixed">
-     <h4>Copyright@2017 <a href="#page_contact" data-icon="mail" data-role="link">Contacto</a> </h4>
-  </div>
-</div>
-<!--Página Contacto --> 
-<div data-role="page" id="page_contact" data-theme="d">
-  <div data-role="header">
-	<a href="#" data-role="button" data-inline="true" data-icon="back" data-iconpos="notext" data-rel="back">Volver</a>
-    <h1>FORMULARIO DE CONTACTO</h1>
-  </div>
-  <div data-role="content">
-  <div data-role="fieldcontain">
-          <input type="text" name="asunto" id="asunto" value="" placeholder="Asunto"  />
-        </div>
-        <div data-role="fieldcontain">
-          <textarea cols="40" rows="8" name="mensaje" id="mensaje" placeholder="Este es el cuerpo del mensaje..."></textarea>
-        </div>
-        <button id="btn_enviar_mail" >Enviar</button>
-  </div>
- 
-</div>
-</body>
-
-</html>
+		<!-- Pagina inicio Test: Seleccion Test-->
+		<div data-role="page" id="page_selecTest" data-theme="a">
+			<div data-role="header">
+				<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+				
+				<h1>TEST</h1>
+			</div>
+			
+			<!--Seleccionar Test-->
+			<div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Buscar test..">
+				<div data-role="collapsible">
+					<h3>Percepción</h3>
+					<p>
+						<ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+							
+							<li><a href="test_apgarNeo.html">
+								
+								<h2>Apgar Neonatal</h2>
+								
+								<a href="#infoapgarNeo" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+								
+							</li>
+							<li><a href="test_barberMR.html">
+								
+								<h2>Barber para Medio Rural</h2>
+								
+								<a href="#infobarberMR" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+								
+							</li>
+							
+							
+							</ul>
+							</p>
+							<div data-role="popup" id="infoapgarNeo" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+								<h3><strong>Apgar Neonatal</strong></h3>
+								<p>
+									<ul >
+										<li>Permite la evolución de un recién nacido. </li>
+										<li>Se realiza al primer y quinto minuto después del nacimiento del bebé.En el minuto 1 se determina qué tan bien toleró el bebé el proceso de nacimiento.
+										En el minuto 5 permite indicar qué tan bien está evolucionando el bebé por fuera del vientre materno.</li>
+										<li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+										
+									</ul></p>
+									
+							</div>
+							<div data-role="popup" id="infobarberMR" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+								<h3><strong>Barber para Medio Rural</strong></h3>
+								<p>
+									<ul >
+										<li>Permite detectar a personas ancianas susceptibles que puedan tener algún nivel de dependencia en zonas rurales. </li>
+										<li>Tiempo estimado de administración:  5 minutos.</</li>
+										
+									</ul></p>
+									
+							</div>
+						</div>
+						<div data-role="collapsible" data-collapsed="true">
+							<h3>Nutricional</h3>
+							<p>
+								<ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+									
+									<li><a href="test_uppBraden.html">
+										
+										<h2>Riesgo de UPP de Braden</h2>
+										
+										<a href="#infouppBraden" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+										
+									</li>
+									<li><a href="test_monitorizacionUPP.html">
+										
+										<h2>Monitorizacion de UPP</h2>
+										
+										<a href="#infomonitorizacionUPP" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+										
+									</li>
+									<li><a href="test_MNA.html">
+										
+										<h2>Mini Evaluación Nutricional(MNA)</h2>
+										
+										<a href="#infoMNA" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+										
+									</li>
+									
+									</ul>  
+									
+									</p>
+									<div data-role="popup" id="infouppBraden" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+										<h3><strong>Riesgo de UPP de Braden</strong></h3>
+										<p>
+											<ul >
+												<li>Evalúa el riesgo de desarrollar úlceras por presión en base a la sensibilidad y humedad de la piel, la fricción del cuerpo con las sábanas,
+												la movilidad, actividad y nutrición del paciente. </li>
+												<li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+												
+											</ul></p>
+											
+									</div>
+									<div data-role="popup" id="infomonitorizacionUPP" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+										<h3><strong>Monitorizacion de UPP</strong></h3>
+										<p>
+											<ul >
+												<li>Permite valorar la evolución de las úlceras por presión. </li>
+												<li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+												
+											</ul></p>
+											
+									</div>
+									<div data-role="popup" id="infoMNA" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+										<h3><strong>Mini Evaluación Nutricional(MNA)</strong></h3>
+										<p>
+											<ul >
+												<li>Permite evaluar el estado nutricional de la población geriátrica. Permite detectar problemas de malnutrición
+												y/o descartar patologías debidas a la alteración de este patrón </li>
+												<li>Tiempo estimado de administración:  hasta 30 minutos.</</li>
+												
+											</ul></p>
+											
+									</div>
+									</div>
+									<div data-role="collapsible" data-collapsed="true">
+										<h3>Eliminación</h3>
+										<p> No hay test disponibles </p>
+									</div>
+									<div data-role="collapsible" data-collapsed="true">
+										<h3>Actividad </h3>
+										<ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+											
+											<li><a href="test_barthel.html">
+												
+												<h2>Barthel</h2>
+												
+												<a href="#infoBarthel" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+												
+											</li>
+											<li><a href="test_ikatz.html">
+												
+												<h2>Indice de Katz</h2>
+												
+												<a href="#infoKatz" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+												
+											</li>
+											<li><a href="test_iLwBdy.html">
+												
+												<h2>Indice de Lawton y Brody</h2>
+												
+												<a href="#infoiLwBdy" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+												
+											</li>
+											<li><a href="test_caidasMultiples.html">
+												
+												<h2>Riesgo de caídas múltiples</h2>
+												
+												<a href="#infoCaidas" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+												
+											</li>
+											
+											</ul>
+											<div data-role="popup" id="infoCaidas" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+												<h3><strong>Riesgo de caídas múltiples</strong></h3>
+												<p>
+													<ul >
+														<li>Permite valorar el riesgo de caídas, incontinencia urinaria, problemas visuales y limitación funcional.</li>
+														<li>Tiempo estimado de administración: 5 minutos.</</li>
+														
+													</ul></p>
+													
+											</div>
+											<div data-role="popup" id="infoKatz" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+												<h3><strong>Katz</strong></h3>
+												<p>
+													<ul >
+														<li>Valoración de las actividades de la vida
+														diaria de la población general.</li>
+														<li>Tiempo estimado de administración: 5 minutos.</</li>
+														
+													</ul></p>
+													
+											</div>
+											<div data-role="popup" id="infoBarthel" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+												<h3><strong>Barthel</strong></h3>
+												<p>
+													<ul >
+														<li>Valorar la autonomía de la persona para realizar las
+															actividades básicas e imprescindibles de la vida diaria tales como comer,
+															lavarse, vestirse, arreglarse, trasladarse del sillón o silla de ruedas a la
+														cama, subir y bajar escaleras, etc.</li>
+														<li>Tiempo estimado de administración: 5 minutos.</</li>
+														
+													</ul></p>
+													
+											</div>
+											<div data-role="popup" id="infoiLwBdy" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+												<h3><strong>Indice de Lawton y Brody</strong></h3>
+												<p>
+													<ul >
+														<li>Permite valorar la capacidad de la persona para realizar las
+															actividades instrumentales necesarias para vivir de manera independiente
+														en la comunidad.</li>
+														<li>Tiempo estimado de administración: 5-10 minutos.</</li>
+														
+													</ul></p>
+													
+											</div>
+											</div>
+											
+											<div data-role="collapsible" data-collapsed="true">
+												<h3>Sueño</h3>
+												<p>No hay test disponibles</p>
+											</div>
+											<div data-role="collapsible" data-collapsed="true">
+												<h3>Cognitivo</h3>
+												<p>
+													<ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+														
+														<li><a href="test_Pfeiffer.html">
+															
+															<h2>Pfeiffer</h2>
+															
+															<a href="#infopfeiffer" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+															
+														</li>
+														<li><a href="test_lobo.html">
+															
+															<h2>Mini examen cognitivo(Lobo)</h2>
+															
+															<a href="#infoLobo" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+															
+														</li>
+														
+														
+														</ul>
+														<div data-role="popup" id="infopfeiffer" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+															<h3><strong>Pfeiffer</strong></h3>
+															<p>
+																<ul >
+																	<li>Permite valorar la capacidad mental de cualquier persona y detectar un deterioro cognitivo.</li>
+																	<li>Tiempo estimado de administración: 5 minutos.</</li>
+																	
+																</ul></p>
+																
+														</div>
+														<div data-role="popup" id="infoLobo" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+															<h3><strong>Mini examen cognitivo(Lobo)</strong></h3>
+															<p>
+																<ul >
+																	<li>Permite valorar detectar un deterioro cognitivo así como el diagnostico de demencias.</li>
+																	<li>Tiempo estimado de administración: 10 minutos.</</li>
+																	
+																</ul></p>
+																
+														</div>
+														</p>
+													</div>
+													<div data-role="collapsible" data-collapsed="true">
+														<h3>Autopercepción</h3>
+														<p>
+															<ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+																
+																<li><a href="test_yesavage.html">
+																	
+																	<h2>Yesavage</h2>
+																	
+																	<a href="#infoYesavage" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+																	
+																</li>
+																
+																</ul>
+															</p>
+															<div data-role="popup" id="infoYesavage" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+																<h3><strong>Yesavage</strong></h3>
+																<p>
+																	<ul >
+																		<li>Permite el estado afectivo de los ancianos y el diagnostico diferencial con una posible demencia de inicio.</li>
+																		<li>Tiempo estimado de administración: 5 - 8 minutos.</</li>
+																		
+																	</ul></p>
+																	
+															</div>
+														</div>
+														<div data-role="collapsible" data-collapsed="true">
+															<h3>Rol-Relaciones</h3>
+															<p>
+																<ul data-role="listview" data-split-icon="info" data-split-theme="d" data-inset="true">
+																	
+																	<li><a href="test_apgar.html">
+																		
+																		<h2>Apgar</h2>
+																		
+																		<a href="#infoApgar" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+																		
+																	</li>
+																	<li><a href="test_gijon.html">
+																		
+																		<h2>Valoracion sociofamiliar de Gijón</h2>
+																		
+																		<a href="#infoGijon" data-rel="popup" data-position-to="window" data-transition="pop">Info</a>
+																		
+																	</li>
+																	
+																	</ul>
+																	</p>
+																	<div data-role="popup" id="infoGijon" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+																		<h3><strong>Valoracion sociofamiliar de Gijón</strong></h3>
+																		<p>
+																			<ul >
+																				<li>Permite la detección de situaciones de riesgo
+																					o problemática social, siendo útil como un instrumento especifico de medición
+																				de la situación social.</li>
+																				<li>Tiempo estimado de administración: 5 minutos.</</li>
+																				
+																			</ul></p>
+																			
+																	</div>
+																	<div data-role="popup" id="infoApgar" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+																		<h3><strong>Apgar</strong></h3>
+																		<p>
+																			<ul >
+																				<li>Permite evidenciar la forma en que una persona percibe el funcionamiento de su familia en un momento determinado</li>
+																				<li>Determinar una primera aproximación para la identificación de aquellas familias con problemas de conflictos o
+																				disfunciones familiares</li>
+																				<li>Tiempo estimado de administración: 5 minutos.</</li>
+																				
+																			</ul></p>
+																			
+																	</div>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Sexualidad</h3>
+																	<p>No hay test disponibles</p>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Adaptación</h3>
+																	<p>No hay test disponibles</p>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Creencias</h3>
+																	<p>No hay test disponibles</p>
+																</div>
+															</div>
+															
+															
+															
+														</div>
+													</div>
+													<!--Página historial test-->
+													<div data-role="page" id="page_histTest" data-theme="b">
+														<div data-role="header">
+															<a onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+															<h1>HISTORIAL</h1>
+														</div>
+														<div data-role="content" data-theme="b">
+															
+															
+															<!--Tabla con el historial test realizado-->
+															
+															
+															<a href="#infoEliminar" onclick="eliminarTodos()" class="linkEliminarTodos"  data-rel="popup" data-role="button" data-position-to="window" data-transition="pop" data-role="button" data-icon="delete" data-inline="true" display="none">Eliminar todos</a>
+															
+															<ul id="historial" data-theme="b" data-role="listview" data-filter="true" data-filter-placeholder="Buscar en el historial..." data-split-icon="delete" data-split-theme="b" data-autodividers="true" data-inset="true">
+																
+																
+																
+															</ul>
+															
+															
+															
+															<div data-role="popup" id="infoEliminar" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+																<h3><strong>¿Estas seguro que deseas eliminar?</strong></h3>
+																<p align="center">
+																	<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+																	<a onClick="eliminarTestHistorial()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+																	
+																</p>
+																
+															</div>
+															<!--
+																<div data-role="popup" id="infoResultado" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+																<h3><strong>Resultado del test</strong></h3>
+																<div id="resultadosTest">
+																Div con el resultado
+																
+																</div>
+																<a href="#" data-role="button" data-rel="back" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+																</div>
+															--> 
+														</div>
+													</div>  
+													<div data-role="page" id="page_resultado" data-theme="b">
+														<div data-role="header"> <!--data-rel="back"--> 
+															<a onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a>
+															<h1 id="nombreTest"></h1>
+														</div>
+														<div data-role="content" data-theme="b">
+															<!--
+																<table id="tablePacienteResultado"  class="ui-responsive table-stroke">
+																<tr>
+																<td><div id="datosPaciente" align="left">
+																<a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"></a><span id="nombreResultadoPaciente">Apellidos,nombre</span><br>
+																<a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a><span id="cipResultadoPaciente">CIP</span><br>
+																<a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a><span id="fechaResultadoPaciente">Fecha Nacimiento</span><br>
+																<a data-role="button" data-icon="home" data-iconpos="notext" data-inline="true"></a><span id="domicilioResultadoPaciente">Domicilio,Ciudad,CP</span><br>
+																<a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"></a><span id="telefonoResultadoPaciente">Telefono</span><br>
+																</div></td>
+																<td><div align="center">
+																<h2 id="txtResultado"></h2>
+																<!--<p id="resultadoCiculoTest" class="circuloPuntuacion">
+																
+																</p>
+																</div>
+																</td>
+																
+																</tr>
+																</table>
+															-->
+															
+															<div class="ui-grid-a">
+																<div class="ui-block-a"><div class="datosPacienteResultado" ><a data-role="button" data-icon="user" data-iconpos="notext" data-inline="true"></a><span id="nombreResultadoPaciente">Apellidos,nombre</span><br>
+																	<a data-role="button" data-icon="tag" data-iconpos="notext" data-inline="true"></a><span id="cipResultadoPaciente">CIP</span><br>
+																	<a data-role="button" data-icon="calendar" data-iconpos="notext" data-inline="true"></a><span id="fechaResultadoPaciente">Fecha Nacimiento</span><br>
+																	<a data-role="button" data-icon="home" data-iconpos="notext" data-inline="true"></a><span id="domicilioResultadoPaciente">Domicilio,Ciudad,CP</span><br>
+																	<a data-role="button" data-icon="phone" data-iconpos="notext" data-inline="true"></a><span id="telefonoResultadoPaciente">Telefono</span><br>
+																</div></div>
+																<div class="ui-block-b"><div align="center">
+																	<h2 id="txtResultado" class="datosPacienteResultado" ></h2>
+																	<p id="resultadoCiculoTest" class="circuloPuntuacion">
+																	</p>
+																</div></div>
+																
+															</div>	
+															
+															<table id="notasTestHistorial"  class="ui-responsive table-stroke">  
+																<tr>
+																	<td coldspan="2">
+																		<h2 align="center">Notas</h2>
+																		<p id="notasResultado" align="left">
+																			
+																		</p>
+																	</td>
+																	
+																	
+																</tr>
+															</table>
+															<table id="actuacionesTestHistorial"  class="ui-responsive table-stroke">
+																<tr>
+																	<td coldspan="2">
+																		<h2 align="center">Actuaciones</h2>
+																		<p id="actuacionesTest" align="left">
+																			
+																		</p>
+																		
+																	</td>
+																	
+																	
+																</tr>
+															</table>
+															
+															
+															<p align="center">
+																<a href="grafico.html" id="btn_resultados" data-role="button" data-icon="search" data-iconpos="left" data-inline="true">Ver resultados anteriores</a>
+															</p>
+															
+															<a onclick="onBackKeyDown()" data-role="button" data-icon="check" >Salir</a>
+															
+															
+															
+															
+														</div>
+													</div> 
+													<!--Página ayuda-->
+													<div data-role="page" id="page_help" data-theme="c">
+														<div data-role="header">
+															
+															<a href="#" data-role="button" data-inline="true" data-icon="back" data-iconpos="notext" data-rel="back">Volver</a>
+															<h1>AYUDA</h1>
+														</div>
+														<div data-role="content">
+															<div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Bucar..">
+																<div data-role="collapsible">
+																	<h3>Añadir un paciente</h3>
+																	<p>
+																		Un paciente es cualquier persona a la que se le vaya aplicar cualquier cuestionario de esta aplicación.
+																		<br>
+																		<br>
+																		Para añadir un paciente:
+																	</p>
+																	<ol>
+																		
+																		<li>Presionamos sobre el icono de la silueta humana con un más: <img src="images/add-user.png" width="30" height="30"/> </li>
+																		<li>Rellenamos todos los campos, solo es obligatorio el CIP o identificador de paciente.</li>
+																		<li>Pulsaremos sobre el botón guardar.</li>
+																	</ol>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Editar/Eliminar un paciente</h3>
+																	<p>
+																		
+																		Para <strong>editar</strong> un paciente:
+																	</p>
+																	<ol>
+																		
+																		<li>Presionamos sobre botón con el icono de edición que se encuentra junto a los datos del paciente. </li>
+																		<li>Cambiamos o borramos los campos que queramos modificar.</li>
+																		<li>Pulsamos sobre el botón guardar para guardar los cambios.</li>
+																		
+																		
+																	</ol>
+																	<p>
+																		
+																		Para <strong>eliminar</strong> un paciente:
+																	</p>
+																	<ul>
+																		
+																		
+																		<li>Pulsamos sobre el botón eliminar si directamente queremos eliminar al paciente.</li>
+																		
+																	</ul>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Resolver un cuestionario</h3>
+																	<p>
+																		Un cuestionario se resuelve cuando hemos seleccionado un paciente previamente.
+																		<br><br>La siguiente explicación sirve para todos los cuestionarios de la aplicación:
+																		<br>
+																		
+																	</p>
+																	<ol>
+																		
+																		<li>Seleccionaremos un paciente de la lista de pacientes.</li><br>
+																		<li>Seleccionaremos un cuestionario de entre los disponibles ordenados segun el patrón de Gordon al que pertenezcan.</li><br>
+																		<li>Si deseamos información sobre el cuestionario antes de resolverlo, pulsaremos sobre el icono de información.</li><br>
+																		<li>Si pulsamos sobre los datos del cuestionario accederemos a las cuestiones del cuestionario y su resolución.</li><br>
+																		<li>Para finalizar, bastará con pulsar el botón finalizar. Deberemos estar seguros de que hemos completado todos los campos y aceptaremos.</li><br>
+																		<li>Automáticamente se nos mostrarán los resultados del test.</li>
+																	</ol>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Añadir notas a un cuestionario</h3>
+																	<p>
+																		Para añadir notas durante la realización del test deberemos escribir todo lo que deseemos en el área texto colocada al final del cuestionario, justo encima del botón de finalizar.
+																		<br>
+																		
+																	</p>
+																	
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Añadir las acciones realizadas después de un resultado</h3>
+																	<p>
+																		Para añadir las acciones realizadas sobre el paciente tras el resultado del cuestionario deberemos escribir en el área de texto colocada al final del cuestionario, justo encima del botón de finalizar.
+																		<br>
+																		
+																	</p>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Consultar un cuestionario en el historial</h3>
+																	<p>
+																		Para acceder al historial del paciente:
+																		<br>
+																		
+																	</p>
+																	<ol>
+																		
+																		<li>Seleccionaremos el botón en la pantalla principal "historial".</li><br>
+																		<li>Se abrirán todos los pacientes ordenados por apellido.</li><br>
+																		<li>Buscaremos el nombre del paciente y seleccionaremos sobre el cuestionario que deseemos consultar.</li><br>
+																		<li>Se abrirá una nueva ventana con los datos del paciente y el resultado del cuestionario asi como las notas y acciones asociadas al mismo.</li><br>
+																		
+																	</ol>
+																</div>
+																<div data-role="collapsible" data-collapsed="true">
+																	<h3>Consultar la gráfica de evolucion de un paciente en un cuestionario</h3>
+																	<p>Para consultar la gráfica de evolucion del paciente, deberá al menos haber realizados dos veces el mismo cuestionario.</p>
+																	<br>
+																	Para acceder a la gráfica de evolución:
+																	<br>
+																	
+																</p>
+																<ol>
+																	
+																	<li>Seleccionaremos el paciente y el cuestionario que queremos consultar.</li><br>
+																	<li>Pulsamos sobre el botón "resultados anteriores".</li><br>
+																	<li>Automáticamente se abrirá una ventana nueva con la gráfica de evolución de resultados correspondiente al cuestionario y paciente seleccionados.</li><br>
+																	<li>Cada punto de la gráfica corresponde al valor del cuestionario, pulsando sobre el mismo, se podrá comprobar la fecha,hora y resultado exacto del cuestionario.</li><br>
+																	
+																</ol>
+															</div>
+															<div data-role="collapsible" data-collapsed="true">
+																<h3>Configuración</h3>
+																<p>En futuras versiones la aplicación podrá configurarse en cualquier idioma y colores temáticos.</p>
+															</div>
+															<div data-role="collapsible" data-collapsed="true">
+																<h3>Información y videotutoriales</h3>
+																
+																
+																<div class="ui-grid-a">
+																	<div class="ui-block-a"><p align="center"><strong>Redes sociales</strong>
+																		<div align="center"><a target="_blank" title="Facebook" href="https://www.facebook.com/UbuNurse" data-inline="true" ><img src="images/facebook.png" class="icons"></a>
+																			<a target="_blank" title="Twitter" href="https://twitter.com/UbuNurse"><img src="images/twitter.png"class="icons"></a>
+																			
+																		</div>
+																		
+																	</p></div>
+																	<div class="ui-block-b"><p align="center"><strong>Videotutoriales</strong><div align="center">
+																		<a target="_blank" title="YouTube" href="https://www.youtube.com/channel/UCQGNnJJb75vryNtXwu_p48w"><img src="images/videos.png"class="icons"></a>
+																	</div></p></div>
+																	
+																</div>
+																<p align="center"><strong>Licencia</strong><div align="center">
+																</p>
+																<p align="center">Más información en <a target="_blank" data-role="link" title="web" href="https://www3.ubu.es/ubunurse">www3.ubu.es/ubunurse</a>
+																</div>
+																
+																
+																</div>
+															</div>
+															
+															
+															
+															
+															<div data-role="footer" data-position="fixed">
+																<h4>Copyright@2017 <a onclick="abrirNavegadorContacto()" data-role="link">Contacto</a> </h4>
+															</div>
+														</div>
+														<!--Página Contacto
+															<div data-role="page" id="page_contact" data-theme="d">
+															<div data-role="header">
+															<a href="#" data-role="button" data-inline="true" data-icon="back" data-iconpos="notext" data-rel="back">Volver</a>
+															<h1>FORMULARIO DE CONTACTO</h1>
+															</div>
+															<div data-role="content">
+															<div data-role="fieldcontain">
+															<input type="text" name="asunto" id="asunto" value="" placeholder="Asunto"  />
+															</div>
+															<div data-role="fieldcontain">
+														<textarea cols="40" rows="8" name="mensaje" id="mensaje" placeholder="Este es el cuerpo del mensaje..."></textarea>
+														</div>
+														<button id="btn_enviar_mail" >Enviar</button>
+														</div>
+														
+													</div> --> 
+												</body>
+												
+											</html>																																																																																																														

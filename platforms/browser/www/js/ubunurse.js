@@ -5,6 +5,7 @@
 	* Variables de la aplicacion
 */
 var db;
+var nombre_usuario;
 var resultadoTest=0;
 var notasTest;
 var txtResultado;
@@ -64,7 +65,7 @@ function openBD(){
 					usuario_econtrado=true;
 					if(user.loggeado=='true'){
 						userloggeado=true;
-						
+						 nombre_usuario=user.usuario;
 						break;
 					}
 				}
@@ -126,7 +127,7 @@ function continuarDB(){
 function exitoInDB(){
 	if(!usuario_econtrado){
 		db.transaction(function(tx){  
-			tx.executeSql("INSERT INTO Usuarios(usuario,password,loggeado) VALUES('usuario','clave','false');");  
+			tx.executeSql("INSERT INTO Usuarios(usuario,password,loggeado) VALUES('Ubunurse','ubunurse','false');");  
 		},errorinsertDB,exitoDB); 
 	}
 	
@@ -207,6 +208,7 @@ function checkLog(){
 				var user=rs.rows.item(i);
 				if(user.loggeado=='true'){
 					userloggeado=false;
+					nombre_usuario=user.usuario;
 					$.mobile.changePage("#page_inicio"); 
 					break;
 				}
@@ -250,13 +252,16 @@ function login(){
 					validacionLoginError();
 				}
 			});  
-		},errorDB,exitoDB); 
+		},errorUsuario,exitoDB); 
 		
 	}
 }
-
+function errorUsuario(){
+	navigator.vibrate(325);
+		$("#nombreusuario").css("border", "2px solid red");
+}
 function loggInUsuario(){
-	
+	nombre_usuario=$("#nombredeusuario").val();
 	db.transaction(function(tx){  
 		tx.executeSql("UPDATE Usuarios" + 
 		" SET loggeado=? WHERE usuario=? ;",
@@ -285,8 +290,8 @@ function validacionLoginError(){
 function logout(){
 	db.transaction(function(tx){  
 		tx.executeSql("UPDATE Usuarios" + 
-		" SET loggeado=? WHERE usuario='usuario' ;",
-		['false']);  
+		" SET loggeado=? WHERE usuario=? ;",
+		['false',nombre_usuario]);  
 	},errorDB,exitoDB);
 	
 	userloggeado=false;
@@ -1843,34 +1848,11 @@ function guardarMNA(){
 	},errorDB,exitoDB);
 }
 //PAGINA CONTACTO
-/*function checkConnection() { 
-    var networkState = navigator.connection.type; 
+
+function abrirNavegadorContacto(){
+	 window.open(encodeURI('http://www3.ubu.es/ubunurse/#page_contact'), '_system', 'location=yes');
 	
-    var states = {}; 
-    states[Connection.UNKNOWN]  = 'Unknown connection'; 
-    states[Connection.ETHERNET] = 'Ethernet connection'; 
-    states[Connection.WIFI]     = 'WiFi connection'; 
-    states[Connection.CELL_2G]  = 'Cell 2G connectijqueon'; 
-    states[Connection.CELL_3G]  = 'Cell 3G connection'; 
-    states[Connection.CELL_4G]  = 'Cell 4G connection'; 
-    states[Connection.NONE]     = 'No network connection'; 
-    if(Connection.NONE){
-	$.mobile.changePage("#page_sin");
-	}
-    //alert('Connection type: ' + states[networkState]); 
-	} 
-	/*
-	function sendMail(){
-	alert("mail");
-	cordova.plugins.email.isAvailable(
-    function (isAvailable) {
-	alert('Service is not available');
-	}
-	);
-	}
-	
-	
-*/
+}
 //PAGINA GRAFICO
 $(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
 
@@ -1964,3 +1946,29 @@ function dibujarGrafico(){
 	});
 	
 }
+/*function checkConnection() { 
+    var networkState = navigator.connection.type; 
+	
+    var states = {}; 
+    states[Connection.UNKNOWN]  = 'Unknown connection'; 
+    states[Connection.ETHERNET] = 'Ethernet connection'; 
+    states[Connection.WIFI]     = 'WiFi connection'; 
+    states[Connection.CELL_2G]  = 'Cell 2G connectijqueon'; 
+    states[Connection.CELL_3G]  = 'Cell 3G connection'; 
+    states[Connection.CELL_4G]  = 'Cell 4G connection'; 
+    states[Connection.NONE]     = 'No network connection'; 
+    if(Connection.NONE){
+	$.mobile.changePage("#page_sin");
+	}
+    //alert('Connection type: ' + states[networkState]); 
+	} 
+	/*
+//PAGINA AYUDA
+$(document).on('pagebeforeshow', '#page_initTest', mostrarVideoAyuda);
+
+function mostrarVideoAyuda(){
+	
+}
+	
+	
+*/
