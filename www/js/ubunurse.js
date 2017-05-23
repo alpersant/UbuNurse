@@ -1,36 +1,69 @@
 //JavaScript Document
-
-
-/*
+/************************************************************
+	*@auhtor:
+	*@fecha:
+	*@version:
+	*@sinopsis:
+	*
+	*
+	/*
 	* Variables de la aplicacion
 */
+/**/
 var db;
+/**/
 var nombre_usuario;
+/**/
 var resultadoTest=0;
+/**/
 var notasTest;
+/**/
 var txtResultado;
+/**/
 var circuloResultado;
+/**/
 var idPagina;
+/**/
 var testMaxID;
+/**/
 var usuario=true;
+/**/
 var clave=true;
+/**/
 var userloggeado=false;
+/**/
 var usuario_econtrado=false;
+/**/
 var fechaActual;
+/**/
 var dia;
+/**/
 var mes;
+/**/
 var anno;
+/**/
 var hora;
+/**/
 var minutos;
+/**/
 var segundos;
+/**/
 var dia_semana;
+/**/
 var testMNA="cribaje";
+/**/
 var error=false;
+/**/
 var eliminar_cuestionarios=false;
+/**/
 var pacienteResultadosAnteriores;
+/**/
 var nombreTestResultadosAnteriores;
+/**/
 var fechasGrafico=[];
+/**/
 var resultadosGrafico=[];
+/**/
 var coloresGrafico=[];
 /*
 	* Carga inicial de la app
@@ -41,12 +74,23 @@ var app = {
 	},
     bindEvents: function() {
 		
-        //document.addEventListener('deviceready', this.onDeviceReady, false);
+        //
 		document.addEventListener("backbutton", onBackKeyDown, true);
 		
 	},
     
 };
+/*
+	* Carga de BBDD y funciones generales
+*/
+
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 
 function openBD(){
 	
@@ -56,16 +100,19 @@ function openBD(){
 		db.transaction(function(tx){
 			tx.executeSql("CREATE TABLE IF NOT EXISTS Usuarios(usuario varchar(254) not null primary key," +
 			"password varchar(150)," +
+			"nombre varchar(150),"+
+			"apellidos varchar(150),"+
 			"loggeado varchar(10));");
-			tx.executeSql("SELECT * FROM Usuarios;",[],function(tx,rs){
-				
+			
+			tx.executeSql("SELECT * FROM Usuarios;",[],function(tx,rs){	
 				for(var i=0;i<rs.rows.length;i++){  
 					var user=rs.rows.item(i);
 					
 					usuario_econtrado=true;
 					if(user.loggeado=='true'){
 						userloggeado=true;
-						 nombre_usuario=user.usuario;
+						nombre_usuario=user.usuario;
+						
 						break;
 					}
 				}
@@ -74,24 +121,15 @@ function openBD(){
 		}else{
 		checkLog();
 	}
-}
-function vaciarBD() {
-	alert("vaciarBD");
-    db.transaction(function(tx) {
-        tx.executeSql("DROP TABLE Usuarios;");
-		tx.executeSql("DROP TABLE Test;");
-		tx.executeSql("DROP TABLE Pacientes;");		
-		
-		}, function(error) {
-        alert('Transaction DROP ERROR: ' + error.message);
-		}, function() {
-		
-        alert('DROP database OK');
-	});
-}
-
-function continuarDB(){
-	
+}	
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
+function continuarDB(){			
 	if(userloggeado){
 		
 		$.mobile.changePage("#page_inicio");
@@ -104,7 +142,10 @@ function continuarDB(){
 			"direccion varchar(200)," +
 			"ciudad varchar(100)," +
 			"cp number," +
-			"telefono number);");
+			"telefono number,"+
+			"usuarioID varchar(254)," +
+			"FOREIGN KEY (usuarioID) REFERENCES Usuarios(usuario));");
+			
 			tx.executeSql("CREATE TABLE IF NOT EXISTS Test(idTest integer not null primary key autoincrement," +
 			"nombreTest char(40)," +
 			"idPaciente varchar(230)," +
@@ -115,46 +156,66 @@ function continuarDB(){
 			"horaTest varchar(100)," +
 			"notasTest varchar(230)," +
 			"actuacionesTest varchar(230)," +
+			"usuarioID varchar(2540)," +
+			"FOREIGN KEY (usuarioID) REFERENCES Usuarios(usuario)," +
 			"FOREIGN KEY (idPaciente) REFERENCES Pacientes(cip));");
 			
 			
-		},errorDB,exitoInDB);
+		},errorDB,exitoDB);
 		
 		
 	}	
-}
+}		
 
-function exitoInDB(){
-	if(!usuario_econtrado){
-		db.transaction(function(tx){  
-			tx.executeSql("INSERT INTO Usuarios(usuario,password,loggeado) VALUES('Ubunurse','ubunurse','false');");  
-		},errorinsertDB,exitoDB); 
-	}
-	
-	
-}
-function exitoDB(){  
-	
-	db.transaction(function(tx){
-		
-		tx.executeSql("SELECT * FROM Usuarios;",[],function(tx,rs){
-			
-			
-		});
-	},errorDB,exitoDB); 
-} 
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function exitoDB(){
 	
 }
+
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/	
 function exitoTest(){
 	$.mobile.changePage("resultado.html");
 }
+
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function errorDB(){  
-    alert("Error DB: " + error.message);
-} 
+	alert("Error DB: " + error.message);
+}	
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function errorinsertDB(){  
 	window.alert("error insert bd");  
-}	
+}
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function onBackKeyDown() {
 	
 	if($.mobile.activePage.attr('id') == 'page_inicio' || $.mobile.activePage.attr('id') == 'page_login'){ 
@@ -165,8 +226,14 @@ function onBackKeyDown() {
 		} else {
 		navigator.app.backHistory();
 	}	
-}
-
+}		
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/	
 //Fecha y hora actual
 function getFechaHora(){
 	var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
@@ -186,8 +253,15 @@ function getFechaHora(){
 		segundos="0"+segundos;
 	}
 	dia_semana=diasSemana[fechaActual.getDay()];
-}
+}		
 
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 //Formatear fecha
 function formatearFecha(fecha){
 	var annoFecha = fecha.substring(0, 4);
@@ -196,19 +270,178 @@ function formatearFecha(fecha){
 	var fechaFinal = diaFecha+"-"+mesFecha+"-"+annoFecha;
 	return fechaFinal;
 }
-//PAGINA: LOGGIN
+/*
+	* PAGINA REGISTRO: Funciones de registro y carga de valores
+*/
+var editar_usuario=false;
+$(document).on('pagebeforeshow', '#page_registro', cargarDetallesUsuario);
+function cargarDetallesUsuario(){
+	
+	document.getElementById("eliminarUsuario").style.display = 'none';
+	$("#registro_usuario").css("border", "0px solid red");
+	$("#registro_password").css("border", "0px solid red");
+	$("#registro_password_validate").css("border", "0px solid red");
+	$("#registro_nombre").css("border", "0px solid red");
+	if (typeof nombre_usuario=="undefined" || nombre_usuario==""){
+	    
+			document.getElementById("registro_usuario").value="";
+			document.getElementById("registro_nombre").value="";
+			document.getElementById("registro_apellidos").value="";
+			document.getElementById("registro_password").value="";
+			document.getElementById("registro_password_validate").value="";
+		 
+		}else{
+		  db.transaction(function(tx){  
+		tx.executeSql("SELECT * FROM Usuarios WHERE usuario=?;",[nombre_usuario],function(tx,rs){
+			
+			document.getElementById("eliminarUsuario").style.display = 'inline';
+			var usuario=rs.rows.item(0);
+			document.getElementById("registro_usuario").value=nombre_usuario;
+			document.getElementById("registro_nombre").value=usuario.nombre;
+			document.getElementById("registro_apellidos").value=usuario.apellidos;
+			document.getElementById("registro_password").value=usuario.password;
+			document.getElementById("registro_password_validate").value=usuario.password;
+	        editar_usuario=true;
+			
+			
+		});  
+	},errorDB,exitoDB); 
+		}
+	
+	
+	
+	
+}		
+		
+
+function registrarUsuario(){
+	if($("#registro_password").val()==$("#registro_password_validate").val() && $("#registro_usuario").val()!="" &&
+	   $("#registro_password").val()!="" && $("#registro_nombre").val()!=""){
+		  db.transaction(function(tx){
+			nombre_usuario=$("#registro_usuario").val();			
+			tx.executeSql("SELECT * FROM Usuarios WHERE usuario=?;",[nombre_usuario],function(tx,rs){	
+
+				if(rs.rows.length==0){
+
+				    continuarRegistro();
+					}else{
+					  
+					  errorRegistro(editar_usuario);
+					  
+					}
+			});
+		},errorDB,exitoDB);
+		
+		}else{
+		  navigator.vibrate(325);
+		 if($("#registro_usuario").val()==""){
+			 $("#registro_usuario").css("border", "2px solid red");
+			 
+			 }
+		  if($("#registro_password").val()=="" || $("#registro_password").val()!=$("#registro_password_validate").val()){
+			  $("#registro_password").css("border", "2px solid red");
+			  $("#registro_password_validate").css("border", "2px solid red");
+			  }
+		  if($("#registro_nombre").val()==""){
+			  $("#registro_nombre").css("border", "2px solid red");
+			  }
+	   }
+
+	
+	
+	
+}
+function continuarRegistro(){
+	    
+  		db.transaction(function(tx){  
+			tx.executeSql("INSERT INTO Usuarios(usuario,password,nombre,apellidos,loggeado) VALUES("+
+			"'"+$("#registro_usuario").val()+"'," +
+			"'"+$("#registro_password").val()+"'," +
+			"'"+$("#registro_nombre").val()+ "'," +
+			"'"+$("#registro_apellidos").val()+ "'," +
+			"'false');");  
+		},errorDB,exitoRegistro);
+		
+		
+}
+function exitoRegistro(){
+	
+	//window.alert("ok regstro");
+	
+	$("#page_registro_popup").popup('open');
+}
+
+function errorRegistro(accion){
+	if(accion){
+		editar_usuario=false;
+		
+		db.transaction(function(tx){  
+		tx.executeSql("UPDATE Usuarios" + 
+		" SET usuario=?,password=?,nombre=?,apellidos=? WHERE usuario=? ;",
+		[$("#registro_usuario").val(),$("#registro_password").val(),
+		$("#registro_nombre").val(),$("#registro_apellidos").val(),nombre_usuario]);  
+	},errorDB,continuarEdicion);
+
+		}else{
+		
+		$("#registro_usuario").css("border", "2px solid red");
+	$("#page_registro_popupError").popup('open');
+		}
+	
+	
+}
+function continuarEdicion(){
+	if(nombre_usuario!=$("#registro_usuario").val()){
+		    
+		   
+			db.transaction(function(tx){ 
+		tx.executeSql("DELETE FROM Usuarios WHERE usuario='"+nombre_usuario+"';"); 
+		
+			},errorDB,function(){nombre_usuario=$("#registro_usuario").val();});
+			
+			}
+	   exitoRegistro();
+	
+}
+function deleteUsuario(){
+	
+	
+	db.transaction(function(tx){ 
+		tx.executeSql("DELETE FROM Usuarios WHERE usuario='"+nombre_usuario+"';"); 
+		
+	},errorDB,function(){nombre_usuario="";});
+	
+	
+	
+}
+function cerrarPopupRegistro(){
+	$("page_registro_popup").popup('close');
+	navigator.app.backHistory();
+	onBackKeyDown();
+}
+/*
+	* PAGINA LOGIN: Funciones de loggeo y carga de valores
+*/
 
 
 $(document).on('pagebeforeshow', '#page_login', openBD);
-
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function checkLog(){
 	db.transaction(function(tx){  
 		tx.executeSql("SELECT * FROM Usuarios;",[],function(tx,rs){
 			for(var i=0;i<rs.rows.length;i++){  
 				var user=rs.rows.item(i);
+				
 				if(user.loggeado=='true'){
 					userloggeado=false;
 					nombre_usuario=user.usuario;
+					
 					$.mobile.changePage("#page_inicio"); 
 					break;
 				}
@@ -216,9 +449,16 @@ function checkLog(){
 		});  
 	},errorDB,exitoDB); 	
 	
-}
-
+}		
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function login(){
+	
 	if($("#nombredeusuario").val()==""){
 		usuario=true;
 		validacionLoginError();
@@ -256,10 +496,24 @@ function login(){
 		
 	}
 }
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function errorUsuario(){
 	navigator.vibrate(325);
-		$("#nombreusuario").css("border", "2px solid red");
+	$("#nombreusuario").css("border", "2px solid red");
 }
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function loggInUsuario(){
 	nombre_usuario=$("#nombredeusuario").val();
 	db.transaction(function(tx){  
@@ -268,6 +522,13 @@ function loggInUsuario(){
 		['true',$("#nombredeusuario").val()]);  
 	},errorDB,$.mobile.changePage("#page_inicio"));
 }
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function validacionLoginError(){
 	
 	if(clave){
@@ -287,29 +548,39 @@ function validacionLoginError(){
 		$("#nombredeusuario").css("border", "0px solid black");
 	}
 }
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
 function logout(){
 	db.transaction(function(tx){  
 		tx.executeSql("UPDATE Usuarios" + 
 		" SET loggeado=? WHERE usuario=? ;",
 		['false',nombre_usuario]);  
-	},errorDB,exitoDB);
+	},errorDB,function(){nombre_usuario="";});
 	
 	userloggeado=false;
+	
 	
 	$.mobile.changePage("#page_login");
 	
 	
-}
-//PAGINA: SELECCION DE PACIENTE
+}		
+/*
+	* PAGINA SELECCION DE PACIENTE: Funciones carga de valores y manejor de la bbdd
+*/
 
 $(document).on('pagebeforeshow', '#page_initTest', cargarPacientes);
 function cargarPacientes(){
 	$.id="";
 	db.transaction(function(tx){  
-		tx.executeSql("SELECT * FROM Pacientes ORDER BY apellidos;",[],function(tx,rs){
+		tx.executeSql("SELECT * FROM Pacientes WHERE usuarioID=? ORDER BY apellidos;",[nombre_usuario],function(tx,rs){
 			$("#pacientes li").remove();
 			if(rs.rows.length==0){
-			    $("#pacientes").append('<li>Sin registros</li>');
+				$("#pacientes").append('<li>Sin registros</li>');
 			}
 			for(var i=0;i<rs.rows.length;i++){  
 				var paciente=rs.rows.item(i);
@@ -338,7 +609,7 @@ function cargarPacientes(){
 	},errorDB,exitoDB); 
 	
 	
-}
+}		
 
 //PAGINA: NUEVO/EDITAR PACIENTE
 $(document).on('pagebeforeshow', '#page_editPaciente', cargarDetallesPaciente);
@@ -359,14 +630,13 @@ function cargarDetallesPaciente(){
 			document.getElementById("detalle_cp").value=paciente.cp;
 			document.getElementById("detalle_telefono").value=paciente.telefono;
 			
-			$.id="";
 			
 		});  
-	},nuevoUsuario,exitoDB); 
+	},nuevoPaciente,exitoDB); 
 	
 	
-}
-function nuevoUsuario(){
+}		
+function nuevoPaciente(){
 	
 	document.getElementById("eliminarPaciente").style.display = 'none';
 	document.getElementById("detalle_cip").value="";
@@ -377,15 +647,15 @@ function nuevoUsuario(){
 	document.getElementById("detalle_ciudad").value="";
 	document.getElementById("detalle_cp").value="";
 	document.getElementById("detalle_telefono").value="";
-}
+}		
 
 function guardarPaciente(){
 	if( $("#detalle_cip").val()!=""){
 		db.transaction(function(tx){ 
 			
 			
-			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?",[$("#detalle_cip").val()],function(tx,rs){
-				if(rs.rows.length<1){
+			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?",[$.id],function(tx,rs){
+				if(rs.rows.length==0){
 					insertPaciente();
 					}else{
 					updatePaciente();
@@ -401,12 +671,12 @@ function guardarPaciente(){
 	
 	
 	
-}
+}		
 
 function insertPaciente(){
 	
 	db.transaction(function(tx){  
-		tx.executeSql("INSERT INTO Pacientes(cip,nombre,apellidos,fechaNacimiento,direccion,ciudad,cp,telefono)" + 
+		tx.executeSql("INSERT INTO Pacientes(cip,nombre,apellidos,fechaNacimiento,direccion,ciudad,cp,telefono,usuarioID)" + 
 		" VALUES('" + $("#detalle_cip").val() + "'," +
 		"'" + $("#detalle_nombre").val() + "'," +
 		"'" + $("#detalle_apellidos").val() + "'," +
@@ -414,21 +684,35 @@ function insertPaciente(){
 		"'" + $("#detalle_direccion").val() + "'," +
 		"'" + $("#detalle_ciudad").val() + "'," +
 		+ $("#detalle_cp").val() + "," +
-		+ $("#detalle_telefono").val() + ");");  
+		+ $("#detalle_telefono").val() + "," +
+		"'" + nombre_usuario + "');");  
 	},errorDB,exitoDB);
 	$.id="";
 	navigator.app.backHistory ();	
-}
+}		
 function updatePaciente(){
 	
 	db.transaction(function(tx){  
 		tx.executeSql("UPDATE Pacientes" + 
-		" SET nombre=?,apellidos=?,fechaNacimiento=?,direccion=?,ciudad=?,cp=?,telefono=? WHERE cip=? ;",
-		[$("#detalle_nombre").val(),$("#detalle_apellidos").val(),
+		" SET cip=?,nombre=?,apellidos=?,fechaNacimiento=?,direccion=?,ciudad=?,cp=?,telefono=? WHERE cip=? ;",
+		[$("#detalle_cip").val(),$("#detalle_nombre").val(),$("#detalle_apellidos").val(),
 			document.getElementById("detalle_fechaNacimiento").value,$("#detalle_direccion").val(),$("#detalle_ciudad").val(),
-		$("#detalle_cp").val(),$("#detalle_telefono").val(),$("#detalle_cip").val()]);  
-	},errorDB,exitoDB);
-	$.id="";
+		$("#detalle_cp").val(),$("#detalle_telefono").val(),$.id]);  
+	},errorDB,continuarEdicionPaciente);
+	
+}		
+function continuarEdicionPaciente(){
+	alert("ID: " + $.id + "\nCasillaID: " +$("#detalle_cip").val() );
+	if($.id!=$("#detalle_cip").val()){
+		db.transaction(function(tx){ 
+		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$.id+"';"); 
+		
+			},errorDB,function(){$.id="";});
+			
+	}else{
+	 $.id="";
+	}
+	
 	navigator.app.backHistory ();
 }
 function deletePaciente(){
@@ -441,16 +725,17 @@ function deletePaciente(){
 	$.id="";
 	
 	
-}
+}		
 
 //PAGINA: CARGAR HISTORIAL
 
 $(document).on('pagebeforeshow', '#page_histTest', cargarHistorialTest);
 function cargarHistorialTest(){
+	
 	var queryPacienteTest="SELECT * " +
 	"FROM Pacientes " +
 	"INNER JOIN Test " +
-	"ON Pacientes.cip=Test.idPaciente " +
+	"ON (Pacientes.cip=Test.idPaciente AND Pacientes.usuarioID='"+nombre_usuario+"') " +
 	"ORDER BY Pacientes.apellidos;";
 	db.transaction(function(tx){  
 		tx.executeSql(queryPacienteTest,[],function(tx,rs){
@@ -483,1269 +768,227 @@ function cargarHistorialTest(){
 	},errorDB,exitoDB); 
 	
 	
-}
+}		
 
-//Eliminar Historial
-function eliminarTodos(){
-	eliminar_cuestionarios=true;
-}
-function eliminarTestHistorial(test){
-	
-	if($.id_Test=='0' || typeof $.id_Test == "undefined" || eliminar_cuestionarios==true){
-	    eliminar_cuestionarios==false;
+	//Eliminar Historial
+	function eliminarTodos(){
+		eliminar_cuestionarios=true;
+	}		
+	function eliminarTestHistorial(test){
+		
+		if($.id_Test=='0' || typeof $.id_Test == "undefined" || eliminar_cuestionarios==true){
+			eliminar_cuestionarios==false;
+			db.transaction(function(tx){  
+				tx.executeSql("DELETE FROM Test WHERE usuarioID='"+nombre_usuario + "';");  
+			},errorDB,exitoDB);
+			}else{
+			
+			db.transaction(function(tx){  
+				tx.executeSql("DELETE FROM Test WHERE idTest=? ;",[$.id_Test]);  
+			},errorDB,restaurarIDTest);
+		}
+		cargarHistorialTest();    
+		navigator.app.backHistory(); 	
+	}		
+	function mostrarBotonEliminarTodos(rows){
+		if(rows>0){
+			$(".linkEliminarTodos").css("display", "block");
+			}else{
+			$("#historial").append('<li>Sin registros</li>');
+			$(".linkEliminarTodos").css("display", "none");
+		}
+	}		
+	function restaurarIDTest(){
+		$.id_Test='0';
+		
+	}		
+		
+	//PAGINA: RESULTADOS ANTERIORES
+		
+	$(document).on('pagebeforeshow', '#page_resultado', cargarResultado);
+	function cargarResultado(){
+		$("#txtResultadoPaginaResultado").html('');
+		$("#resultadoCiculoTestPaginaResultado").html('');
+		$("#notasResultadoPaginaResultado").html('');
+		
+		
+		
+		if(idPagina=="page_inicioBarthel" || idPagina=="page_inicioKatz" ||
+		idPagina=="page_inicioLowy" || idPagina=="page_inicioApgar" ||
+		idPagina=="page_inicioApgarNeo" || idPagina=="page_inicioBarberMR" ||
+		idPagina=="page_inicioGijon" || idPagina=="page_inicioLobo" ||
+		idPagina=="page_inicioMonitorizacionUPP" || idPagina=="page_inicioPfeiffer" ||
+		idPagina=="page_inicioUppBraden" || idPagina=="page_inicioYesavage" || 
+		idPagina=="page_inicioCaidasMultiples" || idPagina=="page_inicioMNA"){
+			
+			$("#txtResultadoPaginaResultado").append(txtResultado);
+			$("#resultadoCiculoTestPaginaResultado").append(resultadoTest);
+			$("#notasResultadoPaginaResultado").append(notasTest);
+			$(".circuloPuntuacion").css("background", circuloResultado);
+			$("#txtResultadoPaginaResultado").css("color", circuloResultado);
+			}else{
+			$("#nombreTest").html('');
+			$("#nombreResultadoPaciente").html('');
+			$("#cipResultadoPaciente").html('');
+			$("#fechaResultadoPaciente").html('');
+			$("#domicilioResultadoPaciente").html('');
+			$("#telefonoResultadoPaciente").html('');
+			$("#txtResultado").html('');
+			$("#resultadoCiculoTest").html('');
+			$("#notasResultado").html('');
+			$("#actuacionesTest").html('');
+			var pacienteTest;
+			var nombreTest;
+			db.transaction(function(tx){ 
+				
+				tx.executeSql("SELECT * FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
+					
+					
+					var test=rs.rows.item(0);
+					
+					$("#nombreTest").append(test.nombreTest);
+					$("#txtResultado").append(test.descripcionResultadoTest);
+					$("#resultadoCiculoTest").append(test.resultadoTest);
+					$("#notasResultado").append(test.notasTest);
+					$("#actuacionesTest").append(test.actuacionesTest);
+					$(".circuloPuntuacion").css("background", test.resultadoColorTest);
+					$("#txtResultado").css("color", test.resultadoColorTest);
+					
+					pacienteTest=test.idPaciente;
+					nombreTest=test.nombreTest;
+					
+				}); 
+				
+				
+				
+			},errorDB,exitoDB);
+			db.transaction(function(tx){ 
+				tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[pacienteTest],function(tx,rs){
+					
+					
+					var paciente=rs.rows.item(0);
+					
+					$("#nombreResultadoPaciente").append(paciente.apellidos +","+paciente.nombre);  
+					$("#cipResultadoPaciente").append(paciente.cip);
+					$("#fechaResultadoPaciente").append(paciente.fechaNacimiento);
+					$("#domicilioResultadoPaciente").append(paciente.direccion+","+paciente.ciudad+","+paciente.cp);
+					$("#telefonoResultadoPaciente").append(paciente.telefono);		
+					
+				}); 
+				
+			},errorDB,exitoDB); 
+			db.transaction(function(tx){ 
+				tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=?;",[pacienteTest,nombreTest],function(tx,rs){
+					
+					
+					var cantidad=rs.rows.item(0);
+					
+					if(cantidad.cantidadTest>=2){
+						disponibleBotonResultados(true);
+						}else{
+						disponibleBotonResultados(false);
+					}
+					
+				}); 
+				
+			},errorDB,exitoDB); 
+			
+			
+		}
+		
+		
+		
+	}		
+	function disponibleBotonResultados(visible){
+		if(visible){
+			$("#btn_resultados").css("display", "block");
+			}else{
+			
+			$("#btn_resultados").css("display", "none");
+		}
+		
+		
+	}		
+		
+	function guardarPagina(){
+		idPagina=$.mobile.activePage.attr('id');
+	}		
+		
+	function abrirActuaciones(){
+		$("#actuaciones").css("display", "block");
+		
+	}		
+		
+	//PAGINA: CONFIGURACION
+	function cambiarTema(){
+		
+		var tema= $("opcion_tema").find("input:checked").val();
+		if(tema="b"){
+			$("#contenidoPrincipal").attr("data-theme","b");
+			
+		}
+		
+	}		
+	// Guadar las actuaciones
+		
+	function guardarActuacionesTest(){
 		db.transaction(function(tx){  
-			tx.executeSql("DELETE FROM Test;");  
+			tx.executeSql("SELECT MAX(idTest) AS maxID FROM Test;",[],function(tx,rs){ 
+				testMaxID=rs.rows.item(0).maxID;
+			});  
+		},errorDB,guardarActuaciones); 
+		
+		
+	}		
+		
+	function guardarActuaciones(){
+		var txtActuaciones=$("#actuacionesTxt").val();
+		if(txtActuaciones==""){
+			txtActuaciones="No se realizón ninguna acción";
+		}
+		
+		db.transaction(function(tx){ 
+			
+			tx.executeSql("UPDATE Test" + 
+			" SET actuacionesTest=? WHERE idTest=?;",
+			[txtActuaciones,testMaxID]); 
 		},errorDB,exitoDB);
-		}else{
-		
-		db.transaction(function(tx){  
-			tx.executeSql("DELETE FROM Test WHERE idTest=? ;",[$.id_Test]);  
-		},errorDB,restaurarIDTest);
-	}
-	cargarHistorialTest();    
-	navigator.app.backHistory(); 	
-}
-function mostrarBotonEliminarTodos(rows){
-	if(rows>0){
-		$(".linkEliminarTodos").css("display", "block");
-		}else{
-		$("#historial").append('<li>Sin registros</li>');
-		$(".linkEliminarTodos").css("display", "none");
-	}
-}
-function restaurarIDTest(){
-	$.id_Test='0';
-	
-}
-
-//PAGINA: RESULTADOS ANTERIORES
-
-$(document).on('pagebeforeshow', '#page_resultado', cargarResultado);
-function cargarResultado(){
-	$("#txtResultadoPaginaResultado").html('');
-	$("#resultadoCiculoTestPaginaResultado").html('');
-	$("#notasResultadoPaginaResultado").html('');
-	
-	
-	
-	if(idPagina=="page_inicioBarthel" || idPagina=="page_inicioKatz" ||
-	idPagina=="page_inicioLowy" || idPagina=="page_inicioApgar" ||
-	idPagina=="page_inicioApgarNeo" || idPagina=="page_inicioBarberMR" ||
-	idPagina=="page_inicioGijon" || idPagina=="page_inicioLobo" ||
-	idPagina=="page_inicioMonitorizacionUPP" || idPagina=="page_inicioPfeiffer" ||
-	idPagina=="page_inicioUppBraden" || idPagina=="page_inicioYesavage" || 
-	idPagina=="page_inicioCaidasMultiples" || idPagina=="page_inicioMNA"){
-		
-		$("#txtResultadoPaginaResultado").append(txtResultado);
-		$("#resultadoCiculoTestPaginaResultado").append(resultadoTest);
-		$("#notasResultadoPaginaResultado").append(notasTest);
-		$(".circuloPuntuacion").css("background", circuloResultado);
-		$("#txtResultadoPaginaResultado").css("color", circuloResultado);
-		}else{
-		$("#nombreTest").html('');
-		$("#nombreResultadoPaciente").html('');
-		$("#cipResultadoPaciente").html('');
-		$("#fechaResultadoPaciente").html('');
-		$("#domicilioResultadoPaciente").html('');
-		$("#telefonoResultadoPaciente").html('');
-		$("#txtResultado").html('');
-		$("#resultadoCiculoTest").html('');
-		$("#notasResultado").html('');
-		$("#actuacionesTest").html('');
-		var pacienteTest;
-		var nombreTest;
-		db.transaction(function(tx){ 
-			
-			tx.executeSql("SELECT * FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
-				
-				
-				var test=rs.rows.item(0);
-				
-				$("#nombreTest").append(test.nombreTest);
-				$("#txtResultado").append(test.descripcionResultadoTest);
-				$("#resultadoCiculoTest").append(test.resultadoTest);
-				$("#notasResultado").append(test.notasTest);
-				$("#actuacionesTest").append(test.actuacionesTest);
-				$(".circuloPuntuacion").css("background", test.resultadoColorTest);
-				$("#txtResultado").css("color", test.resultadoColorTest);
-				
-				pacienteTest=test.idPaciente;
-				nombreTest=test.nombreTest;
-				
-			}); 
-			
-			
-			
-		},errorDB,exitoDB);
-		db.transaction(function(tx){ 
-			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[pacienteTest],function(tx,rs){
-				
-				
-				var paciente=rs.rows.item(0);
-				
-				$("#nombreResultadoPaciente").append(paciente.apellidos +","+paciente.nombre);  
-				$("#cipResultadoPaciente").append(paciente.cip);
-				$("#fechaResultadoPaciente").append(paciente.fechaNacimiento);
-				$("#domicilioResultadoPaciente").append(paciente.direccion+","+paciente.ciudad+","+paciente.cp);
-				$("#telefonoResultadoPaciente").append(paciente.telefono);		
-				
-			}); 
-			
-		},errorDB,exitoDB); 
-		db.transaction(function(tx){ 
-			tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=?;",[pacienteTest,nombreTest],function(tx,rs){
-				
-				
-				var cantidad=rs.rows.item(0);
-				
-				if(cantidad.cantidadTest>=2){
-					disponibleBotonResultados(true);
-					}else{
-					disponibleBotonResultados(false);
-				}
-				
-			}); 
-			
-		},errorDB,exitoDB); 
-		
-		
-	}
-	
-	
-	
-}
-function disponibleBotonResultados(visible){
-	if(visible){
-		$("#btn_resultados").css("display", "block");
-		}else{
-		
-		$("#btn_resultados").css("display", "none");
-	}
-	
-	
-}
-
-function guardarPagina(){
-	idPagina=$.mobile.activePage.attr('id');
-}
-
-function abrirActuaciones(){
-	$("#actuaciones").css("display", "block");
-	
-}
-
-//PAGINA: CONFIGURACION
-function cambiarTema(){
-	
-	var tema= $("opcion_tema").find("input:checked").val();
-	if(tema="b"){
-		$("#contenidoPrincipal").attr("data-theme","b");
-		
-	}
-	
-}
-// Guadar las actuaciones
-
-function guardarActuacionesTest(){
-	db.transaction(function(tx){  
-		tx.executeSql("SELECT MAX(idTest) AS maxID FROM Test;",[],function(tx,rs){ 
-			testMaxID=rs.rows.item(0).maxID;
-		});  
-	},errorDB,guardarActuaciones); 
-	
-	
-}
-
-function guardarActuaciones(){
-	var txtActuaciones=$("#actuacionesTxt").val();
-	if(txtActuaciones==""){
-		txtActuaciones="No se realizón ninguna acción";
-	}
-	
-	db.transaction(function(tx){ 
-		
-		tx.executeSql("UPDATE Test" + 
-		" SET actuacionesTest=? WHERE idTest=?;",
-		[txtActuaciones,testMaxID]); 
-	},errorDB,exitoDB);
-}
-
-//PAGINA: CALCULAR BARTHEL
-
-function calculaBarthel(){ 
-	
-	var sumaBarthel=0;
-	var opcionesBarthel=["#opcion_alimentacion",
-		"#opcion_baño",
-		"#opcion_vestirse",
-		"#opcion_arreglarse",
-		"#opcion_deposiciones",
-		"#opcion_miccion",
-		"#opcion_retrete",
-		"#opcion_movilidad",
-		"#opcion_deambular",
-	"#opcion_escaleras"];
-	
-	getFechaHora();
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	
-	for (opcion = 0; opcion < opcionesBarthel.length; opcion++) { 
-		if(typeof $(opcionesBarthel[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesBarthel[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesBarthel[opcion]).css("border","0px solid black");
-		}
-		
-		
-		sumaBarthel+=parseInt($(opcionesBarthel[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		
-		switch(true) {
-			case (sumaBarthel<=20):
-			txtResultado="Dependencia total";
-			circuloResultado="#CF0202";
-			break;
-			case (25<=sumaBarthel && sumaBarthel<=60):
-			txtResultado="Dependencia severa";
-			circuloResultado="#DC9705";
-			break;
-			case (65<=sumaBarthel && sumaBarthel<=90):
-			txtResultado="Dependencia moderada";
-			circuloResultado="#F9D700";
-			break;
-			case (sumaBarthel==95):
-			txtResultado="Dependencia leve";
-			circuloResultado="#9EC709";
-			break;
-			case (sumaBarthel==100):
-			txtResultado="Independiente";
-			circuloResultado="#82EE09";
-			break;
-			
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		resultadoTest=sumaBarthel;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Barthel'," +
-			"'" + $.id + "'," +
-			"'" + sumaBarthel + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//Indice de Katz
-function calculaKatz(){
-	var indiceKatz=0;
-	var opcionesKatz=["#opcion_baño",
-		"#opcion_vestido",
-		"#opcion_wc",
-		"#opcion_movilidad",
-		"#opcion_continencia",
-	"#opcion_alimentacion"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesKatz.length; opcion++) { 
-		if(typeof $(opcionesKatz[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesKatz[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesKatz[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceKatz+=parseInt($(opcionesKatz[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		
-		switch(true) {
-			case (indiceKatz<=1):
-			txtResultado="Ausencia de incapacidad o incapacidad leve";
-			circuloResultado="#82EE09";
-			
-			break;
-			case (2<=indiceKatz && indiceKatz<=3):
-			txtResultado="Incapacidad moderada";
-			circuloResultado="#F9D700";
-			
-			break;
-			case (4<=indiceKatz && indiceKatz<=6):
-			txtResultado="Incapacidad severa";
-			circuloResultado="#CF0202";
-			
-			break;         
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceKatz;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Katz'," +
-			"'" + $.id + "'," +
-			"'" + indiceKatz + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-	
-}
-//Indice de Lowy
-function calculaLowy(){
-	var indiceLowy=0;
-	var opcionesLowy=["#opcion_telefono",
-		"#opcion_compras",
-		"#opcion_comida",
-		"#opcion_casa",
-		"#opcion_ropa",
-		"#opcion_transporte",
-		"#opcion_medicacion",
-	"#opcion_economia"]
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesLowy.length; opcion++) {  
-		if(typeof $(opcionesLowy[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesLowy[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesLowy[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceLowy+=parseInt($(opcionesLowy[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		switch(true) {
-			case (indiceLowy<=1):
-			txtResultado="Dependencia total";
-			circuloResultado="#CF0202";
-			break;
-			case (2<=indiceLowy && indiceLowy<=3):
-			txtResultado="Dependencia severa";
-			circuloResultado="#DC9705";
-			break;
-			case (4<=indiceLowy && indiceLowy<=5):
-			txtResultado="Dependencia moderada";
-			circuloResultado="#F9D700";
-			break;
-			case (6<=indiceLowy && indiceLowy<=7):
-			txtResultado="Dependencia ligera";
-			circuloResultado="#9EC709";
-			break;
-			case (indiceLowy==8):
-			txtResultado="Independiente";
-			circuloResultado="#82EE09";
-			break;         
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceLowy;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Lowy'," +
-			"'" + $.id + "'," +
-			"'" + indiceLowy + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-
-//PAGINA: Test Pfeiffer
-function calculaEdad(fecha){
-	getFechaHora();
-	var txtEdad="";
-	var annoNacimiento = parseInt(fecha.substring(6, 11));
-	var edad=parseInt(anno)-annoNacimiento;
-	var edadPrevia=edad-1;
-	if(edadPrevia<=0){
-		txtEdad=edad+" años";
-		}else{
-		txtEdad=edadPrevia+"-"+edad+" años";
-	}
-	
-	
-	return  txtEdad;
-}
-$(document).on('pagebeforeshow', '#page_inicioPfeiffer', cargarDatosPfeiffer);
-
-function cargarDatosPfeiffer(){
-	getFechaHora();
-	var edad;	
-	var txtPaciente;
-	$("#fechaActual").html('');
-	$("#diaActual").html('');
-	$("#user_ciudad").html('');
-	$("#user_telefono").html('');
-	$("#edadPaciente").html('');
-	$("#user_nacimiento").html('');
-	$("#presidenteActual").html('');
-	$("#presidenteAnterior").html('');
-	$("#calculoResta").html('');
-	$("#edadPaciente").html('');
-	db.transaction(function(tx){  
-		tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[$.id],function(tx,rs){
-			var pacientePf=rs.rows.item(0);
-			
-			txtFechaPaciente="<strong>Fecha Nacimiento:</strong> " + formatearFecha(pacientePf.fechaNacimiento);
-			txtTelefonoPaciente="<strong>Telefono:</strong> " + pacientePf.telefono+"<br><strong>Direccion:</strong> " + pacientePf.direccion +","+pacientePf.cp+","+pacientePf.ciudad;
-			txtCiudadPaciente="<strong>Ciudad:</strong> " + pacientePf.ciudad;
-			txtEdadPaciente="<strong>Edad: </strong> "+ calculaEdad(formatearFecha(pacientePf.fechaNacimiento));
-			$("#user_nacimiento").append(txtFechaPaciente);
-			$("#user_telefono").append(txtTelefonoPaciente);
-			$("#user_ciudad").append(txtCiudadPaciente);
-			$("#edadPaciente").append(txtEdadPaciente);
-		});  
-	},errorDB,exitoDB); 
-	
-	$("#fechaActual").append('<strong>Fecha Actual: </strong> ' + dia + '-' + mes + '-' + anno);
-	$("#diaActual").append('<strong>Dia de la semana: </strong> ' + dia_semana );
-	
-	$("#presidenteActual").append('<strong>Presidente Actual: </strong> Mariano Rajoy Brey');
-	$("#presidenteAnterior").append('<strong>Presidente Anterior: </strong> José Luis Rodríguez Zapatero');
-	$("#calculoResta").append('<strong>Resta: </strong> 20 - 17 - 14 - 11 - 8 - 5 - 2 - 0');
-}
-
-function calculaPfeiffer(){
-	var indicePfeiffer=0;
-	var opcionesPfeiffer=["#opcion_dia",
-		"#opcion_dia_semana",
-		"#opcion_localizacion",
-		"#opcion_telefono",
-		"#opcion_edad",
-		"#opcion_fechaNacimiento",
-		"#opcion_presidente_actual",
-		"#opcion_presidente_anterior",
-		"#opcion_apellidos_madre",
-	"#opcion_resta"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesPfeiffer.length; opcion++) { 
-		if(typeof $(opcionesPfeiffer[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesPfeiffer[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesPfeiffer[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indicePfeiffer+=parseInt($(opcionesPfeiffer[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		
-		switch(true) {
-			case (indicePfeiffer<=2):
-			txtResultado="Normal";
-			circuloResultado="#82EE09";
-			
-			break;
-			case (3<=indicePfeiffer && indicePfeiffer<=4):
-			txtResultado="Leve deterioro cognitivo";
-			circuloResultado="#9EC709";
-			
-			break;
-			case (5<=indicePfeiffer && indicePfeiffer<=7):
-			txtResultado="Moderado deterioro cognitivo, patológico";
-			circuloResultado="#DC9705";
-			
-			break;  
-			case (8<=indicePfeiffer && indicePfeiffer<=10):
-			txtResultado="Importante deterioro cognitivo.";
-			circuloResultado="#CF0202";
-			
-			break;  		
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indicePfeiffer;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Pfeiffer'," +
-			"'" + $.id + "'," +
-			"'" + indicePfeiffer + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-
-//PAGINA: Test Lobo
-$(document).on('pagebeforeshow', '#page_inicioLobo', cargarDatosLobo);
-
-function cargarDatosLobo(){
-	getFechaHora();
-	$("#datosTemporal").html('');
-	$("#datosEspacial").html('');
-	$("#datosTemporal").append('<strong>Fecha Actual: </strong> ' + dia_semana+" " + dia + '-' + mes + '-' + anno);
-	db.transaction(function(tx){  
-		tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[$.id],function(tx,rs){
-			var pacienteLobo=rs.rows.item(0);
-			var  txtDirPaciente="<strong>Direccion Paciente:</strong> " + pacienteLobo.direccion +","+pacienteLobo.cp+","+pacienteLobo.ciudad;
-			$("#datosEspacial").append(txtDirPaciente);
-		});  
-	},errorDB,exitoDB); 
-	
-}
-function calculaLobo(){
-	var indiceLobo=0;
-	var opcionesLobo=["#opcion_temporal",
-		"#opcion_espacial",
-		"#opcion_memoria",
-		"#opcion_calculo",
-		"#opcion_memoriaDiferida",
-		"#opcion_nominacion",
-		"#opcion_repeticion",
-		"#opcion_comprension",
-		"#opcion_lectura",
-		"#opcion_escritura",
-	"#opcion_dibujo"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesLobo.length; opcion++) { 
-		if(typeof $(opcionesLobo[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesLobo[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesLobo[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceLobo+=parseInt($(opcionesLobo[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		indiceLobo=Math.round(((indiceLobo*35)/30));  
-		switch(true) {
-			case (indiceLobo>=30):
-			txtResultado="Normal";
-			circuloResultado="#82EE09";
-			
-			break;
-			case (25<=indiceLobo && indiceLobo<30):
-			txtResultado="Ligero déficit cognitivo";
-			circuloResultado="#9EC709";
-			
-			break;
-			case (20<=indiceLobo && indiceLobo<=24):
-			txtResultado="Deterioro cognitivo leve";
-			circuloResultado="#DC9705";
-			
-			break;  
-			case (15<=indiceLobo && indiceLobo<=19):
-			txtResultado="Deterioro cognitivo moderado,existencia de una demencia.";
-			circuloResultado="#F96A00";
-			
-			break;  
-			case (0<=indiceLobo && indiceLobo<=14):
-			txtResultado="Grave deterioro cognitivo, existencia de una demencia avanzada.";
-			circuloResultado="#CF0202";
-			
-			break;  		
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceLobo;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Mini examen cognitivo(Lobo)'," +
-			"'" + $.id + "'," +
-			"'" + indiceLobo + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//PAGINA Test Yesavage
-function calculaYesavage(){
-	var indiceYesavage=0;
-	var opcionesYesavage=["#opcion_vida",
-		"#opcion_abandoTareas",
-		"#opcion_vidaVacia",
-		"#opcion_aburrido",
-		"#opcion_humor",
-		"#opcion_malo",
-		"#opcion_feliz",
-		"#opcion_desamparado",
-		"#opcion_salir",
-		"#opcion_problemas",
-		"#opcion_vivo",
-		"#opcion_inutil",
-		"#opcion_esperanza",
-		"#opcion_energia",
-	"#opcion_gente"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesYesavage.length; opcion++) { 
-		if(typeof $(opcionesYesavage[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesYesavage[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesYesavage[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceYesavage+=parseInt($(opcionesYesavage[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		
-		switch(true) {
-			case (indiceYesavage<=5):
-			txtResultado="Normal";
-			circuloResultado="#82EE09";
-			
-			break;
-			case (6<=indiceYesavage && indiceYesavage<=9):
-			txtResultado="Probable depresión";
-			circuloResultado="#DC9705";
-			
-			break;
-			
-			case (9<indiceYesavage):
-			txtResultado="Depresión establecida";
-			circuloResultado="#CF0202";
-			
-			break;  		
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceYesavage;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Yesavage'," +
-			"'" + $.id + "'," +
-			"'" + indiceYesavage + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//PAGINA Test Gijon
-function calculaGijon(){
-	var indiceGijon=0;
-	var opcionesGijon=["#opcion_familia",
-		"#opcion_economia",
-		"#opcion_vivienda",
-		"#opcion_relaciones",
-	"#opcion_apoyo"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesGijon.length; opcion++) { 
-		if(typeof $(opcionesGijon[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesGijon[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesGijon[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceGijon+=parseInt($(opcionesGijon[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		switch(true) {
-			case (indiceGijon<=9):
-			txtResultado="Buena/Aceptable situación social";
-			circuloResultado="#82EE09";
-			
-			break;
-			case (10<=indiceGijon && indiceGijon<=14):
-			txtResultado="Existe riesgo social";
-			circuloResultado="#DC9705";
-			
-			break;
-			
-			case (15<=indiceGijon):
-			txtResultado="Problema social";
-			circuloResultado="#CF0202";
-			
-			break;  		
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceGijon;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Gijon'," +
-			"'" + $.id + "'," +
-			"'" + indiceGijon + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//PAGINA Test Apgar
-function calculaApgar(){
-	var indiceApgar=0;
-	var opcionesApgar=["#opcion_familia",
-		"#opcion_problemas",
-		"#opcion_decisiones",
-		"#opcion_tiempo",
-	"#opcion_amor"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesApgar.length; opcion++) { 
-		if(typeof $(opcionesApgar[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesApgar[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesApgar[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceApgar+=parseInt($(opcionesApgar[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		switch(true) {
-			case (indiceApgar<=2):
-			
-			txtResultado="Disfunción familiar grave";
-			circuloResultado="#CF0202";
-			break;
-			case (3<=indiceApgar && indiceApgar<=6):
-			
-			txtResultado="Disfunción familiar leve";
-			circuloResultado="#DC9705";
-			break;
-			
-			case (7<=indiceApgar):
-			
-			txtResultado="Función familiar normal";
-			circuloResultado="#82EE09";
-			break;  		
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceApgar;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Apgar'," +
-			"'" + $.id + "'," +
-			"'" + indiceApgar + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//PAGINA Test Apgar Neonatal
-function calculaApgarNeo(){
-	var indiceApgarNeo=0;
-	var opcionesApgarNeo=["#opcion_corazon",
-		"#opcion_respiracion",
-		"#opcion_musculos",
-		"#opcion_estimulos",
-	"#opcion_color"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesApgarNeo.length; opcion++) { 
-		if(typeof $(opcionesApgarNeo[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesApgarNeo[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesApgarNeo[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceApgarNeo+=parseInt($(opcionesApgarNeo[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		switch(true) {
-			case (indiceApgarNeo<=3):
-			
-			txtResultado="Atención de emergencia.Repite el test si es el primer intento";
-			circuloResultado="#CF0202";
-			break;
-			case (4<=indiceApgarNeo && indiceApgarNeo<=7):
-			
-			txtResultado="No está respondiendo adecuadamente";
-			circuloResultado="#DC9705";
-			break;
-			
-			case (8<=indiceApgarNeo):
-			
-			txtResultado="Estado correcto";
-			circuloResultado="#82EE09";
-			break;  		
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceApgarNeo;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Apgar Neonatal'," +
-			"'" + $.id + "'," +
-			"'" + indiceApgarNeo + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//PAGINA Test Barber Medio Rural
-function calculaBarberMR(){
-	var indiceBarberMR=0;
-	var opcionesBarberMR=["#opcion_vida",
-		"#opcion_ayuda",
-		"#opcion_necesidades",
-		"#opcion_comer",
-		"#opcion_salir",
-		"#opcion_salud",
-		"#opcion_vision",
-		"#opcion_oido",
-	"#opcion_hospital"];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesBarberMR.length; opcion++) { 
-		if(typeof $(opcionesBarberMR[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesBarberMR[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesBarberMR[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceBarberMR+=parseInt($(opcionesBarberMR[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		
-		if(1<=indiceBarberMR){
-			txtResultado="Sugiere riesgo de dependencia";
-			circuloResultado="#DC9705";
-			}else{
-			
-			txtResultado="No sugiere riesgo de dependencia";
-			circuloResultado="#82EE09";
-		}
-		
-		
-		
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceBarberMR;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Barber Medio Rural'," +
-			"'" + $.id + "'," +
-			"'" + indiceBarberMR + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-
-
-//PAGINA TEST UPP BRADEN
-function calculaBraden(){
-	var indiceBraden=0;
-	var opcionesBraden=["#opcion_sensorial",
-		"#opcion_humedad",
-		"#opcion_actividad",
-		"#opcion_movilidad",
-		"#opcion_nutricion",
-		"#opcion_friccion",
-	];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesBraden.length; opcion++) { 
-		if(typeof $(opcionesBraden[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesBraden[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesBraden[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceBraden+=parseInt($(opcionesBraden[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		switch(true) {
-			case (indiceBraden<=12):
-			
-			txtResultado="Riesgo alto";
-			circuloResultado="#CF0202";
-			break;
-			case (13<=indiceBraden && indiceBraden<=15):
-			
-			txtResultado="Riesgo medio";
-			circuloResultado="#DC9705";
-			break;
-			
-			case (16<=indiceBraden):
-			
-			txtResultado="Riesgo bajo";
-			circuloResultado="#82EE09";
-			break;  		
-		}
-		
-		
-		
-		
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceBraden;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Riesgo de UPP de Braden'," +
-			"'" + $.id + "'," +
-			"'" + indiceBraden + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//PAGINA TEST MONITORIZACION UPP 
-function calculaUPP(){
-	var indiceUPP=0;
-	var opcionesUPP=["#opcion_longitud",
-		"#opcion_tejido",
-		"#opcion_exudado",
-	];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesUPP.length; opcion++) { 
-		if(typeof $(opcionesUPP[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesUPP[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesUPP[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceUPP+=parseInt($(opcionesUPP[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		txtResultado="Evaluacion de la UPP";
-		circuloResultado="#6ED0F2";
-	    idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceUPP;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Valoracion de la UPP'," +
-			"'" + $.id + "'," +
-			"'" + indiceUPP + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-//PAGINA TEST CAIDAS MULTIPLES 
-function calculaCaidasMultiples(){
-	var indiceCaida=0;
-	
-	var opcionesCaida=["#opcion_previas",
-		"#opcion_urinaria",
-		"#opcion_visual",
-		"#opcion_funcional"
-	];
-	
-	getFechaHora();
-	
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	for (opcion = 0; opcion < opcionesCaida.length; opcion++) { 
-		if(typeof $(opcionesCaida[opcion]).find("input:checked").val() == "undefined"){
-			$(opcionesCaida[opcion]).css("border","2px solid red");
-			error=true;
-			
-			}else{
-			$(opcionesCaida[opcion]).css("border","0px solid black");
-		}
-		
-		
-		indiceCaida+=parseInt($(opcionesCaida[opcion]).find("input:checked").val());
-	}
-	if(error){
-		
-		
-		error=false;
-		navigator.vibrate(325);
-		$("#infoFin").popup('close');
-		
-		}else{
-		
-		if(8<=indiceCaida){
-			txtResultado="Riesgo de caídas múltiples";
-			circuloResultado="#DC9705";
-			}else{
-			
-			txtResultado="Sin riesgo de caídas múltiples";
-			circuloResultado="#82EE09";
-		}		
-		
-		
-		
-		
-		
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceCaida;
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-			" VALUES('Riesgo de caida multiple'," +
-			"'" + $.id + "'," +
-			"'" + indiceCaida + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "');");  
-		},errorDB,exitoTest); 
-	}
-}
-
-//PAGINA TEST MNA
-$(document).on('pagebeforeshow', '#page_inicioMNA', testInicialMNA);
-function testInicialMNA(){
-	testMNA="cribaje";
-}
-var indiceMNA=0;
-function calculaMNA(){
-	
-	getFechaHora();
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	
-	if(testMNA=="cribaje"){
-		
-		var opcionesCribaje=["#opcion_apetito",
-			"#opcion_peso",
+	}		
+		
+	//PAGINA: CALCULAR BARTHEL
+		
+	function calculaBarthel(){ 
+		
+		var sumaBarthel=0;
+		var opcionesBarthel=["#opcion_alimentacion",
+			"#opcion_baño",
+			"#opcion_vestirse",
+			"#opcion_arreglarse",
+			"#opcion_deposiciones",
+			"#opcion_miccion",
+			"#opcion_retrete",
 			"#opcion_movilidad",
-			"#opcion_enfermedad",
-			"#opcion_neuro",
-			"#opcion_imc"
-		];	
+			"#opcion_deambular",
+		"#opcion_escaleras"];
 		
-		for (opcion = 0; opcion < opcionesCribaje.length; opcion++) {
-			
-			if(typeof $(opcionesCribaje[opcion]).find("input:checked").val() == "undefined"){
-				
-				$(opcionesCribaje[opcion]).css("border","2px solid red");
+		getFechaHora();
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		
+		for (opcion = 0; opcion < opcionesBarthel.length; opcion++) { 
+			if(typeof $(opcionesBarthel[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesBarthel[opcion]).css("border","2px solid red");
 				error=true;
 				
 				}else{
-				$(opcionesCribaje[opcion]).css("border","0px solid black");
-				indiceMNA+=parseInt($(opcionesCribaje[opcion]).find("input:checked").val());
+				$(opcionesBarthel[opcion]).css("border","0px solid black");
 			}
 			
 			
+			sumaBarthel+=parseInt($(opcionesBarthel[opcion]).find("input:checked").val());
 		}
 		if(error){
 			
@@ -1756,51 +999,76 @@ function calculaMNA(){
 			
 			}else{
 			
-			if(11<=indiceMNA){
-				txtResultado="Estado nutricional normal";
+			switch(true) {
+				case (sumaBarthel<=20):
+				txtResultado="Dependencia total";
+				circuloResultado="#CF0202";
+				break;
+				case (25<=sumaBarthel && sumaBarthel<=60):
+				txtResultado="Dependencia severa";
+				circuloResultado="#DC9705";
+				break;
+				case (65<=sumaBarthel && sumaBarthel<=90):
+				txtResultado="Dependencia moderada";
+				circuloResultado="#F9D700";
+				break;
+				case (sumaBarthel==95):
+				txtResultado="Dependencia leve";
+				circuloResultado="#9EC709";
+				break;
+				case (sumaBarthel==100):
+				txtResultado="Independiente";
 				circuloResultado="#82EE09";
-				guardarMNA();
-				$.mobile.changePage("resultado.html");
-				}else{
-				document.getElementById("cribaje").style.display = 'none';
-				document.getElementById("evaluacion").style.display = 'block';
-				testMNA="evaluacion";
-				$.mobile.changePage("#page_inicioMNA");
-			}					
-			
-		}
-		}else{
-		var opcionesEvaluacion=["#opcion_vivir",
-			"#opcion_medicacion",
-			"#opcion_ulceras",
-			"#opcion_comida",
-			"#opcion_consumicion",
-			"#opcion_frutas",
-			"#opcion_agua",
-			"#opcion_alimentacion",
-			"#opcion_nutricion",
-			"#opcion_salud",
-			"#opcion_branquio",
-			"#opcion_pantorrilla"
-		];	
-		
-		for (opcion = 0; opcion < opcionesEvaluacion.length; opcion++) {
-			
-			if(typeof $(opcionesEvaluacion[opcion]).find("input:checked").val() == "undefined"){
+				break;
 				
-				$(opcionesEvaluacion[opcion]).css("border","2px solid red");
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			resultadoTest=sumaBarthel;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Barthel'," +
+				"'" + $.id + "'," +
+				"'" + sumaBarthel + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");  
+			},errorDB,exitoTest); 
+		}
+	}		
+	//Indice de Katz
+	function calculaKatz(){
+		var indiceKatz=0;
+		var opcionesKatz=["#opcion_baño",
+			"#opcion_vestido",
+			"#opcion_wc",
+			"#opcion_movilidad",
+			"#opcion_continencia",
+		"#opcion_alimentacion"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesKatz.length; opcion++) { 
+			if(typeof $(opcionesKatz[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesKatz[opcion]).css("border","2px solid red");
 				error=true;
 				
 				}else{
-				$(opcionesEvaluacion[opcion]).css("border","0px solid black");
-				indiceMNA+=parseInt($(opcionesEvaluacion[opcion]).find("input:checked").val());
+				$(opcionesKatz[opcion]).css("border","0px solid black");
 			}
 			
 			
+			indiceKatz+=parseInt($(opcionesKatz[opcion]).find("input:checked").val());
 		}
-		
 		if(error){
-			
 			
 			error=false;
 			navigator.vibrate(325);
@@ -1808,167 +1076,1173 @@ function calculaMNA(){
 			
 			}else{
 			
-			if(indiceMNA<=16){
-				txtResultado="Malnutrición";
+			switch(true) {
+				case (indiceKatz<=1):
+				txtResultado="Ausencia de incapacidad o incapacidad leve";
+				circuloResultado="#82EE09";
+				
+				break;
+				case (2<=indiceKatz && indiceKatz<=3):
+				txtResultado="Incapacidad moderada";
+				circuloResultado="#F9D700";
+				
+				break;
+				case (4<=indiceKatz && indiceKatz<=6):
+				txtResultado="Incapacidad severa";
 				circuloResultado="#CF0202";
 				
+				break;         
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceKatz;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Katz'," +
+				"'" + $.id + "'," +
+				"'" + indiceKatz + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");  
+			},errorDB,exitoTest); 
+		}
+		
+	}		
+	//Indice de Lowy
+	function calculaLowy(){
+		var indiceLowy=0;
+		var opcionesLowy=["#opcion_telefono",
+			"#opcion_compras",
+			"#opcion_comida",
+			"#opcion_casa",
+			"#opcion_ropa",
+			"#opcion_transporte",
+			"#opcion_medicacion",
+		"#opcion_economia"]
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesLowy.length; opcion++) {  
+			if(typeof $(opcionesLowy[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesLowy[opcion]).css("border","2px solid red");
+				error=true;
 				
 				}else{
-				txtResultado="Riesgo de malnutrición";
+				$(opcionesLowy[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceLowy+=parseInt($(opcionesLowy[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			switch(true) {
+				case (indiceLowy<=1):
+				txtResultado="Dependencia total";
+				circuloResultado="#CF0202";
+				break;
+				case (2<=indiceLowy && indiceLowy<=3):
+				txtResultado="Dependencia severa";
+				circuloResultado="#DC9705";
+				break;
+				case (4<=indiceLowy && indiceLowy<=5):
+				txtResultado="Dependencia moderada";
+				circuloResultado="#F9D700";
+				break;
+				case (6<=indiceLowy && indiceLowy<=7):
+				txtResultado="Dependencia ligera";
+				circuloResultado="#9EC709";
+				break;
+				case (indiceLowy==8):
+				txtResultado="Independiente";
+				circuloResultado="#82EE09";
+				break;         
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceLowy;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Lowy'," +
+				"'" + $.id + "'," +
+				"'" + indiceLowy + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");  
+			},errorDB,exitoTest); 
+		}
+	}		
+		
+	//PAGINA: Test Pfeiffer
+	function calculaEdad(fecha){
+		getFechaHora();
+		var txtEdad="";
+		var annoNacimiento = parseInt(fecha.substring(6, 11));
+		var edad=parseInt(anno)-annoNacimiento;
+		var edadPrevia=edad-1;
+		if(edadPrevia<=0){
+			txtEdad=edad+" años";
+			}else{
+			txtEdad=edadPrevia+"-"+edad+" años";
+		}
+		
+		
+		return  txtEdad;
+	}		
+	$(document).on('pagebeforeshow', '#page_inicioPfeiffer', cargarDatosPfeiffer);
+		
+	function cargarDatosPfeiffer(){
+		getFechaHora();
+		var edad;	
+		var txtPaciente;
+		$("#fechaActual").html('');
+		$("#diaActual").html('');
+		$("#user_ciudad").html('');
+		$("#user_telefono").html('');
+		$("#edadPaciente").html('');
+		$("#user_nacimiento").html('');
+		$("#presidenteActual").html('');
+		$("#presidenteAnterior").html('');
+		$("#calculoResta").html('');
+		$("#edadPaciente").html('');
+		db.transaction(function(tx){  
+			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[$.id],function(tx,rs){
+				var pacientePf=rs.rows.item(0);
+				
+				txtFechaPaciente="<strong>Fecha Nacimiento:</strong> " + formatearFecha(pacientePf.fechaNacimiento);
+				txtTelefonoPaciente="<strong>Telefono:</strong> " + pacientePf.telefono+"<br><strong>Direccion:</strong> " + pacientePf.direccion +","+pacientePf.cp+","+pacientePf.ciudad;
+				txtCiudadPaciente="<strong>Ciudad:</strong> " + pacientePf.ciudad;
+				txtEdadPaciente="<strong>Edad: </strong> "+ calculaEdad(formatearFecha(pacientePf.fechaNacimiento));
+				$("#user_nacimiento").append(txtFechaPaciente);
+				$("#user_telefono").append(txtTelefonoPaciente);
+				$("#user_ciudad").append(txtCiudadPaciente);
+				$("#edadPaciente").append(txtEdadPaciente);
+			});  
+		},errorDB,exitoDB); 
+		
+		$("#fechaActual").append('<strong>Fecha Actual: </strong> ' + dia + '-' + mes + '-' + anno);
+		$("#diaActual").append('<strong>Dia de la semana: </strong> ' + dia_semana );
+		
+		$("#presidenteActual").append('<strong>Presidente Actual: </strong> Mariano Rajoy Brey');
+		$("#presidenteAnterior").append('<strong>Presidente Anterior: </strong> José Luis Rodríguez Zapatero');
+		$("#calculoResta").append('<strong>Resta: </strong> 20 - 17 - 14 - 11 - 8 - 5 - 2 - 0');
+	}		
+		
+	function calculaPfeiffer(){
+		var indicePfeiffer=0;
+		var opcionesPfeiffer=["#opcion_dia",
+			"#opcion_dia_semana",
+			"#opcion_localizacion",
+			"#opcion_telefono",
+			"#opcion_edad",
+			"#opcion_fechaNacimiento",
+			"#opcion_presidente_actual",
+			"#opcion_presidente_anterior",
+			"#opcion_apellidos_madre",
+		"#opcion_resta"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesPfeiffer.length; opcion++) { 
+			if(typeof $(opcionesPfeiffer[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesPfeiffer[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesPfeiffer[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indicePfeiffer+=parseInt($(opcionesPfeiffer[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			
+			switch(true) {
+				case (indicePfeiffer<=2):
+				txtResultado="Normal";
+				circuloResultado="#82EE09";
+				
+				break;
+				case (3<=indicePfeiffer && indicePfeiffer<=4):
+				txtResultado="Leve deterioro cognitivo";
+				circuloResultado="#9EC709";
+				
+				break;
+				case (5<=indicePfeiffer && indicePfeiffer<=7):
+				txtResultado="Moderado deterioro cognitivo, patológico";
 				circuloResultado="#DC9705";
 				
-			}
-			guardarMNA();
-			$.mobile.changePage("resultado.html");
-			
-		}
-	}
-}
-function guardarMNA(){
-	var notasTest;
-	if($("#notas").val()==""){
-		notasTest="No se registrarón notas";
-		}else{
-		notasTest=$("#notas").val();
-	}
-	idPagina=$.mobile.activePage.attr('id');
-	
-	resultadoTest=indiceMNA;
-	db.transaction(function(tx){  
-		
-		tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest)"+
-		" VALUES('Evaluación Nutricional(MNA)'," +
-		"'" + $.id + "'," +
-		"'" + indiceMNA + "'," +
-		"'" + circuloResultado + "'," +
-		"'" + txtResultado + "'," +
-		"'" +  dia + "-" + mes + "-" + anno  + "'," +
-		"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-		"'" + notasTest + "');");  
-	},errorDB,exitoDB);
-}
-//PAGINA CONTACTO
-
-function abrirNavegadorContacto(){
-	 window.open(encodeURI('http://www3.ubu.es/ubunurse/#page_contact'), '_system', 'location=yes');
-	
-}
-//PAGINA GRAFICO
-$(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
-
-function crearGrafico(){
-	
-	db.transaction(function(tx){ 
-		
-		tx.executeSql("SELECT idPaciente,nombreTest FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
-			
-			
-			var test=rs.rows.item(0);		
-			pacienteResultadosAnteriores=test.idPaciente;
-			nombreTestResultadosAnteriores=test.nombreTest; 
-		}); 
-	},errorDB,buscarDatosGrafico);
-	
-	
-}
-
-function buscarDatosGrafico(){
-	fechasGrafico.length=0;
-	resultadosGrafico.length=0;
-	coloresGrafico.length=0;
-	db.transaction(function(tx){ 
-		
-		tx.executeSql("SELECT fechaTest,horaTest,resultadoTest,resultadoColorTest FROM Test WHERE (idPaciente=? AND nombreTest=?);",
-		[pacienteResultadosAnteriores,nombreTestResultadosAnteriores],function(tx,rs){
-			var fechaHoraGrafico;
-			
-			for(var i=0;i<rs.rows.length;i++){  
+				break;  
+				case (8<=indicePfeiffer && indicePfeiffer<=10):
+				txtResultado="Importante deterioro cognitivo.";
+				circuloResultado="#CF0202";
 				
-				var test=rs.rows.item(i);
-				var fechaHoraGrafico=test.fechaTest+" "+test.horaTest +"h";
-				fechasGrafico.push(fechaHoraGrafico);
-				resultadosGrafico.push(test.resultadoTest);
-				coloresGrafico.push(test.resultadoColorTest);
+				break;  		
 			}
+			idPagina=$.mobile.activePage.attr('id');
 			
-			
-			
-			
-		}); 
+			resultadoTest=indicePfeiffer;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Pfeiffer'," +
+				"'" + $.id + "'," +
+				"'" + indicePfeiffer + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");  
+			},errorDB,exitoTest); 
+		}
+	}		
+		
+	//PAGINA: Test Lobo
+	$(document).on('pagebeforeshow', '#page_inicioLobo', cargarDatosLobo);
+		
+	function cargarDatosLobo(){
+		getFechaHora();
+		$("#datosTemporal").html('');
+		$("#datosEspacial").html('');
+		$("#datosTemporal").append('<strong>Fecha Actual: </strong> ' + dia_semana+" " + dia + '-' + mes + '-' + anno);
+		db.transaction(function(tx){  
+			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[$.id],function(tx,rs){
+				var pacienteLobo=rs.rows.item(0);
+				var  txtDirPaciente="<strong>Direccion Paciente:</strong> " + pacienteLobo.direccion +","+pacienteLobo.cp+","+pacienteLobo.ciudad;
+				$("#datosEspacial").append(txtDirPaciente);
+			});  
+		},errorDB,exitoDB); 
 		
-	},errorDB,dibujarGrafico);
-	
-}
-
-function dibujarGrafico(){
-	
-	var ctx = document.getElementById("graficoResultados").getContext('2d');
-	
-	var data = {
-		labels: fechasGrafico ,
-		datasets: [
-			{
-				label: "Valor",
-				fill: true,
-				lineTension: 0.1,
-				backgroundColor: "rgba(75,192,192,0.4)",
-				borderColor: "rgba(75,192,192,1)",
-				borderCapStyle: 'butt',
-				borderDash: [],
-				borderDashOffset: 0.0,
-				borderJoinStyle: 'round',
-				pointBorderColor: "rgba(75,192,192,1)",
-				pointBackgroundColor: coloresGrafico,
-				pointBorderWidth: 1,
-				pointHoverRadius: 5,
-				pointHoverBackgroundColor: coloresGrafico,
-				pointHoverBorderColor: "#fff",
-				pointHoverBorderWidth: 2,
-				pointRadius: 10,
-				pointHitRadius: 10,
-				data: resultadosGrafico,
-				spanGaps: true,
+	}		
+	function calculaLobo(){
+		var indiceLobo=0;
+		var opcionesLobo=["#opcion_temporal",
+			"#opcion_espacial",
+			"#opcion_memoria",
+			"#opcion_calculo",
+			"#opcion_memoriaDiferida",
+			"#opcion_nominacion",
+			"#opcion_repeticion",
+			"#opcion_comprension",
+			"#opcion_lectura",
+			"#opcion_escritura",
+		"#opcion_dibujo"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesLobo.length; opcion++) { 
+			if(typeof $(opcionesLobo[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesLobo[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesLobo[opcion]).css("border","0px solid black");
 			}
-		]
-	};
-	var myLineChart = new Chart(ctx, {
-		type: 'line',
-		data: data,
-		options: {
-			scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero:true
-					}
-				}]
+			
+			
+			indiceLobo+=parseInt($(opcionesLobo[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			indiceLobo=Math.round(((indiceLobo*35)/30));  
+			switch(true) {
+				case (indiceLobo>=30):
+				txtResultado="Normal";
+				circuloResultado="#82EE09";
+				
+				break;
+				case (25<=indiceLobo && indiceLobo<30):
+				txtResultado="Ligero déficit cognitivo";
+				circuloResultado="#9EC709";
+				
+				break;
+				case (20<=indiceLobo && indiceLobo<=24):
+				txtResultado="Deterioro cognitivo leve";
+				circuloResultado="#DC9705";
+				
+				break;  
+				case (15<=indiceLobo && indiceLobo<=19):
+				txtResultado="Deterioro cognitivo moderado,existencia de una demencia.";
+				circuloResultado="#F96A00";
+				
+				break;  
+				case (0<=indiceLobo && indiceLobo<=14):
+				txtResultado="Grave deterioro cognitivo, existencia de una demencia avanzada.";
+				circuloResultado="#CF0202";
+				
+				break;  		
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceLobo;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Mini examen cognitivo(Lobo)'," +
+				"'" + $.id + "'," +
+				"'" + indiceLobo + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");  
+			},errorDB,exitoTest); 
+		}
+	}		
+	//PAGINA Test Yesavage
+	function calculaYesavage(){
+		var indiceYesavage=0;
+		var opcionesYesavage=["#opcion_vida",
+			"#opcion_abandoTareas",
+			"#opcion_vidaVacia",
+			"#opcion_aburrido",
+			"#opcion_humor",
+			"#opcion_malo",
+			"#opcion_feliz",
+			"#opcion_desamparado",
+			"#opcion_salir",
+			"#opcion_problemas",
+			"#opcion_vivo",
+			"#opcion_inutil",
+			"#opcion_esperanza",
+			"#opcion_energia",
+		"#opcion_gente"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesYesavage.length; opcion++) { 
+			if(typeof $(opcionesYesavage[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesYesavage[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesYesavage[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceYesavage+=parseInt($(opcionesYesavage[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			
+			switch(true) {
+				case (indiceYesavage<=5):
+				txtResultado="Normal";
+				circuloResultado="#82EE09";
+				
+				break;
+				case (6<=indiceYesavage && indiceYesavage<=9):
+				txtResultado="Probable depresión";
+				circuloResultado="#DC9705";
+				
+				break;
+				
+				case (9<indiceYesavage):
+				txtResultado="Depresión establecida";
+				circuloResultado="#CF0202";
+				
+				break;  		
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceYesavage;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Yesavage'," +
+				"'" + $.id + "'," +
+				"'" + indiceYesavage + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");    
+			},errorDB,exitoTest); 
+		}
+	}		
+	//PAGINA Test Gijon
+	function calculaGijon(){
+		var indiceGijon=0;
+		var opcionesGijon=["#opcion_familia",
+			"#opcion_economia",
+			"#opcion_vivienda",
+			"#opcion_relaciones",
+		"#opcion_apoyo"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesGijon.length; opcion++) { 
+			if(typeof $(opcionesGijon[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesGijon[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesGijon[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceGijon+=parseInt($(opcionesGijon[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			switch(true) {
+				case (indiceGijon<=9):
+				txtResultado="Buena/Aceptable situación social";
+				circuloResultado="#82EE09";
+				
+				break;
+				case (10<=indiceGijon && indiceGijon<=14):
+				txtResultado="Existe riesgo social";
+				circuloResultado="#DC9705";
+				
+				break;
+				
+				case (15<=indiceGijon):
+				txtResultado="Problema social";
+				circuloResultado="#CF0202";
+				
+				break;  		
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceGijon;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Gijon'," +
+				"'" + $.id + "'," +
+				"'" + indiceGijon + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");   
+			},errorDB,exitoTest); 
+		}
+	}		
+	//PAGINA Test Apgar
+	function calculaApgar(){
+		var indiceApgar=0;
+		var opcionesApgar=["#opcion_familia",
+			"#opcion_problemas",
+			"#opcion_decisiones",
+			"#opcion_tiempo",
+		"#opcion_amor"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesApgar.length; opcion++) { 
+			if(typeof $(opcionesApgar[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesApgar[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesApgar[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceApgar+=parseInt($(opcionesApgar[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			switch(true) {
+				case (indiceApgar<=2):
+				
+				txtResultado="Disfunción familiar grave";
+				circuloResultado="#CF0202";
+				break;
+				case (3<=indiceApgar && indiceApgar<=6):
+				
+				txtResultado="Disfunción familiar leve";
+				circuloResultado="#DC9705";
+				break;
+				
+				case (7<=indiceApgar):
+				
+				txtResultado="Función familiar normal";
+				circuloResultado="#82EE09";
+				break;  		
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceApgar;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Apgar'," +
+				"'" + $.id + "'," +
+				"'" + indiceApgar + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");    
+			},errorDB,exitoTest); 
+		}
+	}		
+	//PAGINA Test Apgar Neonatal
+	function calculaApgarNeo(){
+		var indiceApgarNeo=0;
+		var opcionesApgarNeo=["#opcion_corazon",
+			"#opcion_respiracion",
+			"#opcion_musculos",
+			"#opcion_estimulos",
+		"#opcion_color"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesApgarNeo.length; opcion++) { 
+			if(typeof $(opcionesApgarNeo[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesApgarNeo[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesApgarNeo[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceApgarNeo+=parseInt($(opcionesApgarNeo[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			switch(true) {
+				case (indiceApgarNeo<=3):
+				
+				txtResultado="Atención de emergencia.Repite el test si es el primer intento";
+				circuloResultado="#CF0202";
+				break;
+				case (4<=indiceApgarNeo && indiceApgarNeo<=7):
+				
+				txtResultado="No está respondiendo adecuadamente";
+				circuloResultado="#DC9705";
+				break;
+				
+				case (8<=indiceApgarNeo):
+				
+				txtResultado="Estado correcto";
+				circuloResultado="#82EE09";
+				break;  		
+			}
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceApgarNeo;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Apgar Neonatal'," +
+				"'" + $.id + "'," +
+				"'" + indiceApgarNeo + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");   
+			},errorDB,exitoTest); 
+		}
+	}		
+	//PAGINA Test Barber Medio Rural
+	function calculaBarberMR(){
+		var indiceBarberMR=0;
+		var opcionesBarberMR=["#opcion_vida",
+			"#opcion_ayuda",
+			"#opcion_necesidades",
+			"#opcion_comer",
+			"#opcion_salir",
+			"#opcion_salud",
+			"#opcion_vision",
+			"#opcion_oido",
+		"#opcion_hospital"];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesBarberMR.length; opcion++) { 
+			if(typeof $(opcionesBarberMR[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesBarberMR[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesBarberMR[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceBarberMR+=parseInt($(opcionesBarberMR[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			
+			if(1<=indiceBarberMR){
+				txtResultado="Sugiere riesgo de dependencia";
+				circuloResultado="#DC9705";
+				}else{
+				
+				txtResultado="No sugiere riesgo de dependencia";
+				circuloResultado="#82EE09";
+			}
+			
+			
+			
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceBarberMR;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Barber Medio Rural'," +
+				"'" + $.id + "'," +
+				"'" + indiceBarberMR + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");   
+			},errorDB,exitoTest); 
+		}
+	}		
+		
+	
+	//PAGINA TEST UPP BRADEN
+	function calculaBraden(){
+		var indiceBraden=0;
+		var opcionesBraden=["#opcion_sensorial",
+			"#opcion_humedad",
+			"#opcion_actividad",
+			"#opcion_movilidad",
+			"#opcion_nutricion",
+			"#opcion_friccion",
+		];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesBraden.length; opcion++) { 
+			if(typeof $(opcionesBraden[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesBraden[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesBraden[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceBraden+=parseInt($(opcionesBraden[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			switch(true) {
+				case (indiceBraden<=12):
+				
+				txtResultado="Riesgo alto";
+				circuloResultado="#CF0202";
+				break;
+				case (13<=indiceBraden && indiceBraden<=15):
+				
+				txtResultado="Riesgo medio";
+				circuloResultado="#DC9705";
+				break;
+				
+				case (16<=indiceBraden):
+				
+				txtResultado="Riesgo bajo";
+				circuloResultado="#82EE09";
+				break;  		
+			}
+			
+			
+			
+			
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceBraden;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Riesgo de UPP de Braden'," +
+				"'" + $.id + "'," +
+				"'" + indiceBraden + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");   
+			},errorDB,exitoTest); 
+		}
+	}		
+	//PAGINA TEST MONITORIZACION UPP 
+	function calculaUPP(){
+		var indiceUPP=0;
+		var opcionesUPP=["#opcion_longitud",
+			"#opcion_tejido",
+			"#opcion_exudado",
+		];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesUPP.length; opcion++) { 
+			if(typeof $(opcionesUPP[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesUPP[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesUPP[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceUPP+=parseInt($(opcionesUPP[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			txtResultado="Evaluacion de la UPP";
+			circuloResultado="#6ED0F2";
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceUPP;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Valoracion de la UPP'," +
+				"'" + $.id + "'," +
+				"'" + indiceUPP + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");   
+			},errorDB,exitoTest); 
+		}
+	}		
+	//PAGINA TEST CAIDAS MULTIPLES 
+	function calculaCaidasMultiples(){
+		var indiceCaida=0;
+		
+		var opcionesCaida=["#opcion_previas",
+			"#opcion_urinaria",
+			"#opcion_visual",
+			"#opcion_funcional"
+		];
+		
+		getFechaHora();
+		
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		for (opcion = 0; opcion < opcionesCaida.length; opcion++) { 
+			if(typeof $(opcionesCaida[opcion]).find("input:checked").val() == "undefined"){
+				$(opcionesCaida[opcion]).css("border","2px solid red");
+				error=true;
+				
+				}else{
+				$(opcionesCaida[opcion]).css("border","0px solid black");
+			}
+			
+			
+			indiceCaida+=parseInt($(opcionesCaida[opcion]).find("input:checked").val());
+		}
+		if(error){
+			
+			
+			error=false;
+			navigator.vibrate(325);
+			$("#infoFin").popup('close');
+			
+			}else{
+			
+			if(8<=indiceCaida){
+				txtResultado="Riesgo de caídas múltiples";
+				circuloResultado="#DC9705";
+				}else{
+				
+				txtResultado="Sin riesgo de caídas múltiples";
+				circuloResultado="#82EE09";
+			}		
+			
+			
+			
+			
+			
+			idPagina=$.mobile.activePage.attr('id');
+			
+			resultadoTest=indiceCaida;
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES('Riesgo de caida multiple'," +
+				"'" + $.id + "'," +
+				"'" + indiceCaida + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");    
+			},errorDB,exitoTest); 
+		}
+	}		
+		
+	//PAGINA TEST MNA
+	$(document).on('pagebeforeshow', '#page_inicioMNA', testInicialMNA);
+	function testInicialMNA(){
+		testMNA="cribaje";
+	}		
+	var indiceMNA=0;
+	function calculaMNA(){
+		
+		getFechaHora();
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		
+		if(testMNA=="cribaje"){
+			
+			var opcionesCribaje=["#opcion_apetito",
+				"#opcion_peso",
+				"#opcion_movilidad",
+				"#opcion_enfermedad",
+				"#opcion_neuro",
+				"#opcion_imc"
+			];	
+			
+			for (opcion = 0; opcion < opcionesCribaje.length; opcion++) {
+				
+				if(typeof $(opcionesCribaje[opcion]).find("input:checked").val() == "undefined"){
+					
+					$(opcionesCribaje[opcion]).css("border","2px solid red");
+					error=true;
+					
+					}else{
+					$(opcionesCribaje[opcion]).css("border","0px solid black");
+					indiceMNA+=parseInt($(opcionesCribaje[opcion]).find("input:checked").val());
+				}
+				
+				
+			}
+			if(error){
+				
+				
+				error=false;
+				navigator.vibrate(325);
+				$("#infoFin").popup('close');
+				
+				}else{
+				
+				if(11<=indiceMNA){
+					txtResultado="Estado nutricional normal";
+					circuloResultado="#82EE09";
+					guardarMNA();
+					$.mobile.changePage("resultado.html");
+					}else{
+					document.getElementById("cribaje").style.display = 'none';
+					document.getElementById("evaluacion").style.display = 'block';
+					testMNA="evaluacion";
+					$.mobile.changePage("#page_inicioMNA");
+				}					
+				
+			}
+			}else{
+			var opcionesEvaluacion=["#opcion_vivir",
+				"#opcion_medicacion",
+				"#opcion_ulceras",
+				"#opcion_comida",
+				"#opcion_consumicion",
+				"#opcion_frutas",
+				"#opcion_agua",
+				"#opcion_alimentacion",
+				"#opcion_nutricion",
+				"#opcion_salud",
+				"#opcion_branquio",
+				"#opcion_pantorrilla"
+			];	
+			
+			for (opcion = 0; opcion < opcionesEvaluacion.length; opcion++) {
+				
+				if(typeof $(opcionesEvaluacion[opcion]).find("input:checked").val() == "undefined"){
+					
+					$(opcionesEvaluacion[opcion]).css("border","2px solid red");
+					error=true;
+					
+					}else{
+					$(opcionesEvaluacion[opcion]).css("border","0px solid black");
+					indiceMNA+=parseInt($(opcionesEvaluacion[opcion]).find("input:checked").val());
+				}
+				
+				
+			}
+			
+			if(error){
+				
+				
+				error=false;
+				navigator.vibrate(325);
+				$("#infoFin").popup('close');
+				
+				}else{
+				
+				if(indiceMNA<=16){
+					txtResultado="Malnutrición";
+					circuloResultado="#CF0202";
+					
+					
+					}else{
+					txtResultado="Riesgo de malnutrición";
+					circuloResultado="#DC9705";
+					
+				}
+				guardarMNA();
+				$.mobile.changePage("resultado.html");
+				
 			}
 		}
-	});
-	
-}
-/*function checkConnection() { 
-    var networkState = navigator.connection.type; 
-	
-    var states = {}; 
-    states[Connection.UNKNOWN]  = 'Unknown connection'; 
-    states[Connection.ETHERNET] = 'Ethernet connection'; 
-    states[Connection.WIFI]     = 'WiFi connection'; 
-    states[Connection.CELL_2G]  = 'Cell 2G connectijqueon'; 
-    states[Connection.CELL_3G]  = 'Cell 3G connection'; 
-    states[Connection.CELL_4G]  = 'Cell 4G connection'; 
-    states[Connection.NONE]     = 'No network connection'; 
-    if(Connection.NONE){
-	$.mobile.changePage("#page_sin");
+	}		
+	function guardarMNA(){
+		var notasTest;
+		if($("#notas").val()==""){
+			notasTest="No se registrarón notas";
+			}else{
+			notasTest=$("#notas").val();
+		}
+		idPagina=$.mobile.activePage.attr('id');
+		
+		resultadoTest=indiceMNA;
+		db.transaction(function(tx){  
+			
+			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+			" VALUES('Evaluación Nutricional(MNA)'," +
+			"'" + $.id + "'," +
+			"'" + indiceMNA + "'," +
+			"'" + circuloResultado + "'," +
+			"'" + txtResultado + "'," +
+			"'" +  dia + "-" + mes + "-" + anno  + "'," +
+			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+			"'" + notasTest + "'," + 
+			"'" + nombre_usuario + "');");  
+		},errorDB,exitoDB);
+	}		
+	//PAGINA CONTACTO
+		
+	function abrirNavegadorContacto(){
+		window.open(encodeURI('http://www3.ubu.es/ubunurse/#page_contact'), '_system', 'location=yes');
+		
+	}		
+	//PAGINA GRAFICO
+	$(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
+		
+	function crearGrafico(){
+		
+		db.transaction(function(tx){ 
+			
+			tx.executeSql("SELECT idPaciente,nombreTest FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
+				
+				
+				var test=rs.rows.item(0);		
+				pacienteResultadosAnteriores=test.idPaciente;
+				nombreTestResultadosAnteriores=test.nombreTest; 
+			}); 
+		},errorDB,buscarDatosGrafico);
+		
+		
+	}		
+		
+	function buscarDatosGrafico(){
+		fechasGrafico.length=0;
+		resultadosGrafico.length=0;
+		coloresGrafico.length=0;
+		db.transaction(function(tx){ 
+			
+			tx.executeSql("SELECT fechaTest,horaTest,resultadoTest,resultadoColorTest FROM Test WHERE (idPaciente=? AND nombreTest=? AND usuarioID=?);",
+			[pacienteResultadosAnteriores,nombreTestResultadosAnteriores,nombre_usuario],function(tx,rs){
+				var fechaHoraGrafico;
+				
+				for(var i=0;i<rs.rows.length;i++){  
+					
+					var test=rs.rows.item(i);
+					var fechaHoraGrafico=test.fechaTest+" "+test.horaTest +"h";
+					fechasGrafico.push(fechaHoraGrafico);
+					resultadosGrafico.push(test.resultadoTest);
+					coloresGrafico.push(test.resultadoColorTest);
+				}
+				
+				
+				
+				
+			}); 
+			
+		},errorDB,dibujarGrafico);
+		
+	}		
+		
+	function dibujarGrafico(){
+		
+		var ctx = document.getElementById("graficoResultados").getContext('2d');
+		
+		var data = {
+			labels: fechasGrafico ,
+			datasets: [
+				{
+					label: "Valor",
+					fill: true,
+					lineTension: 0.1,
+					backgroundColor: "rgba(75,192,192,0.4)",
+					borderColor: "rgba(75,192,192,1)",
+					borderCapStyle: 'butt',
+					borderDash: [],
+					borderDashOffset: 0.0,
+					borderJoinStyle: 'round',
+					pointBorderColor: "rgba(75,192,192,1)",
+					pointBackgroundColor: coloresGrafico,
+					pointBorderWidth: 1,
+					pointHoverRadius: 5,
+					pointHoverBackgroundColor: coloresGrafico,
+					pointHoverBorderColor: "#fff",
+					pointHoverBorderWidth: 2,
+					pointRadius: 10,
+					pointHitRadius: 10,
+					data: resultadosGrafico,
+					spanGaps: true,
+				}
+			]
+		};
+		var myLineChart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero:true
+						}
+					}]
+				}
+			}
+		});
+		
 	}
-    //alert('Connection type: ' + states[networkState]); 
-	} 
-	/*
-//PAGINA AYUDA
-$(document).on('pagebeforeshow', '#page_initTest', mostrarVideoAyuda);
-
-function mostrarVideoAyuda(){
-	
-}
-	
-	
-*/
+		

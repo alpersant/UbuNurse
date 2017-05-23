@@ -26,6 +26,8 @@
 			<div data-role="header" data-theme="a">
 				<h1>UbuNurse</h1>
 				<a href="#page_help" data-role="button" data-icon="info" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
+				<a href="#page_registro" data-role="button" data-theme="a" data-inline="true">Registrate</a>
+			
 			</div>
 			<!-- /content -->
 			<div data-role="content" data-theme="a" id="contenidoPrincipal">
@@ -43,6 +45,63 @@
 			<!-- /footer-->
 			<div data-role="footer" data-position="fixed" >
 				<h4>Copyright@2017 <a onclick="abrirNavegadorContacto()" data-role="link">Contacto</a> </h4>
+			</div>
+		</div>
+		<div data-role="page" id="page_registro" data-theme="a" data-url="page_registro">
+			<!-- /header --> 
+			<div data-role="header" data-theme="a">
+			<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a> 
+			<h1>Registro en UbuNurse</h1>
+			<a href="#page_help" data-role="button" data-icon="info" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
+				
+			</div>
+			<!-- /content -->
+			<div data-role="content" data-theme="a" id="contenidoPrincipal">
+				
+				<form id="formulario" >
+					<input type="text" id="registro_nombre" name="registro_nombre" value="" placeholder="Nombre.."><br>
+					<input type="text" id="registro_apellidos" name="registro_apellidos" value="" placeholder="Apellidos.."><br>
+					<input type="text" id="registro_usuario" name="registro_usuario" value="" placeholder="Usuario.."><br>
+					<input type="password" id="registro_password" name="registro_password" value="" placeholder="Contraseña..."><br>
+					<input type="password" id="registro_password_validate" name="registro_password_validate" value="" placeholder="Repita la contraseña..."><br>
+					
+				</form>	
+				<!--href="#page_inicio"-->
+				<p align="center">
+				<a id="eliminarUsuario" href="#page_eliminarUsuario" data-rel="popup" data-role="button" data-icon="delete" data-iconpos="left"data-inline="true">Eliminar</a>
+				<a onClick="registrarUsuario()"  data-role="button" data-icon="action" data-iconpos="left" data-inline="true">Guardar</a>
+				</p>	
+			</div>
+			<!-- /footer-->
+			<div data-role="footer" data-position="fixed" >
+				<h4>Copyright@2017 <a onclick="abrirNavegadorContacto()" data-role="link">Contacto</a> </h4>
+			</div>
+				<div data-role="popup" id="page_eliminarUsuario" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+				<h3><strong>¿Estas seguro que deseas eliminar?</strong></h3>
+				<p align="center">
+					<a href="#" data-role="button" data-rel="back" data-icon="delete" data-iconpos="left" data-inline="true">Cancelar</a>
+					<a href="#page_login" onClick="deleteUsuario()"data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+					
+				</p>
+				
+			</div>
+			<div data-role="popup" id="page_registro_popup" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+				<h3><strong>Datos guardados correctamente</strong></h3>
+				<p align="center">
+					<a onclick="cerrarPopupRegistro()" data-role="button" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+					
+					
+				</p>
+				
+			</div>
+			<div data-role="popup" id="page_registro_popupError" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+				<h3><strong>Nombre de usuario ya existe</strong></h3>
+				<p align="center">
+					<a href="#" data-role="button" data-rel="back" data-icon="check" data-iconpos="left" data-inline="true">Aceptar</a>
+					
+					
+				</p>
+				
 			</div>
 		</div>
 		<div data-role="page" id="page_inicio" data-theme="a" data-url="page_inicio">
@@ -121,6 +180,7 @@
 					</div>
 					
 				</div>
+				<a href="#page_registro" data-role="button"  data-icon="edit" data-iconpos="left" data-transition="slidefade" >Editar perfil</a>
 				<a href="#page_help" data-role="button"  data-icon="info" data-iconpos="left" data-transition="slidefade" >Ayuda</a>
 				<a href="#page_logout" data-rel="popup" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="left" data-transition="slide">Cerrar sesión</a>
 				
@@ -145,7 +205,7 @@
 		<!--Página inicio Test: Paciente-->
 		<div data-role="page" id="page_initTest" data-theme="a">
 			<div data-role="header">
-				<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+				<a href="#" data-role="button" onclick="onBackKeyDown()" data-icon="back" data-iconpos="notext">Atrás</a>
 				
 				<h1>PACIENTE</h1>
 			</div>
@@ -681,6 +741,48 @@
 														</div>
 														<div data-role="content">
 															<div data-role="collapsible-set" data-filter="true" data-filter-placeholder="Bucar..">
+															<div data-role="collapsible">
+																	<h3>Registrarse en la aplicación</h3>
+																	<p>
+																		Para poder usar la aplicación deberemos estar registrados como usuarios de la misma.
+																		<br>
+																		<br>
+																		Para registrarnos en la aplicación:
+																	</p>
+																	<ol>
+																		
+																		<li>Presionamos sobre el botón "Registrate" en la parte superior derecha de la pantalla inicial.</li>
+																		<li>Rellenamos todos los campos. Los campos del nombre, del usuario y de la contraseña son obligatorios.</li>
+																		<li>Deberemos escribir la contraseña dos veces.</li>
+																		<li>Una vez rellenados los campos pulsaremos sobre el botón "Guardar".</li>
+																	</ol>
+																</div>
+																<div data-role="collapsible">
+																	<h3>Editar o eliminar la cuenta de usuario.</h3>
+																	<p>
+																		
+																		Para <strong>editar</strong> la cuenta:
+																	</p>
+																	<ol>
+																		
+																		<li>Presionamos sobre botón con el icono de engranaje en la parte superior izquierda de la ventana principal. </li>
+																		<li>Pulsaremos sobre el boton "Editar perfil".</li>
+																		<li>Cambiamos o borramos los campos que queramos modificar.</li>
+																		<li>Pulsamos sobre el botón "Guardar" para guardar los cambios.</li>
+																		
+																		
+																	</ol>
+																	<p>
+																		
+																		Para <strong>eliminar</strong> un usuario:
+																	</p>
+																	<ul>
+																		
+																		
+																		<li>Pulsamos sobre el botón eliminar si directamente queremos eliminar el usuario.</li>
+																		
+																	</ul>
+																</div>
 																<div data-role="collapsible">
 																	<h3>Añadir un paciente</h3>
 																	<p>
@@ -693,7 +795,7 @@
 																		
 																		<li>Presionamos sobre el icono de la silueta humana con un más: <img src="images/add-user.png" width="30" height="30"/> </li>
 																		<li>Rellenamos todos los campos, solo es obligatorio el CIP o identificador de paciente.</li>
-																		<li>Pulsaremos sobre el botón guardar.</li>
+																		<li>Pulsaremos sobre el botón "Guardar".</li>
 																	</ol>
 																</div>
 																<div data-role="collapsible" data-collapsed="true">
@@ -706,7 +808,7 @@
 																		
 																		<li>Presionamos sobre botón con el icono de edición que se encuentra junto a los datos del paciente. </li>
 																		<li>Cambiamos o borramos los campos que queramos modificar.</li>
-																		<li>Pulsamos sobre el botón guardar para guardar los cambios.</li>
+																		<li>Pulsamos sobre el botón "Guardar" para guardar los cambios.</li>
 																		
 																		
 																	</ol>
@@ -837,12 +939,12 @@
 															<input type="text" name="asunto" id="asunto" value="" placeholder="Asunto"  />
 															</div>
 															<div data-role="fieldcontain">
-														<textarea cols="40" rows="8" name="mensaje" id="mensaje" placeholder="Este es el cuerpo del mensaje..."></textarea>
-														</div>
-														<button id="btn_enviar_mail" >Enviar</button>
-														</div>
-														
-													</div> --> 
-												</body>
-												
-											</html>																																																																																																														
+															<textarea cols="40" rows="8" name="mensaje" id="mensaje" placeholder="Este es el cuerpo del mensaje..."></textarea>
+															</div>
+															<button id="btn_enviar_mail" >Enviar</button>
+															</div>
+															
+														</div> --> 
+													</body>
+													
+												</html>																																																																																																																										

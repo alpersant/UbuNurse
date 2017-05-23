@@ -9,6 +9,7 @@
     <name>UbuNurse		</name>
     <description>Una aplicacion para mejorar la asistencia domiciliaria.		</description>
     <author email="ubunurseapp@gmail.com" href="http://www3.ubu.es/ubunurse">Álvaro Pérez Santamaría</author>
+    <icon src="icon.png" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
