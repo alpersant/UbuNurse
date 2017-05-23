@@ -13,6 +13,7 @@
 var db;
 /**/
 var nombre_usuario;
+
 /**/
 var resultadoTest=0;
 /**/
@@ -91,7 +92,20 @@ var app = {
 	*
 	*
 ***************************/
-
+function vaciarBD() {
+	alert("vaciarBD");
+    db.transaction(function(tx) {
+        tx.executeSql("DROP TABLE Usuarios;");
+		tx.executeSql("DROP TABLE Test;");
+		tx.executeSql("DROP TABLE Pacientes;");		
+		
+		}, function(error) {
+        alert('Transaction DROP ERROR: ' + error.message);
+		}, function() {
+		
+        alert('DROP database OK');
+	});
+}
 function openBD(){
 	
 	if(typeof db== "undefined"){
@@ -135,7 +149,7 @@ function continuarDB(){
 		$.mobile.changePage("#page_inicio");
 		}else{
 		db.transaction(function(tx){
-			tx.executeSql("CREATE TABLE IF NOT EXISTS Pacientes(cip varchar(230) not null primary key," +
+			tx.executeSql("CREATE TABLE IF NOT EXISTS Pacientes(cip varchar(230) not null," +
 			"nombre varchar(100)," +
 			"apellidos varchar(100)," +
 			"fechaNacimiento varchar(100)," +
@@ -144,6 +158,7 @@ function continuarDB(){
 			"cp number," +
 			"telefono number,"+
 			"usuarioID varchar(254)," +
+			"CONSTRAINT PK_Paciente PRIMARY KEY (cip,usuarioID)," +
 			"FOREIGN KEY (usuarioID) REFERENCES Usuarios(usuario));");
 			
 			tx.executeSql("CREATE TABLE IF NOT EXISTS Test(idTest integer not null primary key autoincrement," +
@@ -273,7 +288,7 @@ function formatearFecha(fecha){
 /*
 	* PAGINA REGISTRO: Funciones de registro y carga de valores
 */
-var editar_usuario=false;
+
 $(document).on('pagebeforeshow', '#page_registro', cargarDetallesUsuario);
 function cargarDetallesUsuario(){
 	
@@ -301,7 +316,7 @@ function cargarDetallesUsuario(){
 			document.getElementById("registro_apellidos").value=usuario.apellidos;
 			document.getElementById("registro_password").value=usuario.password;
 			document.getElementById("registro_password_validate").value=usuario.password;
-	        editar_usuario=true;
+	       
 			
 			
 		});  
@@ -318,7 +333,7 @@ function registrarUsuario(){
 	if($("#registro_password").val()==$("#registro_password_validate").val() && $("#registro_usuario").val()!="" &&
 	   $("#registro_password").val()!="" && $("#registro_nombre").val()!=""){
 		  db.transaction(function(tx){
-			nombre_usuario=$("#registro_usuario").val();			
+					
 			tx.executeSql("SELECT * FROM Usuarios WHERE usuario=?;",[nombre_usuario],function(tx,rs){	
 
 				if(rs.rows.length==0){
@@ -326,7 +341,7 @@ function registrarUsuario(){
 				    continuarRegistro();
 					}else{
 					  
-					  errorRegistro(editar_usuario);
+					  errorRegistro(true);
 					  
 					}
 			});
@@ -360,37 +375,38 @@ function continuarRegistro(){
 			"'"+$("#registro_nombre").val()+ "'," +
 			"'"+$("#registro_apellidos").val()+ "'," +
 			"'false');");  
-		},errorDB,exitoRegistro);
+		},function(){errorRegistro(false);},exitoRegistro);
 		
 		
 }
 function exitoRegistro(){
-	
-	//window.alert("ok regstro");
-	
+
 	$("#page_registro_popup").popup('open');
 }
 
 function errorRegistro(accion){
 	if(accion){
-		editar_usuario=false;
 		
 		db.transaction(function(tx){  
 		tx.executeSql("UPDATE Usuarios" + 
 		" SET usuario=?,password=?,nombre=?,apellidos=? WHERE usuario=? ;",
 		[$("#registro_usuario").val(),$("#registro_password").val(),
 		$("#registro_nombre").val(),$("#registro_apellidos").val(),nombre_usuario]);  
-	},errorDB,continuarEdicion);
+	},function(){errorRegistro(false);},continuarEdicion);
 
 		}else{
 		
 		$("#registro_usuario").css("border", "2px solid red");
+		$("#registro_password").css("border", "0px solid red");
+		$("#registro_password_validate").css("border", "0px solid red");
+		$("#registro_nombre").css("border", "0px solid red");
 	$("#page_registro_popupError").popup('open');
 		}
 	
 	
 }
 function continuarEdicion(){
+	
 	if(nombre_usuario!=$("#registro_usuario").val()){
 		    
 		   
@@ -654,8 +670,9 @@ function guardarPaciente(){
 		db.transaction(function(tx){ 
 			
 			
-			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?",[$.id],function(tx,rs){
+			tx.executeSql("SELECT * FROM Pacientes WHERE cip=? AND usuarioID=?",[$.id,nombre_usuario],function(tx,rs){
 				if(rs.rows.length==0){
+				  
 					insertPaciente();
 					}else{
 					updatePaciente();
@@ -667,12 +684,17 @@ function guardarPaciente(){
 		}else{
 		$("#detalle_cip").css("border", "2px solid red");
 		navigator.vibrate(325);
+		
 	}
 	
 	
 	
 }		
-
+function errorPacienteDuplicado(){
+	$("#detalle_cip").css("border", "2px solid red");
+	navigator.vibrate(325);
+	$("#page_paciente_popupError").popup('open');
+}
 function insertPaciente(){
 	
 	db.transaction(function(tx){  
@@ -686,9 +708,9 @@ function insertPaciente(){
 		+ $("#detalle_cp").val() + "," +
 		+ $("#detalle_telefono").val() + "," +
 		"'" + nombre_usuario + "');");  
-	},errorDB,exitoDB);
+	},errorPacienteDuplicado,function(){navigator.app.backHistory();});
 	$.id="";
-	navigator.app.backHistory ();	
+		
 }		
 function updatePaciente(){
 	
@@ -698,14 +720,14 @@ function updatePaciente(){
 		[$("#detalle_cip").val(),$("#detalle_nombre").val(),$("#detalle_apellidos").val(),
 			document.getElementById("detalle_fechaNacimiento").value,$("#detalle_direccion").val(),$("#detalle_ciudad").val(),
 		$("#detalle_cp").val(),$("#detalle_telefono").val(),$.id]);  
-	},errorDB,continuarEdicionPaciente);
+	},errorPacienteDuplicado,continuarEdicionPaciente);
 	
 }		
 function continuarEdicionPaciente(){
-	alert("ID: " + $.id + "\nCasillaID: " +$("#detalle_cip").val() );
+	
 	if($.id!=$("#detalle_cip").val()){
 		db.transaction(function(tx){ 
-		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$.id+"';"); 
+		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$.id+"' AND usuarioID='"+nombre_usuario+"';"); 
 		
 			},errorDB,function(){$.id="";});
 			
@@ -719,9 +741,9 @@ function deletePaciente(){
 	
 	
 	db.transaction(function(tx){ 
-		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$("#detalle_cip").val()+"';"); 
+		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$("#detalle_cip").val()+"' AND usuarioID='"+nombre_usuario+"';"); 
 		
-	},errorDB,exitoDB);
+	},function(){alert("Error update:" + $("#detalle_cip").val());},exitoDB);
 	$.id="";
 	
 	
