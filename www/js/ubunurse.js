@@ -84,7 +84,6 @@ var app = {
 /*
 	* Carga de BBDD y funciones generales
 */
-
 /************************
 	*
 	*
@@ -92,12 +91,52 @@ var app = {
 	*
 	*
 ***************************/
+
+function checkConexion() { 
+    var tipoConexion = navigator.connection.type; 
+    
+    var conexiones = {}; 
+    conexiones[Connection.UNKNOWN]  = false; //Sin conexiones
+    conexiones[Connection.ETHERNET] = true;//Ethernet
+    conexiones[Connection.WIFI]     = true; //WiFi
+    conexiones[Connection.CELL_2G]  = true;//2G
+    conexiones[Connection.CELL_3G]  = true;//3G
+    conexiones[Connection.CELL_4G]  = true;//4G
+    conexiones[Connection.NONE]     = false;//Sin conexiones
+	
+	return conexiones[tipoConexion];
+	
+}
+/************************
+	*
+	*
+	*
+	*
+	*
+***************************/
+function verAcciones(){
+	db.transaction(function(tx){  
+		tx.executeSql("SELECT * FROM Acciones",[],function(tx,rs){
+			
+			if (rs.rows.length>0){
+				for(var i=0;i<rs.rows.length;i++){  
+					var act=rs.rows.item(i);
+					alert("Accion: " + act.accion + "\nDatos: "+act.datos+"\n");
+					//guardarBD(act.accion,act.datos);
+				}
+			}
+		}				
+		
+		);	
+	},errorDB,exitoDB);
+}
 function vaciarBD() {
 	alert("vaciarBD");
     db.transaction(function(tx) {
         tx.executeSql("DROP TABLE Usuarios;");
 		tx.executeSql("DROP TABLE Test;");
-		tx.executeSql("DROP TABLE Pacientes;");		
+		tx.executeSql("DROP TABLE Pacientes;");	
+		tx.executeSql("DROP TABLE Acciones;");		
 		
 		}, function(error) {
         alert('Transaction DROP ERROR: ' + error.message);
@@ -155,25 +194,29 @@ function continuarDB(){
 			"fechaNacimiento varchar(100)," +
 			"direccion varchar(200)," +
 			"ciudad varchar(100)," +
-			"cp number," +
-			"telefono number,"+
+			"cp integer," +
+			"telefono integer,"+
 			"usuarioID varchar(254)," +
 			"CONSTRAINT PK_Paciente PRIMARY KEY (cip,usuarioID)," +
 			"FOREIGN KEY (usuarioID) REFERENCES Usuarios(usuario));");
 			
 			tx.executeSql("CREATE TABLE IF NOT EXISTS Test(idTest integer not null primary key autoincrement," +
-			"nombreTest char(40)," +
+			"nombreTest varchar(40)," +
 			"idPaciente varchar(230)," +
 			"resultadoTest varchar(200)," +
 			"resultadoColorTest varchar(200)," +
 			"descripcionResultadoTest varchar(200)," +
 			"fechaTest varchar(100)," +
 			"horaTest varchar(100)," +
-			"notasTest varchar(230)," +
-			"actuacionesTest varchar(230)," +
-			"usuarioID varchar(2540)," +
+			"notasTest text," +
+			"actuacionesTest text," +
+			"usuarioID varchar(254)," +
 			"FOREIGN KEY (usuarioID) REFERENCES Usuarios(usuario)," +
 			"FOREIGN KEY (idPaciente) REFERENCES Pacientes(cip));");
+			
+			tx.executeSql("CREATE TABLE IF NOT EXISTS Acciones(idAccion integer not null primary key autoincrement," +
+			"accion varchar(150)," +
+			"datos text);");
 			
 			
 		},errorDB,exitoDB);
@@ -200,7 +243,23 @@ function exitoDB(){
 	*
 	*
 ***************************/	
-function exitoTest(){
+function exitoTest(dataString){
+	alert("dataStrinTest:\n" + dataString );
+	var redConnection = checkConexion();
+	if(redConnection){
+		
+		
+		guardarBD("insert",dataString);
+		
+		} else{
+		//aqui sin conexiones
+		db.transaction(function(tx){  
+			tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+			"'insert'," +
+			"'"+dataString+ "');");  
+		},errorDB,exitoDB);
+		
+	}
 	$.mobile.changePage("resultado.html");
 }
 
@@ -232,6 +291,7 @@ function errorinsertDB(){
 	*
 ***************************/
 function onBackKeyDown() {
+	copiaSeguridad();
 	
 	if($.mobile.activePage.attr('id') == 'page_inicio' || $.mobile.activePage.attr('id') == 'page_login'){ 
 		navigator.app.exitApp();  
@@ -241,8 +301,46 @@ function onBackKeyDown() {
 		} else {
 		navigator.app.backHistory();
 	}	
-}		
-/************************
+}
+function copiaSeguridad(){
+	var redConnection = checkConexion();
+	if(redConnection){
+		
+		db.transaction(function(tx){  
+			tx.executeSql("SELECT * FROM Acciones",[],function(tx,rs){
+				
+				if (rs.rows.length>0){
+					for(var i=0;i<rs.rows.length;i++){  
+				        var act=rs.rows.item(i);
+						//alert("Accion: " + act.accion + "\nTabla: " +act.tabla +"\nDatos: "+act.datos+"\n");
+						guardarBD(act.accion,act.datos);
+					}
+				}
+			}				
+			
+			);	
+		},errorDB,exitoDB); 
+		
+		
+	}
+}
+function guardarBD(accion,datos){
+	
+	$.ajax({
+		type: "POST",
+		url: "http://www3.ubu.es/ubunurse/crudBD/"+accion+".php",
+		data: datos,
+		crossDomain: true,
+		cache: false,
+		beforeSend: function() {
+			
+		},
+		success: function() {
+			
+		}
+	});
+	
+}/************************
 	*
 	*
 	*
@@ -299,88 +397,112 @@ function cargarDetallesUsuario(){
 	$("#registro_nombre").css("border", "0px solid red");
 	if (typeof nombre_usuario=="undefined" || nombre_usuario==""){
 	    
-			document.getElementById("registro_usuario").value="";
-			document.getElementById("registro_nombre").value="";
-			document.getElementById("registro_apellidos").value="";
-			document.getElementById("registro_password").value="";
-			document.getElementById("registro_password_validate").value="";
-		 
+		document.getElementById("registro_usuario").value="";
+		document.getElementById("registro_nombre").value="";
+		document.getElementById("registro_apellidos").value="";
+		document.getElementById("registro_password").value="";
+		document.getElementById("registro_password_validate").value="";
+		
 		}else{
-		  db.transaction(function(tx){  
-		tx.executeSql("SELECT * FROM Usuarios WHERE usuario=?;",[nombre_usuario],function(tx,rs){
-			
-			document.getElementById("eliminarUsuario").style.display = 'inline';
-			var usuario=rs.rows.item(0);
-			document.getElementById("registro_usuario").value=nombre_usuario;
-			document.getElementById("registro_nombre").value=usuario.nombre;
-			document.getElementById("registro_apellidos").value=usuario.apellidos;
-			document.getElementById("registro_password").value=usuario.password;
-			document.getElementById("registro_password_validate").value=usuario.password;
-	       
-			
-			
-		});  
-	},errorDB,exitoDB); 
-		}
+		db.transaction(function(tx){  
+			tx.executeSql("SELECT * FROM Usuarios WHERE usuario=?;",[nombre_usuario],function(tx,rs){
+				
+				document.getElementById("eliminarUsuario").style.display = 'inline';
+				var usuario=rs.rows.item(0);
+				document.getElementById("registro_usuario").value=nombre_usuario;
+				document.getElementById("registro_nombre").value=usuario.nombre;
+				document.getElementById("registro_apellidos").value=usuario.apellidos;
+				document.getElementById("registro_password").value=usuario.password;
+				document.getElementById("registro_password_validate").value=usuario.password;
+				
+				
+				
+			});  
+		},errorDB,exitoDB); 
+	}
 	
 	
 	
 	
 }		
-		
+
 
 function registrarUsuario(){
 	if($("#registro_password").val()==$("#registro_password_validate").val() && $("#registro_usuario").val()!="" &&
-	   $("#registro_password").val()!="" && $("#registro_nombre").val()!=""){
-		  db.transaction(function(tx){
-					
+	$("#registro_password").val()!="" && $("#registro_nombre").val()!=""){
+		db.transaction(function(tx){
+			
 			tx.executeSql("SELECT * FROM Usuarios WHERE usuario=?;",[nombre_usuario],function(tx,rs){	
-
+				
 				if(rs.rows.length==0){
-
+					
 				    continuarRegistro();
 					}else{
-					  
-					  errorRegistro(true);
-					  
-					}
+					
+					errorRegistro(true);
+					
+				}
 			});
 		},errorDB,exitoDB);
 		
 		}else{
-		  navigator.vibrate(325);
-		 if($("#registro_usuario").val()==""){
-			 $("#registro_usuario").css("border", "2px solid red");
-			 
-			 }
-		  if($("#registro_password").val()=="" || $("#registro_password").val()!=$("#registro_password_validate").val()){
-			  $("#registro_password").css("border", "2px solid red");
-			  $("#registro_password_validate").css("border", "2px solid red");
-			  }
-		  if($("#registro_nombre").val()==""){
-			  $("#registro_nombre").css("border", "2px solid red");
-			  }
-	   }
-
+		navigator.vibrate(325);
+		if($("#registro_usuario").val()==""){
+			$("#registro_usuario").css("border", "2px solid red");
+			
+		}
+		if($("#registro_password").val()=="" || $("#registro_password").val()!=$("#registro_password_validate").val()){
+			$("#registro_password").css("border", "2px solid red");
+			$("#registro_password_validate").css("border", "2px solid red");
+		}
+		if($("#registro_nombre").val()==""){
+			$("#registro_nombre").css("border", "2px solid red");
+		}
+	}
+	
 	
 	
 	
 }
 function continuarRegistro(){
-	    
-  		db.transaction(function(tx){  
-			tx.executeSql("INSERT INTO Usuarios(usuario,password,nombre,apellidos,loggeado) VALUES("+
-			"'"+$("#registro_usuario").val()+"'," +
-			"'"+$("#registro_password").val()+"'," +
-			"'"+$("#registro_nombre").val()+ "'," +
-			"'"+$("#registro_apellidos").val()+ "'," +
-			"'false');");  
-		},function(){errorRegistro(false);},exitoRegistro);
-		
-		
+	
+	db.transaction(function(tx){  
+		tx.executeSql("INSERT INTO Usuarios(usuario,password,nombre,apellidos,loggeado) VALUES("+
+		"'"+$("#registro_usuario").val()+"'," +
+		"'"+$("#registro_password").val()+"'," +
+		"'"+$("#registro_nombre").val()+ "'," +
+		"'"+$("#registro_apellidos").val()+ "'," +
+		"'false');");  
+	},function(){errorRegistro(false);},exitoRegistro);
+	
+	
 }
-function exitoRegistro(){
 
+function exitoRegistro(){
+	var redConnection = checkConexion();
+	var usuario = $("#registro_usuario").val();
+	var password = $("#registro_password").val(); 
+	var nombre = $("#registro_nombre").val();
+	var apellido = $("#registro_apellidos").val();
+	var logiado = "false";
+	var dataString = "usuario=" + usuario + "&password=" + password + "&nombre=" + nombre +
+	"&apellidos=" + apellido + "&loggeado=" + logiado + "&registroUsuario=";
+	
+	if(redConnection){
+		
+		
+		guardarBD("insert",dataString);
+		
+		} else{
+		//aqui sin conexiones
+		db.transaction(function(tx){  
+			tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+			"'insert'," +
+			"'"+dataString+ "');");  
+		},errorDB,exitoDB);
+		
+	}
+	
 	$("#page_registro_popup").popup('open');
 }
 
@@ -388,35 +510,57 @@ function errorRegistro(accion){
 	if(accion){
 		
 		db.transaction(function(tx){  
-		tx.executeSql("UPDATE Usuarios" + 
-		" SET usuario=?,password=?,nombre=?,apellidos=? WHERE usuario=? ;",
-		[$("#registro_usuario").val(),$("#registro_password").val(),
-		$("#registro_nombre").val(),$("#registro_apellidos").val(),nombre_usuario]);  
-	},function(){errorRegistro(false);},continuarEdicion);
-
+			tx.executeSql("UPDATE Usuarios" + 
+			" SET usuario=?,password=?,nombre=?,apellidos=? WHERE usuario=? ;",
+			[$("#registro_usuario").val(),$("#registro_password").val(),
+			$("#registro_nombre").val(),$("#registro_apellidos").val(),nombre_usuario]);  
+		},function(){errorRegistro(false);},continuarEdicion);
+		
 		}else{
 		
 		$("#registro_usuario").css("border", "2px solid red");
 		$("#registro_password").css("border", "0px solid red");
 		$("#registro_password_validate").css("border", "0px solid red");
 		$("#registro_nombre").css("border", "0px solid red");
-	$("#page_registro_popupError").popup('open');
-		}
+		$("#page_registro_popupError").popup('open');
+	}
 	
 	
 }
 function continuarEdicion(){
 	
-	if(nombre_usuario!=$("#registro_usuario").val()){
-		    
-		   
-			db.transaction(function(tx){ 
-		tx.executeSql("DELETE FROM Usuarios WHERE usuario='"+nombre_usuario+"';"); 
+	var usuario = $("#registro_usuario").val();
+	var password = $("#registro_password").val(); 
+	var nombre = $("#registro_nombre").val();
+	var apellido = $("#registro_apellidos").val();
+	var redConnection = checkConexion();
+	var dataString = "usuario=" + usuario + "&password=" + password + "&nombre=" + nombre +
+	"&apellidos=" + apellido + "&updateUsuario=";
+	if(redConnection){
 		
-			},errorDB,function(){nombre_usuario=$("#registro_usuario").val();});
+		guardarBD("update",dataString);
+		
+		}else{
+		//aqui sin conexiones
+		db.transaction(function(tx){  
+			tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+			"'update'," +
+			"'"+dataString+ "');");  
+		},errorDB,exitoDB);
+		
+	}
+	
+	
+	if(nombre_usuario!=$("#registro_usuario").val()){
+		
+		
+		db.transaction(function(tx){ 
+			tx.executeSql("DELETE FROM Usuarios WHERE usuario='"+nombre_usuario+"';"); 
 			
-			}
-	   exitoRegistro();
+		},errorDB,function(){nombre_usuario=$("#registro_usuario").val();});
+		
+	}
+	$("#page_registro_popup").popup('open');
 	
 }
 function deleteUsuario(){
@@ -425,7 +569,27 @@ function deleteUsuario(){
 	db.transaction(function(tx){ 
 		tx.executeSql("DELETE FROM Usuarios WHERE usuario='"+nombre_usuario+"';"); 
 		
-	},errorDB,function(){nombre_usuario="";});
+		},errorDB,function(){
+		var redConnection = checkConexion();
+		var dataString = "usuario=" + nombre_usuario + "&deleteUsuario=";
+		
+		
+		if(redConnection){
+			
+			
+			guardarBD("delete",dataString);
+			
+			} else{
+			//aqui sin conexiones
+			db.transaction(function(tx){  
+				tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+				"'delete'," +
+				"'"+dataString+ "');");  
+			},errorDB,exitoDB);
+			
+		}
+	nombre_usuario="";});
+	
 	
 	
 	
@@ -672,7 +836,7 @@ function guardarPaciente(){
 			
 			tx.executeSql("SELECT * FROM Pacientes WHERE cip=? AND usuarioID=?",[$.id,nombre_usuario],function(tx,rs){
 				if(rs.rows.length==0){
-				  
+					
 					insertPaciente();
 					}else{
 					updatePaciente();
@@ -708,9 +872,41 @@ function insertPaciente(){
 		+ $("#detalle_cp").val() + "," +
 		+ $("#detalle_telefono").val() + "," +
 		"'" + nombre_usuario + "');");  
-	},errorPacienteDuplicado,function(){navigator.app.backHistory();});
-	$.id="";
+		},errorPacienteDuplicado,function(){
+		var redConnection = checkConexion();
 		
+		var cip = $("#detalle_cip").val();
+		var nombre = $("#detalle_nombre").val();
+		var apellidos = $("#detalle_apellidos").val();
+		var fechaNacimiento = document.getElementById("detalle_fechaNacimiento").value; 
+		var direccion = $("#detalle_direccion").val();
+		var ciudad = $("#detalle_ciudad").val();
+		var cp = $("#detalle_cp").val();
+		var telefono = $("#detalle_telefono").val();
+		var dataString = "cip=" + cip + "&nombre=" + nombre + "&apellidos=" + apellidos +
+		"&fechaNacimiento=" + fechaNacimiento + "&direccion=" + direccion + "&direccion=" +
+		direccion + "&ciudad=" + ciudad + "&cp=" + cp + "&telefono=" + telefono +
+		"&usuario=" + nombre_usuario + "&registroPaciente=ok";
+		
+		if(redConnection){
+			
+			guardarBD("insert",dataString);
+			
+			}else{
+			//aqui sin conexiones
+			db.transaction(function(tx){  
+				tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+				"'insert'," +
+				"'"+dataString+ "');");  
+			},errorDB,exitoDB);
+			
+		} 
+		
+		navigator.app.backHistory();
+		
+	});
+	$.id="";
+	
 }		
 function updatePaciente(){
 	
@@ -724,15 +920,40 @@ function updatePaciente(){
 	
 }		
 function continuarEdicionPaciente(){
-	
+	var redConnection = checkConexion();
+	var cip = $("#detalle_cip").val();
+	var nombre = $("#detalle_nombre").val();
+	var apellidos = $("#detalle_apellidos").val();
+	var fechaNacimiento = document.getElementById("detalle_fechaNacimiento").value; 
+	var direccion = $("#detalle_direccion").val();
+	var ciudad = $("#detalle_ciudad").val();
+	var cp = $("#detalle_cp").val();
+	var telefono = $("#detalle_telefono").val();
+	var dataString = "cip=" + cip + "&nombre=" + nombre + "&apellidos=" + apellidos +
+	"&fechaNacimiento=" + fechaNacimiento + "&direccion=" + direccion + "&direccion=" +
+	direccion + "&ciudad=" + ciudad + "&cp=" + cp + "&telefono=" + telefono +
+	"&usuario=" + nombre_usuario + "&updatePaciente=ok";
+	if(redConnection){
+		
+		guardarBD("update",dataString);
+		
+		}else{
+		//aqui sin conexiones
+		db.transaction(function(tx){  
+			tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+			"'update'," +
+			"'"+dataString+ "');");  
+		},errorDB,exitoDB);
+		
+	}
 	if($.id!=$("#detalle_cip").val()){
 		db.transaction(function(tx){ 
-		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$.id+"' AND usuarioID='"+nombre_usuario+"';"); 
-		
-			},errorDB,function(){$.id="";});
+			tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$.id+"' AND usuarioID='"+nombre_usuario+"';"); 
 			
-	}else{
-	 $.id="";
+		},errorDB,function(){$.id="";});
+		
+		}else{
+		$.id="";
 	}
 	
 	navigator.app.backHistory ();
@@ -743,7 +964,27 @@ function deletePaciente(){
 	db.transaction(function(tx){ 
 		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$("#detalle_cip").val()+"' AND usuarioID='"+nombre_usuario+"';"); 
 		
-	},function(){alert("Error update:" + $("#detalle_cip").val());},exitoDB);
+		},function(){alert("Error update:" + $("#detalle_cip").val());},function(){
+		
+		var redConnection = checkConexion();
+		var dataString = "usuario=" + nombre_usuario + "&cip=" + $("#detalle_cip").val() + "&deletePaciente=ok";
+		
+		
+		if(redConnection){
+			
+			
+			guardarBD("delete",dataString);
+			
+			} else{
+			//aqui sin conexiones
+			db.transaction(function(tx){  
+				tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+				"'delete'," +
+				"'"+dataString+ "');");  
+			},errorDB,exitoDB);
+			
+		}	
+	});
 	$.id="";
 	
 	
@@ -757,15 +998,18 @@ function cargarHistorialTest(){
 	var queryPacienteTest="SELECT * " +
 	"FROM Pacientes " +
 	"INNER JOIN Test " +
-	"ON (Pacientes.cip=Test.idPaciente AND Pacientes.usuarioID='"+nombre_usuario+"') " +
+	"ON (Pacientes.cip=Test.idPaciente) " +
+	"WHERE (Pacientes.usuarioID='"+nombre_usuario +"' AND Test.usuarioID='" + nombre_usuario + "' ) " +
 	"ORDER BY Pacientes.apellidos;";
 	db.transaction(function(tx){  
 		tx.executeSql(queryPacienteTest,[],function(tx,rs){
 			
 			$("#historial li").remove();
 			mostrarBotonEliminarTodos(rs.rows.length);
-			for(var i=0;i<rs.rows.length;i++){  
+			for(var i=0;i<rs.rows.length;i++){ 
+				
 				var test=rs.rows.item(i);
+				
 				
 				$("#historial").append('<li id="li_'+test.idTest+'"><a onclick="guardarPagina()" href="#page_resultado" data-uid='+test.idTest+' class="linkDetallesTest">'+
 				'<h2>'+ test.apellidos +','+ test.nombre +'</h2>' +
@@ -792,193 +1036,245 @@ function cargarHistorialTest(){
 	
 }		
 
-	//Eliminar Historial
-	function eliminarTodos(){
-		eliminar_cuestionarios=true;
-	}		
-	function eliminarTestHistorial(test){
-		
-		if($.id_Test=='0' || typeof $.id_Test == "undefined" || eliminar_cuestionarios==true){
-			eliminar_cuestionarios==false;
-			db.transaction(function(tx){  
-				tx.executeSql("DELETE FROM Test WHERE usuarioID='"+nombre_usuario + "';");  
-			},errorDB,exitoDB);
-			}else{
-			
-			db.transaction(function(tx){  
-				tx.executeSql("DELETE FROM Test WHERE idTest=? ;",[$.id_Test]);  
-			},errorDB,restaurarIDTest);
-		}
-		cargarHistorialTest();    
-		navigator.app.backHistory(); 	
-	}		
-	function mostrarBotonEliminarTodos(rows){
-		if(rows>0){
-			$(".linkEliminarTodos").css("display", "block");
-			}else{
-			$("#historial").append('<li>Sin registros</li>');
-			$(".linkEliminarTodos").css("display", "none");
-		}
-	}		
-	function restaurarIDTest(){
-		$.id_Test='0';
-		
-	}		
-		
-	//PAGINA: RESULTADOS ANTERIORES
-		
-	$(document).on('pagebeforeshow', '#page_resultado', cargarResultado);
-	function cargarResultado(){
-		$("#txtResultadoPaginaResultado").html('');
-		$("#resultadoCiculoTestPaginaResultado").html('');
-		$("#notasResultadoPaginaResultado").html('');
-		
-		
-		
-		if(idPagina=="page_inicioBarthel" || idPagina=="page_inicioKatz" ||
-		idPagina=="page_inicioLowy" || idPagina=="page_inicioApgar" ||
-		idPagina=="page_inicioApgarNeo" || idPagina=="page_inicioBarberMR" ||
-		idPagina=="page_inicioGijon" || idPagina=="page_inicioLobo" ||
-		idPagina=="page_inicioMonitorizacionUPP" || idPagina=="page_inicioPfeiffer" ||
-		idPagina=="page_inicioUppBraden" || idPagina=="page_inicioYesavage" || 
-		idPagina=="page_inicioCaidasMultiples" || idPagina=="page_inicioMNA"){
-			
-			$("#txtResultadoPaginaResultado").append(txtResultado);
-			$("#resultadoCiculoTestPaginaResultado").append(resultadoTest);
-			$("#notasResultadoPaginaResultado").append(notasTest);
-			$(".circuloPuntuacion").css("background", circuloResultado);
-			$("#txtResultadoPaginaResultado").css("color", circuloResultado);
-			}else{
-			$("#nombreTest").html('');
-			$("#nombreResultadoPaciente").html('');
-			$("#cipResultadoPaciente").html('');
-			$("#fechaResultadoPaciente").html('');
-			$("#domicilioResultadoPaciente").html('');
-			$("#telefonoResultadoPaciente").html('');
-			$("#txtResultado").html('');
-			$("#resultadoCiculoTest").html('');
-			$("#notasResultado").html('');
-			$("#actuacionesTest").html('');
-			var pacienteTest;
-			var nombreTest;
-			db.transaction(function(tx){ 
-				
-				tx.executeSql("SELECT * FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
-					
-					
-					var test=rs.rows.item(0);
-					
-					$("#nombreTest").append(test.nombreTest);
-					$("#txtResultado").append(test.descripcionResultadoTest);
-					$("#resultadoCiculoTest").append(test.resultadoTest);
-					$("#notasResultado").append(test.notasTest);
-					$("#actuacionesTest").append(test.actuacionesTest);
-					$(".circuloPuntuacion").css("background", test.resultadoColorTest);
-					$("#txtResultado").css("color", test.resultadoColorTest);
-					
-					pacienteTest=test.idPaciente;
-					nombreTest=test.nombreTest;
-					
-				}); 
-				
-				
-				
-			},errorDB,exitoDB);
-			db.transaction(function(tx){ 
-				tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[pacienteTest],function(tx,rs){
-					
-					
-					var paciente=rs.rows.item(0);
-					
-					$("#nombreResultadoPaciente").append(paciente.apellidos +","+paciente.nombre);  
-					$("#cipResultadoPaciente").append(paciente.cip);
-					$("#fechaResultadoPaciente").append(paciente.fechaNacimiento);
-					$("#domicilioResultadoPaciente").append(paciente.direccion+","+paciente.ciudad+","+paciente.cp);
-					$("#telefonoResultadoPaciente").append(paciente.telefono);		
-					
-				}); 
-				
-			},errorDB,exitoDB); 
-			db.transaction(function(tx){ 
-				tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=?;",[pacienteTest,nombreTest],function(tx,rs){
-					
-					
-					var cantidad=rs.rows.item(0);
-					
-					if(cantidad.cantidadTest>=2){
-						disponibleBotonResultados(true);
-						}else{
-						disponibleBotonResultados(false);
-					}
-					
-				}); 
-				
-			},errorDB,exitoDB); 
-			
-			
-		}
-		
-		
-		
-	}		
-	function disponibleBotonResultados(visible){
-		if(visible){
-			$("#btn_resultados").css("display", "block");
-			}else{
-			
-			$("#btn_resultados").css("display", "none");
-		}
-		
-		
-	}		
-		
-	function guardarPagina(){
-		idPagina=$.mobile.activePage.attr('id');
-	}		
-		
-	function abrirActuaciones(){
-		$("#actuaciones").css("display", "block");
-		
-	}		
-		
-	//PAGINA: CONFIGURACION
-	function cambiarTema(){
-		
-		var tema= $("opcion_tema").find("input:checked").val();
-		if(tema="b"){
-			$("#contenidoPrincipal").attr("data-theme","b");
-			
-		}
-		
-	}		
-	// Guadar las actuaciones
-		
-	function guardarActuacionesTest(){
+//Eliminar Historial
+function eliminarTodos(){
+	eliminar_cuestionarios=true;
+}		
+function eliminarTestHistorial(test){
+	
+	if($.id_Test=='0' || typeof $.id_Test == "undefined" || eliminar_cuestionarios==true){
+		eliminar_cuestionarios==false;
 		db.transaction(function(tx){  
-			tx.executeSql("SELECT MAX(idTest) AS maxID FROM Test;",[],function(tx,rs){ 
-				testMaxID=rs.rows.item(0).maxID;
-			});  
-		},errorDB,guardarActuaciones); 
+			tx.executeSql("DELETE FROM Test WHERE usuarioID='"+nombre_usuario + "';");  
+			},errorDB,function(){
+		    var redConnection = checkConexion();
+			var dataString = "usuario=" + nombre_usuario + "&deleteTest=ok";
+			if(redConnection){
+				
+				guardarBD("delete",dataString);
+				
+				} else{
+				//aqui sin conexiones
+				db.transaction(function(tx){  
+					tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+					"'delete'," +
+					"'"+dataString+ "');");  
+				},errorDB,exitoDB);
+				
+			}
+		});
+		}else{
 		
+		db.transaction(function(tx){  
+			tx.executeSql("DELETE FROM Test WHERE idTest=? ;",[$.id_Test]);  
+		},errorDB,restaurarIDTest);
+	}
+	cargarHistorialTest();    
+	navigator.app.backHistory(); 	
+}		
+function mostrarBotonEliminarTodos(rows){
+	if(rows>0){
+		$(".linkEliminarTodos").css("display", "block");
+		}else{
+		$("#historial").append('<li>Sin registros</li>');
+		$(".linkEliminarTodos").css("display", "none");
+	}
+}		
+function restaurarIDTest(){
+	var redConnection = checkConexion();
+	var dataString = "idTest=" + $.id_Test + "&deleteTest=ok";
+	if(redConnection){
 		
-	}		
-		
-	function guardarActuaciones(){
-		var txtActuaciones=$("#actuacionesTxt").val();
-		if(txtActuaciones==""){
-			txtActuaciones="No se realizón ninguna acción";
-		}
+		guardarBD("delete",dataString);
 		
+		} else{
+		//aqui sin conexiones
+		db.transaction(function(tx){  
+			tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+			"'delete'," +
+			"'"+dataString+ "');");  
+		},errorDB,exitoDB);
+		
+	}
+	$.id_Test='0';
+	
+	
+}		
+
+//PAGINA: RESULTADOS ANTERIORES
+
+$(document).on('pagebeforeshow', '#page_resultado', cargarResultado);
+function cargarResultado(){
+	$("#txtResultadoPaginaResultado").html('');
+	$("#resultadoCiculoTestPaginaResultado").html('');
+	$("#notasResultadoPaginaResultado").html('');
+	
+	
+	
+	if(idPagina=="page_inicioBarthel" || idPagina=="page_inicioKatz" ||
+	idPagina=="page_inicioLowy" || idPagina=="page_inicioApgar" ||
+	idPagina=="page_inicioApgarNeo" || idPagina=="page_inicioBarberMR" ||
+	idPagina=="page_inicioGijon" || idPagina=="page_inicioLobo" ||
+	idPagina=="page_inicioMonitorizacionUPP" || idPagina=="page_inicioPfeiffer" ||
+	idPagina=="page_inicioUppBraden" || idPagina=="page_inicioYesavage" || 
+	idPagina=="page_inicioCaidasMultiples" || idPagina=="page_inicioMNA"){
+		
+		$("#txtResultadoPaginaResultado").append(txtResultado);
+		$("#resultadoCiculoTestPaginaResultado").append(resultadoTest);
+		$("#notasResultadoPaginaResultado").append(notasTest);
+		$(".circuloPuntuacion").css("background", circuloResultado);
+		$("#txtResultadoPaginaResultado").css("color", circuloResultado);
+		}else{
+		$("#nombreTest").html('');
+		$("#nombreResultadoPaciente").html('');
+		$("#cipResultadoPaciente").html('');
+		$("#fechaResultadoPaciente").html('');
+		$("#domicilioResultadoPaciente").html('');
+		$("#telefonoResultadoPaciente").html('');
+		$("#txtResultado").html('');
+		$("#resultadoCiculoTest").html('');
+		$("#notasResultado").html('');
+		$("#actuacionesTest").html('');
+		var pacienteTest;
+		var nombreTest;
 		db.transaction(function(tx){ 
 			
-			tx.executeSql("UPDATE Test" + 
-			" SET actuacionesTest=? WHERE idTest=?;",
-			[txtActuaciones,testMaxID]); 
+			tx.executeSql("SELECT * FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
+				
+				
+				var test=rs.rows.item(0);
+				
+				$("#nombreTest").append(test.nombreTest);
+				$("#txtResultado").append(test.descripcionResultadoTest);
+				$("#resultadoCiculoTest").append(test.resultadoTest);
+				$("#notasResultado").append(test.notasTest);
+				$("#actuacionesTest").append(test.actuacionesTest);
+				$(".circuloPuntuacion").css("background", test.resultadoColorTest);
+				$("#txtResultado").css("color", test.resultadoColorTest);
+				
+				pacienteTest=test.idPaciente;
+				nombreTest=test.nombreTest;
+				
+			}); 
+			
+			
+			
 		},errorDB,exitoDB);
-	}		
-		
-	//PAGINA: CALCULAR BARTHEL
-		
+		db.transaction(function(tx){ 
+			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[pacienteTest],function(tx,rs){
+				
+				
+				var paciente=rs.rows.item(0);
+				
+				$("#nombreResultadoPaciente").append(paciente.apellidos +","+paciente.nombre);  
+				$("#cipResultadoPaciente").append(paciente.cip);
+				$("#fechaResultadoPaciente").append(paciente.fechaNacimiento);
+				$("#domicilioResultadoPaciente").append(paciente.direccion+","+paciente.ciudad+","+paciente.cp);
+				$("#telefonoResultadoPaciente").append(paciente.telefono);		
+				
+			}); 
+			
+		},errorDB,exitoDB); 
+		db.transaction(function(tx){ 
+			tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=?;",[pacienteTest,nombreTest],function(tx,rs){
+				
+				
+				var cantidad=rs.rows.item(0);
+				
+				if(cantidad.cantidadTest>=2){
+					disponibleBotonResultados(true);
+					}else{
+					disponibleBotonResultados(false);
+				}
+				
+			}); 
+			
+		},errorDB,exitoDB); 
+		
+		
+	}
+	
+	
+	
+}		
+function disponibleBotonResultados(visible){
+	if(visible){
+		$("#btn_resultados").css("display", "block");
+		}else{
+		
+		$("#btn_resultados").css("display", "none");
+	}
+	
+	
+}		
+
+function guardarPagina(){
+	idPagina=$.mobile.activePage.attr('id');
+}		
+
+function abrirActuaciones(){
+	$("#actuaciones").css("display", "block");
+	
+}		
+
+//PAGINA: CONFIGURACION
+function cambiarTema(){
+	
+	var tema= $("opcion_tema").find("input:checked").val();
+	if(tema="b"){
+		$("#contenidoPrincipal").attr("data-theme","b");
+		
+	}
+	
+}		
+// Guadar las actuaciones
+
+function guardarActuacionesTest(){
+	db.transaction(function(tx){  
+		tx.executeSql("SELECT MAX(idTest) AS maxID FROM Test;",[],function(tx,rs){ 
+			testMaxID=rs.rows.item(0).maxID;
+		});  
+	},errorDB,guardarActuaciones); 
+	
+	
+}		
+
+function guardarActuaciones(){
+	var txtActuaciones=$("#actuacionesTxt").val();
+	if(txtActuaciones==""){
+		txtActuaciones="No se realizón ninguna acción";
+	}
+	
+	db.transaction(function(tx){ 
+		
+		tx.executeSql("UPDATE Test" + 
+		" SET actuacionesTest=? WHERE idTest=?;",
+		[txtActuaciones,testMaxID]); 
+	},errorDB,updateExitoTest(txtActuaciones,testMaxID));
+}		
+
+function updateExitoTest(txtActuaciones,id){
+	var redConnection = checkConexion();
+	var dataString = "txtActuaciones=" + txtActuaciones + "&idTest=" + id + "&updateTest=ok";
+	
+	if(redConnection){
+		
+		guardarBD("update",dataString);
+		
+		}else{
+		//aqui sin conexiones
+		db.transaction(function(tx){  
+			tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+			"'update'," +
+			"'"+dataString+ "');");  
+		},errorDB,exitoDB);
+		
+	}
+	
+	
+}
+//PAGINA: CALCULAR BARTHEL
+
 	function calculaBarthel(){ 
 		
 		var sumaBarthel=0;
@@ -1046,6 +1342,10 @@ function cargarHistorialTest(){
 			}
 			idPagina=$.mobile.activePage.attr('id');
 			resultadoTest=sumaBarthel;
+			var dataString = "nombreTest=Barthel&idPaciente=" + $.id + "&resultadoTest=" + sumaBarthel +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1058,7 +1358,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//Indice de Katz
@@ -1118,6 +1418,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceKatz;
+			var dataString = "nombreTest=Katz&idPaciente=" + $.id + "&resultadoTest=" + indiceKatz +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1130,7 +1434,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 		
 	}		
@@ -1198,6 +1502,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceLowy;
+			var dataString = "nombreTest=Lowy&idPaciente=" + $.id + "&resultadoTest=" + indiceLowy +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1210,7 +1518,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 		
@@ -1335,6 +1643,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indicePfeiffer;
+			var dataString = "nombreTest=Pfeiffer&idPaciente=" + $.id + "&resultadoTest=" + indicePfeiffer +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1347,7 +1659,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 		
@@ -1440,6 +1752,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceLobo;
+			var dataString = "nombreTest=Mini examen cognitivo(Lobo)&idPaciente=" + $.id + "&resultadoTest=" + indiceLobo +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1452,7 +1768,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//PAGINA Test Yesavage
@@ -1522,6 +1838,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceYesavage;
+			var dataString = "nombreTest=Yesavage&idPaciente=" + $.id + "&resultadoTest=" + indiceYesavage +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1534,7 +1854,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");    
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//PAGINA Test Gijon
@@ -1594,6 +1914,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceGijon;
+			var dataString = "nombreTest=Gijon&idPaciente=" + $.id + "&resultadoTest=" + indiceGijon +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1606,7 +1930,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");   
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//PAGINA Test Apgar
@@ -1666,6 +1990,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceApgar;
+			var dataString = "nombreTest=Apgar&idPaciente=" + $.id + "&resultadoTest=" + indiceApgar +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1678,7 +2006,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");    
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//PAGINA Test Apgar Neonatal
@@ -1738,6 +2066,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceApgarNeo;
+			var dataString = "nombreTest=Apgar Neonatal&idPaciente=" + $.id + "&resultadoTest=" + indiceApgarNeo +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1750,7 +2082,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");   
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//PAGINA Test Barber Medio Rural
@@ -1808,6 +2140,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceBarberMR;
+			var dataString = "nombreTest=Barber Medio Rural&idPaciente=" + $.id + "&resultadoTest=" + indiceBarberMR +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1820,7 +2156,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");   
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 		
@@ -1888,6 +2224,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceBraden;
+			var dataString = "nombreTest=Riesgo de Upp de Braden&idPaciente=" + $.id + "&resultadoTest=" + indiceBraden +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1900,7 +2240,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");   
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//PAGINA TEST MONITORIZACION UPP 
@@ -1943,6 +2283,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceUPP;
+			var dataString = "nombreTest=Valoracion de la UPP&idPaciente=" + $.id + "&resultadoTest=" + indiceUPP +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -1955,7 +2299,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");   
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 	//PAGINA TEST CAIDAS MULTIPLES 
@@ -2012,6 +2356,10 @@ function cargarHistorialTest(){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceCaida;
+			var dataString = "nombreTest=Riesgo de caida multiple&idPaciente=" + $.id + "&resultadoTest=" + indiceCaida +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
 				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -2024,7 +2372,7 @@ function cargarHistorialTest(){
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
 				"'" + nombre_usuario + "');");    
-			},errorDB,exitoTest); 
+			},errorDB,exitoTest(stringData)); 
 		}
 	}		
 		
@@ -2154,6 +2502,10 @@ function cargarHistorialTest(){
 		idPagina=$.mobile.activePage.attr('id');
 		
 		resultadoTest=indiceMNA;
+		var dataString = "nombreTest=Evaluacion Nutricional(MNA)&idPaciente=" + $.id + "&resultadoTest=" + indiceMNA +
+		"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+		"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+		"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
 		db.transaction(function(tx){  
 			
 			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
@@ -2166,7 +2518,7 @@ function cargarHistorialTest(){
 			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 			"'" + notasTest + "'," + 
 			"'" + nombre_usuario + "');");  
-		},errorDB,exitoDB);
+		},errorDB,exitoDB(stringData));
 	}		
 	//PAGINA CONTACTO
 		
@@ -2178,93 +2530,93 @@ function cargarHistorialTest(){
 	$(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
 		
 	function crearGrafico(){
-		
-		db.transaction(function(tx){ 
-			
-			tx.executeSql("SELECT idPaciente,nombreTest FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
-				
-				
-				var test=rs.rows.item(0);		
-				pacienteResultadosAnteriores=test.idPaciente;
-				nombreTestResultadosAnteriores=test.nombreTest; 
-			}); 
-		},errorDB,buscarDatosGrafico);
-		
-		
+	
+	db.transaction(function(tx){ 
+	
+	tx.executeSql("SELECT idPaciente,nombreTest FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
+	
+	
+	var test=rs.rows.item(0);		
+	pacienteResultadosAnteriores=test.idPaciente;
+	nombreTestResultadosAnteriores=test.nombreTest; 
+	}); 
+	},errorDB,buscarDatosGrafico);
+	
+	
 	}		
 		
 	function buscarDatosGrafico(){
-		fechasGrafico.length=0;
-		resultadosGrafico.length=0;
-		coloresGrafico.length=0;
-		db.transaction(function(tx){ 
-			
-			tx.executeSql("SELECT fechaTest,horaTest,resultadoTest,resultadoColorTest FROM Test WHERE (idPaciente=? AND nombreTest=? AND usuarioID=?);",
-			[pacienteResultadosAnteriores,nombreTestResultadosAnteriores,nombre_usuario],function(tx,rs){
-				var fechaHoraGrafico;
-				
-				for(var i=0;i<rs.rows.length;i++){  
-					
-					var test=rs.rows.item(i);
-					var fechaHoraGrafico=test.fechaTest+" "+test.horaTest +"h";
-					fechasGrafico.push(fechaHoraGrafico);
-					resultadosGrafico.push(test.resultadoTest);
-					coloresGrafico.push(test.resultadoColorTest);
-				}
-				
-				
-				
-				
-			}); 
-			
-		},errorDB,dibujarGrafico);
-		
+	fechasGrafico.length=0;
+	resultadosGrafico.length=0;
+	coloresGrafico.length=0;
+	db.transaction(function(tx){ 
+	
+	tx.executeSql("SELECT fechaTest,horaTest,resultadoTest,resultadoColorTest FROM Test WHERE (idPaciente=? AND nombreTest=? AND usuarioID=?);",
+	[pacienteResultadosAnteriores,nombreTestResultadosAnteriores,nombre_usuario],function(tx,rs){
+	var fechaHoraGrafico;
+	
+	for(var i=0;i<rs.rows.length;i++){  
+	
+	var test=rs.rows.item(i);
+	var fechaHoraGrafico=test.fechaTest+" "+test.horaTest +"h";
+	fechasGrafico.push(fechaHoraGrafico);
+	resultadosGrafico.push(test.resultadoTest);
+	coloresGrafico.push(test.resultadoColorTest);
+	}
+	
+	
+	
+	
+	}); 
+	
+	},errorDB,dibujarGrafico);
+	
 	}		
 		
 	function dibujarGrafico(){
-		
-		var ctx = document.getElementById("graficoResultados").getContext('2d');
-		
-		var data = {
-			labels: fechasGrafico ,
-			datasets: [
-				{
-					label: "Valor",
-					fill: true,
-					lineTension: 0.1,
-					backgroundColor: "rgba(75,192,192,0.4)",
-					borderColor: "rgba(75,192,192,1)",
-					borderCapStyle: 'butt',
-					borderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'round',
-					pointBorderColor: "rgba(75,192,192,1)",
-					pointBackgroundColor: coloresGrafico,
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: coloresGrafico,
-					pointHoverBorderColor: "#fff",
-					pointHoverBorderWidth: 2,
-					pointRadius: 10,
-					pointHitRadius: 10,
-					data: resultadosGrafico,
-					spanGaps: true,
-				}
-			]
-		};
-		var myLineChart = new Chart(ctx, {
-			type: 'line',
-			data: data,
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero:true
-						}
-					}]
-				}
-			}
-		});
-		
+	
+	var ctx = document.getElementById("graficoResultados").getContext('2d');
+	
+	var data = {
+	labels: fechasGrafico ,
+	datasets: [
+	{
+	label: "Valor",
+	fill: true,
+	lineTension: 0.1,
+	backgroundColor: "rgba(75,192,192,0.4)",
+	borderColor: "rgba(75,192,192,1)",
+	borderCapStyle: 'butt',
+	borderDash: [],
+	borderDashOffset: 0.0,
+	borderJoinStyle: 'round',
+	pointBorderColor: "rgba(75,192,192,1)",
+	pointBackgroundColor: coloresGrafico,
+	pointBorderWidth: 1,
+	pointHoverRadius: 5,
+	pointHoverBackgroundColor: coloresGrafico,
+	pointHoverBorderColor: "#fff",
+	pointHoverBorderWidth: 2,
+	pointRadius: 10,
+	pointHitRadius: 10,
+	data: resultadosGrafico,
+	spanGaps: true,
+	}
+	]
+	};
+	var myLineChart = new Chart(ctx, {
+	type: 'line',
+	data: data,
+	options: {
+	scales: {
+	yAxes: [{
+	ticks: {
+	beginAtZero:true
+	}
+	}]
+	}
+	}
+	});
+	
 	}
 		

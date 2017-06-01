@@ -50,7 +50,7 @@
 		<div data-role="page" id="page_registro" data-theme="a" data-url="page_registro">
 			<!-- /header --> 
 			<div data-role="header" data-theme="a">
-			<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a> 
+			<a href="#" onclick="onBackKeyDown()" data-role="button" data-icon="back" data-iconpos="notext">Atrás</a> 
 			<h1>Registro en UbuNurse</h1>
 			<a href="#page_help" data-role="button" data-icon="info" data-iconpos="notext" data-theme="a" data-iconshadow="false" data-inline="true">Open left panel</a>
 				
@@ -69,7 +69,9 @@
 				<!--href="#page_inicio"-->
 				<p align="center">
 				<a id="eliminarUsuario" href="#page_eliminarUsuario" data-rel="popup" data-role="button" data-icon="delete" data-iconpos="left"data-inline="true">Eliminar</a>
-				<a onClick="registrarUsuario()"  data-role="button" data-icon="action" data-iconpos="left" data-inline="true">Guardar</a>
+				<!--<a onClick="registrarUsuario()"  id="guardarUsuario" data-role="button" data-icon="action" data-iconpos="left" data-inline="true">Guardar</a>
+				-->
+				<input id="guardarUsuario" type="submit" value="Guardar" onclick="registrarUsuario()" data-icon="action" data-iconpos="left" data-inline="true"/>
 				</p>	
 			</div>
 			<!-- /footer-->
@@ -130,7 +132,7 @@
 				</div>
 				
 				<!-- /grid-a -->
-				
+				<a onclick="verAcciones()" data-role="button"  data-transition="slide">Acciones</a>
 			</div>
 			
 			<!-- /panel -->  
@@ -233,7 +235,7 @@
 		<!-- Pagina editar_nuevo Paciente -->
 		<div data-role="page" id="page_editPaciente" data-theme="a">
 			<div data-role="header">
-				<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+				<a href="#" onclick="onBackKeyDown()" data-role="button"  data-icon="back" data-iconpos="notext">Atrás</a>
 				
 				<h1>DATOS PACIENTE</h1>
 			</div>
@@ -276,7 +278,7 @@
 		<!-- Pagina inicio Test: Seleccion Test-->
 		<div data-role="page" id="page_selecTest" data-theme="a">
 			<div data-role="header">
-				<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext">Atrás</a>
+				<a href="#" onclick="onBackKeyDown()" data-role="button"  data-icon="back" data-iconpos="notext">Atrás</a>
 				
 				<h1>TEST</h1>
 			</div>
@@ -745,7 +747,7 @@
 													<div data-role="page" id="page_help" data-theme="c">
 														<div data-role="header">
 															
-															<a href="#" data-role="button" data-inline="true" data-icon="back" data-iconpos="notext" data-rel="back">Volver</a>
+															<a href="#" onclick="onBackKeyDown()" data-role="button" data-inline="true" data-icon="back" data-iconpos="notext" >Volver</a>
 															<h1>AYUDA</h1>
 														</div>
 														<div data-role="content">
