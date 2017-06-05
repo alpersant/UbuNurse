@@ -121,7 +121,7 @@ function verAcciones(){
 			if (rs.rows.length>0){
 				for(var i=0;i<rs.rows.length;i++){  
 					var act=rs.rows.item(i);
-					alert("Accion: " + act.accion + "\nDatos: "+act.datos+"\n");
+					//alert("Accion: " + act.accion + "\nDatos: "+act.datos+"\n");
 					//guardarBD(act.accion,act.datos);
 				}
 			}
@@ -149,7 +149,7 @@ function openBD(){
 	
 	if(typeof db== "undefined"){
 		
-		db=window.openDatabase("UbuNurse","","Datos de la app",200000); 
+		db=window.openDatabase("UbuNurseApp","","Datos de la app",200000); 
 		db.transaction(function(tx){
 			tx.executeSql("CREATE TABLE IF NOT EXISTS Usuarios(usuario varchar(254) not null primary key," +
 			"password varchar(150)," +
@@ -200,7 +200,7 @@ function continuarDB(){
 			"CONSTRAINT PK_Paciente PRIMARY KEY (cip,usuarioID)," +
 			"FOREIGN KEY (usuarioID) REFERENCES Usuarios(usuario));");
 			
-			tx.executeSql("CREATE TABLE IF NOT EXISTS Test(idTest integer not null primary key autoincrement," +
+			tx.executeSql("CREATE TABLE IF NOT EXISTS Test(idTest integer not null," +
 			"nombreTest varchar(40)," +
 			"idPaciente varchar(230)," +
 			"resultadoTest varchar(200)," +
@@ -210,7 +210,8 @@ function continuarDB(){
 			"horaTest varchar(100)," +
 			"notasTest text," +
 			"actuacionesTest text," +
-			"usuarioID varchar(254)," +
+			"usuarioID varchar(254),"+
+			"CONSTRAINT PK_Test PRIMARY KEY (idTest,usuarioID)," +
 			"FOREIGN KEY (usuarioID) REFERENCES Usuarios(usuario)," +
 			"FOREIGN KEY (idPaciente) REFERENCES Pacientes(cip));");
 			
@@ -244,7 +245,7 @@ function exitoDB(){
 	*
 ***************************/	
 function exitoTest(dataString){
-	alert("dataStrinTest:\n" + dataString );
+	
 	var redConnection = checkConexion();
 	if(redConnection){
 		
@@ -298,20 +299,27 @@ function onBackKeyDown() {
 		
 		}else if($.mobile.activePage.attr('id') == 'page_initTest'){ 
 		$.mobile.changePage("#page_inicio");
+		}else if($.mobile.activePage.attr('id') == 'page_resultadoTest'){
+		   
+		
 		} else {
 		navigator.app.backHistory();
 	}	
 }
+var filaAccion=0;
+var cantidadAcciones=0;
 function copiaSeguridad(){
 	var redConnection = checkConexion();
 	if(redConnection){
 		
 		db.transaction(function(tx){  
 			tx.executeSql("SELECT * FROM Acciones",[],function(tx,rs){
-				
+				cantidadAcciones=rs.rows.length;
 				if (rs.rows.length>0){
+				   
 					for(var i=0;i<rs.rows.length;i++){  
 				        var act=rs.rows.item(i);
+						filaAccion=act.idAccion;
 						//alert("Accion: " + act.accion + "\nTabla: " +act.tabla +"\nDatos: "+act.datos+"\n");
 						guardarBD(act.accion,act.datos);
 					}
@@ -319,10 +327,25 @@ function copiaSeguridad(){
 			}				
 			
 			);	
-		},errorDB,exitoDB); 
+		},errorDB,deleteAccion(filaAccion,cantidadAcciones)); 
 		
 		
 	}
+}
+
+function deleteAccion(accionBorrar,cantidadBorrar){
+	if (cantidadBorrar>0){
+		
+		db.transaction(function(tx){ 
+			tx.executeSql("DELETE FROM Acciones;"); 
+			
+		},errorDB,exitoDB);
+		}
+	
+	/*
+	*/
+	
+	
 }
 function guardarBD(accion,datos){
 	
@@ -389,7 +412,7 @@ function formatearFecha(fecha){
 
 $(document).on('pagebeforeshow', '#page_registro', cargarDetallesUsuario);
 function cargarDetallesUsuario(){
-	
+	document.getElementById("registro_usuario").disabled = false;
 	document.getElementById("eliminarUsuario").style.display = 'none';
 	$("#registro_usuario").css("border", "0px solid red");
 	$("#registro_password").css("border", "0px solid red");
@@ -410,6 +433,7 @@ function cargarDetallesUsuario(){
 				document.getElementById("eliminarUsuario").style.display = 'inline';
 				var usuario=rs.rows.item(0);
 				document.getElementById("registro_usuario").value=nombre_usuario;
+				document.getElementById("registro_usuario").disabled = true;
 				document.getElementById("registro_nombre").value=usuario.nombre;
 				document.getElementById("registro_apellidos").value=usuario.apellidos;
 				document.getElementById("registro_password").value=usuario.password;
@@ -565,31 +589,51 @@ function continuarEdicion(){
 }
 function deleteUsuario(){
 	
-	
 	db.transaction(function(tx){ 
-		tx.executeSql("DELETE FROM Usuarios WHERE usuario='"+nombre_usuario+"';"); 
+	    // alert("delte test de: " + nombre_usuario);
+		tx.executeSql("DELETE FROM Test WHERE usuarioID='"+nombre_usuario+"';"); 
 		
 		},errorDB,function(){
-		var redConnection = checkConexion();
-		var dataString = "usuario=" + nombre_usuario + "&deleteUsuario=";
+		//alert("delte paciente de: " + nombre_usuario);
+	    db.transaction(function(tx){ 
 		
+			tx.executeSql("DELETE FROM Pacientes WHERE usuarioID='"+nombre_usuario+"';"); 
+			
+			},errorDB,function(){
+			
+			db.transaction(function(tx){ 
+			//alert("delte usuario de: " + nombre_usuario);
+				tx.executeSql("DELETE FROM Usuarios WHERE usuario='"+nombre_usuario+"';"); 
+				
+				},errorDB,function(){
+				//alert("delete usuario remoto: " +nombre_usuario);
+				var redConnection = checkConexion();
+				var dataString = "usuario=" + nombre_usuario + "&deleteUsuario=ok";
+				
+				
+				if(redConnection){
+					
+					
+					guardarBD("delete",dataString);
+					
+					} else{
+					//aqui sin conexiones
+					db.transaction(function(tx){  
+						tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
+						"'delete'," +
+						"'"+dataString+ "');");  
+					},errorDB,exitoDB);
+					
+				}
+			nombre_usuario="";
+			$.mobile.changePage("#page_login"); 
+			});
+			
+			
+			
+		});
 		
-		if(redConnection){
-			
-			
-			guardarBD("delete",dataString);
-			
-			} else{
-			//aqui sin conexiones
-			db.transaction(function(tx){  
-				tx.executeSql("INSERT INTO Acciones(accion,datos) VALUES("+
-				"'delete'," +
-				"'"+dataString+ "');");  
-			},errorDB,exitoDB);
-			
-		}
-	nombre_usuario="";});
-	
+	});	
 	
 	
 	
@@ -788,6 +832,15 @@ function cargarPacientes(){
 		});  
 	},errorDB,exitoDB); 
 	
+	db.transaction(function(tx){  
+		tx.executeSql("SELECT MAX(idTest) AS maxID FROM Test WHERE usuarioID=?;",[nombre_usuario],function(tx,rs){
+		
+		      var test=rs.rows.item(0);
+		    	
+			 testMaxID=rs.rows.item(0).maxID + 1;
+		});  
+	},function(){testMaxID=0;},exitoDB); 
+	
 	
 }		
 
@@ -921,6 +974,7 @@ function updatePaciente(){
 }		
 function continuarEdicionPaciente(){
 	var redConnection = checkConexion();
+	
 	var cip = $("#detalle_cip").val();
 	var nombre = $("#detalle_nombre").val();
 	var apellidos = $("#detalle_apellidos").val();
@@ -932,7 +986,7 @@ function continuarEdicionPaciente(){
 	var dataString = "cip=" + cip + "&nombre=" + nombre + "&apellidos=" + apellidos +
 	"&fechaNacimiento=" + fechaNacimiento + "&direccion=" + direccion + "&direccion=" +
 	direccion + "&ciudad=" + ciudad + "&cp=" + cp + "&telefono=" + telefono +
-	"&usuario=" + nombre_usuario + "&updatePaciente=ok";
+	"&usuario=" + nombre_usuario + "&idEdicion=" + $.id + "&updatePaciente=ok";
 	if(redConnection){
 		
 		guardarBD("update",dataString);
@@ -960,13 +1014,19 @@ function continuarEdicionPaciente(){
 }
 function deletePaciente(){
 	
-	
 	db.transaction(function(tx){ 
+	     
+		tx.executeSql("DELETE FROM Test WHERE idPaciente='"+$("#detalle_cip").val()+"';"); 
+		
+	},errorDB,function(){
+	
+	   db.transaction(function(tx){ 
 		tx.executeSql("DELETE FROM Pacientes WHERE cip='"+$("#detalle_cip").val()+"' AND usuarioID='"+nombre_usuario+"';"); 
 		
 		},function(){alert("Error update:" + $("#detalle_cip").val());},function(){
 		
 		var redConnection = checkConexion();
+		
 		var dataString = "usuario=" + nombre_usuario + "&cip=" + $("#detalle_cip").val() + "&deletePaciente=ok";
 		
 		
@@ -983,8 +1043,14 @@ function deletePaciente(){
 				"'"+dataString+ "');");  
 			},errorDB,exitoDB);
 			
-		}	
+		}
+		$.mobile.changePage("#page_initTest"); 	
 	});
+	
+	
+	});
+	
+	
 	$.id="";
 	
 	
@@ -1102,7 +1168,7 @@ function restaurarIDTest(){
 }		
 
 //PAGINA: RESULTADOS ANTERIORES
-
+$(document).on('pagebeforeshow', '#page_resultadoTest', cargarResultado);
 $(document).on('pagebeforeshow', '#page_resultado', cargarResultado);
 function cargarResultado(){
 	$("#txtResultadoPaginaResultado").html('');
@@ -1139,7 +1205,7 @@ function cargarResultado(){
 		var nombreTest;
 		db.transaction(function(tx){ 
 			
-			tx.executeSql("SELECT * FROM Test WHERE idTest=?;",[$.id_Test],function(tx,rs){
+			tx.executeSql("SELECT * FROM Test WHERE idTest=? AND usuarioID=?;",[$.id_Test,nombre_usuario],function(tx,rs){
 				
 				
 				var test=rs.rows.item(0);
@@ -1161,7 +1227,7 @@ function cargarResultado(){
 			
 		},errorDB,exitoDB);
 		db.transaction(function(tx){ 
-			tx.executeSql("SELECT * FROM Pacientes WHERE cip=?;",[pacienteTest],function(tx,rs){
+			tx.executeSql("SELECT * FROM Pacientes WHERE cip=? AND usuarioID=?;",[pacienteTest,nombre_usuario],function(tx,rs){
 				
 				
 				var paciente=rs.rows.item(0);
@@ -1176,7 +1242,7 @@ function cargarResultado(){
 			
 		},errorDB,exitoDB); 
 		db.transaction(function(tx){ 
-			tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=?;",[pacienteTest,nombreTest],function(tx,rs){
+			tx.executeSql("SELECT COUNT(*) AS cantidadTest FROM Test WHERE idPaciente=? AND nombreTest=? AND usuarioID=?;",[pacienteTest,nombreTest,nombre_usuario],function(tx,rs){
 				
 				
 				var cantidad=rs.rows.item(0);
@@ -1230,11 +1296,14 @@ function cambiarTema(){
 // Guadar las actuaciones
 
 function guardarActuacionesTest(){
-	db.transaction(function(tx){  
-		tx.executeSql("SELECT MAX(idTest) AS maxID FROM Test;",[],function(tx,rs){ 
+	/*db.transaction(function(tx){  
+		tx.executeSql("SELECT MAX(idTest) AS maxID FROM Test WHERE nom;",[],function(tx,rs){ 
 			testMaxID=rs.rows.item(0).maxID;
 		});  
-	},errorDB,guardarActuaciones); 
+	},errorDB,guardarActuaciones); */
+	
+	//alert("Actuciones test: " + testMaxID);
+	guardarActuaciones();
 	
 	
 }		
@@ -1248,15 +1317,17 @@ function guardarActuaciones(){
 	db.transaction(function(tx){ 
 		
 		tx.executeSql("UPDATE Test" + 
-		" SET actuacionesTest=? WHERE idTest=?;",
-		[txtActuaciones,testMaxID]); 
+		" SET actuacionesTest=? WHERE idTest=? AND usuarioID=?;",
+		[txtActuaciones,testMaxID,nombre_usuario]); 
 	},errorDB,updateExitoTest(txtActuaciones,testMaxID));
-}		
+}			
 
-function updateExitoTest(txtActuaciones,id){
-	var redConnection = checkConexion();
-	var dataString = "txtActuaciones=" + txtActuaciones + "&idTest=" + id + "&updateTest=ok";
+function updateExitoTest(txtActuaciones,testMaxID){
 	
+	var redConnection = checkConexion();
+	
+	var dataString = "txtActuaciones=" + txtActuaciones + "&idTest=" + testMaxID + "&usuarioID=" + nombre_usuario  + "&updateTest=ok";
+	//alert("Data:\n" + dataString);
 	if(redConnection){
 		
 		guardarBD("update",dataString);
@@ -1275,253 +1346,256 @@ function updateExitoTest(txtActuaciones,id){
 }
 //PAGINA: CALCULAR BARTHEL
 
-	function calculaBarthel(){ 
-		
-		var sumaBarthel=0;
-		var opcionesBarthel=["#opcion_alimentacion",
-			"#opcion_baño",
-			"#opcion_vestirse",
-			"#opcion_arreglarse",
-			"#opcion_deposiciones",
-			"#opcion_miccion",
-			"#opcion_retrete",
-			"#opcion_movilidad",
-			"#opcion_deambular",
-		"#opcion_escaleras"];
-		
-		getFechaHora();
-		if($("#notas").val()==""){
-			notasTest="No se registrarón notas";
-			}else{
-			notasTest=$("#notas").val();
-		}
-		
-		for (opcion = 0; opcion < opcionesBarthel.length; opcion++) { 
-			if(typeof $(opcionesBarthel[opcion]).find("input:checked").val() == "undefined"){
-				$(opcionesBarthel[opcion]).css("border","2px solid red");
-				error=true;
-				
-				}else{
-				$(opcionesBarthel[opcion]).css("border","0px solid black");
-			}
-			
-			
-			sumaBarthel+=parseInt($(opcionesBarthel[opcion]).find("input:checked").val());
-		}
-		if(error){
-			
-			
-			error=false;
-			navigator.vibrate(325);
-			$("#infoFin").popup('close');
+function calculaBarthel(){ 
+	
+	var sumaBarthel=0;
+	var opcionesBarthel=["#opcion_alimentacion",
+		"#opcion_baño",
+		"#opcion_vestirse",
+		"#opcion_arreglarse",
+		"#opcion_deposiciones",
+		"#opcion_miccion",
+		"#opcion_retrete",
+		"#opcion_movilidad",
+		"#opcion_deambular",
+	"#opcion_escaleras"];
+	
+	getFechaHora();
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
+	
+	for (opcion = 0; opcion < opcionesBarthel.length; opcion++) { 
+		if(typeof $(opcionesBarthel[opcion]).find("input:checked").val() == "undefined"){
+			$(opcionesBarthel[opcion]).css("border","2px solid red");
+			error=true;
 			
 			}else{
-			
-			switch(true) {
-				case (sumaBarthel<=20):
-				txtResultado="Dependencia total";
-				circuloResultado="#CF0202";
-				break;
-				case (25<=sumaBarthel && sumaBarthel<=60):
-				txtResultado="Dependencia severa";
-				circuloResultado="#DC9705";
-				break;
-				case (65<=sumaBarthel && sumaBarthel<=90):
-				txtResultado="Dependencia moderada";
-				circuloResultado="#F9D700";
-				break;
-				case (sumaBarthel==95):
-				txtResultado="Dependencia leve";
-				circuloResultado="#9EC709";
-				break;
-				case (sumaBarthel==100):
-				txtResultado="Independiente";
-				circuloResultado="#82EE09";
-				break;
-				
-			}
-			idPagina=$.mobile.activePage.attr('id');
-			resultadoTest=sumaBarthel;
-			var dataString = "nombreTest=Barthel&idPaciente=" + $.id + "&resultadoTest=" + sumaBarthel +
-			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
-			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
-			db.transaction(function(tx){  
-				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Barthel'," +
-				"'" + $.id + "'," +
-				"'" + sumaBarthel + "'," +
-				"'" + circuloResultado + "'," +
-				"'" + txtResultado + "'," +
-				"'" +  dia + "-" + mes + "-" + anno  + "'," +
-				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-				"'" + notasTest + "'," + 
-				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest(dataString)); 
-		}
-	}		
-	//Indice de Katz
-	function calculaKatz(){
-		var indiceKatz=0;
-		var opcionesKatz=["#opcion_baño",
-			"#opcion_vestido",
-			"#opcion_wc",
-			"#opcion_movilidad",
-			"#opcion_continencia",
-		"#opcion_alimentacion"];
-		
-		getFechaHora();
-		
-		if($("#notas").val()==""){
-			notasTest="No se registrarón notas";
-			}else{
-			notasTest=$("#notas").val();
-		}
-		for (opcion = 0; opcion < opcionesKatz.length; opcion++) { 
-			if(typeof $(opcionesKatz[opcion]).find("input:checked").val() == "undefined"){
-				$(opcionesKatz[opcion]).css("border","2px solid red");
-				error=true;
-				
-				}else{
-				$(opcionesKatz[opcion]).css("border","0px solid black");
-			}
-			
-			
-			indiceKatz+=parseInt($(opcionesKatz[opcion]).find("input:checked").val());
-		}
-		if(error){
-			
-			error=false;
-			navigator.vibrate(325);
-			$("#infoFin").popup('close');
-			
-			}else{
-			
-			switch(true) {
-				case (indiceKatz<=1):
-				txtResultado="Ausencia de incapacidad o incapacidad leve";
-				circuloResultado="#82EE09";
-				
-				break;
-				case (2<=indiceKatz && indiceKatz<=3):
-				txtResultado="Incapacidad moderada";
-				circuloResultado="#F9D700";
-				
-				break;
-				case (4<=indiceKatz && indiceKatz<=6):
-				txtResultado="Incapacidad severa";
-				circuloResultado="#CF0202";
-				
-				break;         
-			}
-			idPagina=$.mobile.activePage.attr('id');
-			
-			resultadoTest=indiceKatz;
-			var dataString = "nombreTest=Katz&idPaciente=" + $.id + "&resultadoTest=" + indiceKatz +
-			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
-			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
-			db.transaction(function(tx){  
-				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Katz'," +
-				"'" + $.id + "'," +
-				"'" + indiceKatz + "'," +
-				"'" + circuloResultado + "'," +
-				"'" + txtResultado + "'," +
-				"'" +  dia + "-" + mes + "-" + anno  + "'," +
-				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-				"'" + notasTest + "'," + 
-				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest(dataString)); 
+			$(opcionesBarthel[opcion]).css("border","0px solid black");
 		}
 		
-	}		
-	//Indice de Lowy
-	function calculaLowy(){
-		var indiceLowy=0;
-		var opcionesLowy=["#opcion_telefono",
-			"#opcion_compras",
-			"#opcion_comida",
-			"#opcion_casa",
-			"#opcion_ropa",
-			"#opcion_transporte",
-			"#opcion_medicacion",
-		"#opcion_economia"]
 		
-		getFechaHora();
+		sumaBarthel+=parseInt($(opcionesBarthel[opcion]).find("input:checked").val());
+	}
+	if(error){
 		
-		if($("#notas").val()==""){
-			notasTest="No se registrarón notas";
-			}else{
-			notasTest=$("#notas").val();
+		
+		error=false;
+		navigator.vibrate(325);
+		$("#infoFin").popup('close');
+		
+		}else{
+		
+		switch(true) {
+			case (sumaBarthel<=20):
+			txtResultado="Dependencia total";
+			circuloResultado="#CF0202";
+			break;
+			case (25<=sumaBarthel && sumaBarthel<=60):
+			txtResultado="Dependencia severa";
+			circuloResultado="#DC9705";
+			break;
+			case (65<=sumaBarthel && sumaBarthel<=90):
+			txtResultado="Dependencia moderada";
+			circuloResultado="#F9D700";
+			break;
+			case (sumaBarthel==95):
+			txtResultado="Dependencia leve";
+			circuloResultado="#9EC709";
+			break;
+			case (sumaBarthel==100):
+			txtResultado="Independiente";
+			circuloResultado="#82EE09";
+			break;
+			
 		}
-		for (opcion = 0; opcion < opcionesLowy.length; opcion++) {  
-			if(typeof $(opcionesLowy[opcion]).find("input:checked").val() == "undefined"){
-				$(opcionesLowy[opcion]).css("border","2px solid red");
-				error=true;
-				
-				}else{
-				$(opcionesLowy[opcion]).css("border","0px solid black");
-			}
+		idPagina=$.mobile.activePage.attr('id');
+		resultadoTest=sumaBarthel;
+		var dataString = "nombreTest=Barthel&idPaciente=" + $.id + "&resultadoTest=" + sumaBarthel +
+		"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+		"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+		"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
+		db.transaction(function(tx){  
 			
-			
-			indiceLowy+=parseInt($(opcionesLowy[opcion]).find("input:checked").val());
-		}
-		if(error){
-			
-			
-			error=false;
-			navigator.vibrate(325);
-			$("#infoFin").popup('close');
+			tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+			" VALUES(" + testMaxID + "," +
+			"'Barthel'," +
+			"'" + $.id + "'," +
+			"'" + sumaBarthel + "'," +
+			"'" + circuloResultado + "'," +
+			"'" + txtResultado + "'," +
+			"'" +  dia + "-" + mes + "-" + anno  + "'," +
+			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+			"'" + notasTest + "'," + 
+			"'" + nombre_usuario + "');");  
+		},errorDB,exitoTest(dataString)); 
+	}
+}		
+//Indice de Katz
+function calculaKatz(){
+	var indiceKatz=0;
+	var opcionesKatz=["#opcion_baño",
+		"#opcion_vestido",
+		"#opcion_wc",
+		"#opcion_movilidad",
+		"#opcion_continencia",
+	"#opcion_alimentacion"];
+	
+	getFechaHora();
+	
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
+	for (opcion = 0; opcion < opcionesKatz.length; opcion++) { 
+		if(typeof $(opcionesKatz[opcion]).find("input:checked").val() == "undefined"){
+			$(opcionesKatz[opcion]).css("border","2px solid red");
+			error=true;
 			
 			}else{
-			switch(true) {
-				case (indiceLowy<=1):
-				txtResultado="Dependencia total";
-				circuloResultado="#CF0202";
-				break;
-				case (2<=indiceLowy && indiceLowy<=3):
-				txtResultado="Dependencia severa";
-				circuloResultado="#DC9705";
-				break;
-				case (4<=indiceLowy && indiceLowy<=5):
-				txtResultado="Dependencia moderada";
-				circuloResultado="#F9D700";
-				break;
-				case (6<=indiceLowy && indiceLowy<=7):
-				txtResultado="Dependencia ligera";
-				circuloResultado="#9EC709";
-				break;
-				case (indiceLowy==8):
-				txtResultado="Independiente";
-				circuloResultado="#82EE09";
-				break;         
-			}
-			idPagina=$.mobile.activePage.attr('id');
-			
-			resultadoTest=indiceLowy;
-			var dataString = "nombreTest=Lowy&idPaciente=" + $.id + "&resultadoTest=" + indiceLowy +
-			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
-			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
-			db.transaction(function(tx){  
-				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Lowy'," +
-				"'" + $.id + "'," +
-				"'" + indiceLowy + "'," +
-				"'" + circuloResultado + "'," +
-				"'" + txtResultado + "'," +
-				"'" +  dia + "-" + mes + "-" + anno  + "'," +
-				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-				"'" + notasTest + "'," + 
-				"'" + nombre_usuario + "');");  
-			},errorDB,exitoTest(dataString)); 
+			$(opcionesKatz[opcion]).css("border","0px solid black");
 		}
-	}		
-		
+		
+		
+		indiceKatz+=parseInt($(opcionesKatz[opcion]).find("input:checked").val());
+	}
+	if(error){
+		
+		error=false;
+		navigator.vibrate(325);
+		$("#infoFin").popup('close');
+		
+		}else{
+		
+		switch(true) {
+			case (indiceKatz<=1):
+			txtResultado="Ausencia de incapacidad o incapacidad leve";
+			circuloResultado="#82EE09";
+			
+			break;
+			case (2<=indiceKatz && indiceKatz<=3):
+			txtResultado="Incapacidad moderada";
+			circuloResultado="#F9D700";
+			
+			break;
+			case (4<=indiceKatz && indiceKatz<=6):
+			txtResultado="Incapacidad severa";
+			circuloResultado="#CF0202";
+			
+			break;         
+		}
+		idPagina=$.mobile.activePage.attr('id');
+		
+		resultadoTest=indiceKatz;
+		var dataString = "nombreTest=Katz&idPaciente=" + $.id + "&resultadoTest=" + indiceKatz +
+		"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+		"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+		"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
+		db.transaction(function(tx){  
+			
+			tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+			" VALUES(" + testMaxID + "," +
+			"'Katz'," +
+			"'" + $.id + "'," +
+			"'" + indiceKatz + "'," +
+			"'" + circuloResultado + "'," +
+			"'" + txtResultado + "'," +
+			"'" +  dia + "-" + mes + "-" + anno  + "'," +
+			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+			"'" + notasTest + "'," + 
+			"'" + nombre_usuario + "');");  
+		},errorDB,exitoTest(dataString)); 
+	}
+	
+}		
+//Indice de Lowy
+function calculaLowy(){
+	var indiceLowy=0;
+	var opcionesLowy=["#opcion_telefono",
+		"#opcion_compras",
+		"#opcion_comida",
+		"#opcion_casa",
+		"#opcion_ropa",
+		"#opcion_transporte",
+		"#opcion_medicacion",
+	"#opcion_economia"]
+	
+	getFechaHora();
+	
+	if($("#notas").val()==""){
+		notasTest="No se registrarón notas";
+		}else{
+		notasTest=$("#notas").val();
+	}
+	for (opcion = 0; opcion < opcionesLowy.length; opcion++) {  
+		if(typeof $(opcionesLowy[opcion]).find("input:checked").val() == "undefined"){
+			$(opcionesLowy[opcion]).css("border","2px solid red");
+			error=true;
+			
+			}else{
+			$(opcionesLowy[opcion]).css("border","0px solid black");
+		}
+		
+		
+		indiceLowy+=parseInt($(opcionesLowy[opcion]).find("input:checked").val());
+	}
+	if(error){
+		
+		
+		error=false;
+		navigator.vibrate(325);
+		$("#infoFin").popup('close');
+		
+		}else{
+		switch(true) {
+			case (indiceLowy<=1):
+			txtResultado="Dependencia total";
+			circuloResultado="#CF0202";
+			break;
+			case (2<=indiceLowy && indiceLowy<=3):
+			txtResultado="Dependencia severa";
+			circuloResultado="#DC9705";
+			break;
+			case (4<=indiceLowy && indiceLowy<=5):
+			txtResultado="Dependencia moderada";
+			circuloResultado="#F9D700";
+			break;
+			case (6<=indiceLowy && indiceLowy<=7):
+			txtResultado="Dependencia ligera";
+			circuloResultado="#9EC709";
+			break;
+			case (indiceLowy==8):
+			txtResultado="Independiente";
+			circuloResultado="#82EE09";
+			break;         
+		}
+		idPagina=$.mobile.activePage.attr('id');
+		
+		resultadoTest=indiceLowy;
+		var dataString = "nombreTest=Lowy&idPaciente=" + $.id + "&resultadoTest=" + indiceLowy +
+		"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+		"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+		"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
+		db.transaction(function(tx){  
+			
+			tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+			" VALUES(" + testMaxID + "," +
+			"'Lowy'," +
+			"'" + $.id + "'," +
+			"'" + indiceLowy + "'," +
+			"'" + circuloResultado + "'," +
+			"'" + txtResultado + "'," +
+			"'" +  dia + "-" + mes + "-" + anno  + "'," +
+			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+			"'" + notasTest + "'," + 
+			"'" + nombre_usuario + "');");  
+		},errorDB,exitoTest(dataString)); 
+	}
+}		
+
 	//PAGINA: Test Pfeiffer
 	function calculaEdad(fecha){
 		getFechaHora();
@@ -1646,11 +1720,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Pfeiffer&idPaciente=" + $.id + "&resultadoTest=" + indicePfeiffer +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Pfeiffer'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Pfeiffer'," +
 				"'" + $.id + "'," +
 				"'" + indicePfeiffer + "'," +
 				"'" + circuloResultado + "'," +
@@ -1755,11 +1830,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Mini examen cognitivo(Lobo)&idPaciente=" + $.id + "&resultadoTest=" + indiceLobo +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Mini examen cognitivo(Lobo)'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Mini examen cognitivo(Lobo)'," +
 				"'" + $.id + "'," +
 				"'" + indiceLobo + "'," +
 				"'" + circuloResultado + "'," +
@@ -1841,11 +1917,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Yesavage&idPaciente=" + $.id + "&resultadoTest=" + indiceYesavage +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Yesavage'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," + 
+				"'Yesavage'," +
 				"'" + $.id + "'," +
 				"'" + indiceYesavage + "'," +
 				"'" + circuloResultado + "'," +
@@ -1917,11 +1994,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Gijon&idPaciente=" + $.id + "&resultadoTest=" + indiceGijon +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Gijon'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Gijon'," +
 				"'" + $.id + "'," +
 				"'" + indiceGijon + "'," +
 				"'" + circuloResultado + "'," +
@@ -1993,11 +2071,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Apgar&idPaciente=" + $.id + "&resultadoTest=" + indiceApgar +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Apgar'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Apgar'," +
 				"'" + $.id + "'," +
 				"'" + indiceApgar + "'," +
 				"'" + circuloResultado + "'," +
@@ -2069,11 +2148,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Apgar Neonatal&idPaciente=" + $.id + "&resultadoTest=" + indiceApgarNeo +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Apgar Neonatal'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Apgar Neonatal'," +
 				"'" + $.id + "'," +
 				"'" + indiceApgarNeo + "'," +
 				"'" + circuloResultado + "'," +
@@ -2143,11 +2223,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Barber Medio Rural&idPaciente=" + $.id + "&resultadoTest=" + indiceBarberMR +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Barber Medio Rural'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Barber Medio Rural'," +
 				"'" + $.id + "'," +
 				"'" + indiceBarberMR + "'," +
 				"'" + circuloResultado + "'," +
@@ -2227,11 +2308,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Riesgo de Upp de Braden&idPaciente=" + $.id + "&resultadoTest=" + indiceBraden +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Riesgo de UPP de Braden'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Riesgo de UPP de Braden'," +
 				"'" + $.id + "'," +
 				"'" + indiceBraden + "'," +
 				"'" + circuloResultado + "'," +
@@ -2286,11 +2368,12 @@ function updateExitoTest(txtActuaciones,id){
 			var dataString = "nombreTest=Valoracion de la UPP&idPaciente=" + $.id + "&resultadoTest=" + indiceUPP +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Valoracion de la UPP'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Valoracion de la UPP'," +
 				"'" + $.id + "'," +
 				"'" + indiceUPP + "'," +
 				"'" + circuloResultado + "'," +
@@ -2356,14 +2439,20 @@ function updateExitoTest(txtActuaciones,id){
 			idPagina=$.mobile.activePage.attr('id');
 			
 			resultadoTest=indiceCaida;
+			
+			
 			var dataString = "nombreTest=Riesgo de caida multiple&idPaciente=" + $.id + "&resultadoTest=" + indiceCaida +
 			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
 			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
+			
+			
+		
 			db.transaction(function(tx){  
 				
-				tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-				" VALUES('Riesgo de caida multiple'," +
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Riesgo de caida multiple'," +
 				"'" + $.id + "'," +
 				"'" + indiceCaida + "'," +
 				"'" + circuloResultado + "'," +
@@ -2371,8 +2460,8 @@ function updateExitoTest(txtActuaciones,id){
 				"'" +  dia + "-" + mes + "-" + anno  + "'," +
 				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
 				"'" + notasTest + "'," + 
-				"'" + nombre_usuario + "');");    
-			},errorDB,exitoTest(stringData)); 
+				"'" + nombre_usuario + "');");   
+			},errorDB,exitoTest(dataString)); 
 		}
 	}		
 		
@@ -2390,141 +2479,145 @@ function updateExitoTest(txtActuaciones,id){
 			}else{
 			notasTest=$("#notas").val();
 		}
-		
-		if(testMNA=="cribaje"){
-			
-			var opcionesCribaje=["#opcion_apetito",
-				"#opcion_peso",
-				"#opcion_movilidad",
-				"#opcion_enfermedad",
-				"#opcion_neuro",
-				"#opcion_imc"
-			];	
-			
-			for (opcion = 0; opcion < opcionesCribaje.length; opcion++) {
-				
-				if(typeof $(opcionesCribaje[opcion]).find("input:checked").val() == "undefined"){
-					
-					$(opcionesCribaje[opcion]).css("border","2px solid red");
-					error=true;
-					
-					}else{
-					$(opcionesCribaje[opcion]).css("border","0px solid black");
-					indiceMNA+=parseInt($(opcionesCribaje[opcion]).find("input:checked").val());
-				}
-				
-				
-			}
-			if(error){
-				
-				
-				error=false;
-				navigator.vibrate(325);
-				$("#infoFin").popup('close');
-				
-				}else{
-				
-				if(11<=indiceMNA){
-					txtResultado="Estado nutricional normal";
-					circuloResultado="#82EE09";
-					guardarMNA();
-					$.mobile.changePage("resultado.html");
-					}else{
-					document.getElementById("cribaje").style.display = 'none';
-					document.getElementById("evaluacion").style.display = 'block';
-					testMNA="evaluacion";
-					$.mobile.changePage("#page_inicioMNA");
-				}					
-				
-			}
-			}else{
-			var opcionesEvaluacion=["#opcion_vivir",
-				"#opcion_medicacion",
-				"#opcion_ulceras",
-				"#opcion_comida",
-				"#opcion_consumicion",
-				"#opcion_frutas",
-				"#opcion_agua",
-				"#opcion_alimentacion",
-				"#opcion_nutricion",
-				"#opcion_salud",
-				"#opcion_branquio",
-				"#opcion_pantorrilla"
-			];	
-			
-			for (opcion = 0; opcion < opcionesEvaluacion.length; opcion++) {
-				
-				if(typeof $(opcionesEvaluacion[opcion]).find("input:checked").val() == "undefined"){
-					
-					$(opcionesEvaluacion[opcion]).css("border","2px solid red");
-					error=true;
-					
-					}else{
-					$(opcionesEvaluacion[opcion]).css("border","0px solid black");
-					indiceMNA+=parseInt($(opcionesEvaluacion[opcion]).find("input:checked").val());
-				}
-				
-				
-			}
-			
-			if(error){
-				
-				
-				error=false;
-				navigator.vibrate(325);
-				$("#infoFin").popup('close');
-				
-				}else{
-				
-				if(indiceMNA<=16){
-					txtResultado="Malnutrición";
-					circuloResultado="#CF0202";
-					
-					
-					}else{
-					txtResultado="Riesgo de malnutrición";
-					circuloResultado="#DC9705";
-					
-				}
-				guardarMNA();
-				$.mobile.changePage("resultado.html");
-				
-			}
-		}
+	
+	if(testMNA=="cribaje"){
+	
+	var opcionesCribaje=["#opcion_apetito",
+	"#opcion_peso",
+	"#opcion_movilidad",
+	"#opcion_enfermedad",
+	"#opcion_neuro",
+	"#opcion_imc"
+	];	
+	
+	for (opcion = 0; opcion < opcionesCribaje.length; opcion++) {
+	
+	if(typeof $(opcionesCribaje[opcion]).find("input:checked").val() == "undefined"){
+	
+	$(opcionesCribaje[opcion]).css("border","2px solid red");
+	error=true;
+	
+	}else{
+	$(opcionesCribaje[opcion]).css("border","0px solid black");
+	indiceMNA+=parseInt($(opcionesCribaje[opcion]).find("input:checked").val());
+	}
+	
+	
+	}
+	if(error){
+	
+	
+	error=false;
+	navigator.vibrate(325);
+	$("#infoFin").popup('close');
+	
+	}else{
+	
+	if(11<=indiceMNA){
+	txtResultado="Estado nutricional normal";
+	circuloResultado="#82EE09";
+	guardarMNA();
+	$.mobile.changePage("resultado.html");
+	}else{
+	document.getElementById("cribaje").style.display = 'none';
+	document.getElementById("evaluacion").style.display = 'block';
+	testMNA="evaluacion";
+	$.mobile.changePage("#page_inicioMNA");
+	}					
+	
+	}
+	}else{
+	var opcionesEvaluacion=["#opcion_vivir",
+	"#opcion_medicacion",
+	"#opcion_ulceras",
+	"#opcion_comida",
+	"#opcion_consumicion",
+	"#opcion_frutas",
+	"#opcion_agua",
+	"#opcion_alimentacion",
+	"#opcion_nutricion",
+	"#opcion_salud",
+	"#opcion_branquio",
+	"#opcion_pantorrilla"
+	];	
+	
+	for (opcion = 0; opcion < opcionesEvaluacion.length; opcion++) {
+	
+	if(typeof $(opcionesEvaluacion[opcion]).find("input:checked").val() == "undefined"){
+	
+	$(opcionesEvaluacion[opcion]).css("border","2px solid red");
+	error=true;
+	
+	}else{
+	$(opcionesEvaluacion[opcion]).css("border","0px solid black");
+	indiceMNA+=parseInt($(opcionesEvaluacion[opcion]).find("input:checked").val());
+	}
+	
+	
+	}
+	
+	if(error){
+	
+	
+	error=false;
+	navigator.vibrate(325);
+	$("#infoFin").popup('close');
+	
+	}else{
+	
+	if(indiceMNA<=16){
+	txtResultado="Malnutrición";
+	circuloResultado="#CF0202";
+	
+	
+	}else{
+	txtResultado="Riesgo de malnutrición";
+	circuloResultado="#DC9705";
+	
+	}
+	guardarMNA();
+	$.mobile.changePage("resultado.html");
+	
+	}
+	}
 	}		
 	function guardarMNA(){
-		var notasTest;
-		if($("#notas").val()==""){
-			notasTest="No se registrarón notas";
-			}else{
-			notasTest=$("#notas").val();
-		}
-		idPagina=$.mobile.activePage.attr('id');
-		
-		resultadoTest=indiceMNA;
-		var dataString = "nombreTest=Evaluacion Nutricional(MNA)&idPaciente=" + $.id + "&resultadoTest=" + indiceMNA +
-		"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
-		"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
-		"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&registroTest=ok";
-		db.transaction(function(tx){  
-			
-			tx.executeSql("INSERT INTO Test(nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
-			" VALUES('Evaluación Nutricional(MNA)'," +
-			"'" + $.id + "'," +
-			"'" + indiceMNA + "'," +
-			"'" + circuloResultado + "'," +
-			"'" + txtResultado + "'," +
-			"'" +  dia + "-" + mes + "-" + anno  + "'," +
-			"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
-			"'" + notasTest + "'," + 
-			"'" + nombre_usuario + "');");  
-		},errorDB,exitoDB(stringData));
+	var notasTest;
+	if($("#notas").val()==""){
+	notasTest="No se registrarón notas";
+	}else{
+	notasTest=$("#notas").val();
+	}
+	idPagina=$.mobile.activePage.attr('id');
+	
+	resultadoTest=indiceMNA;
+	
+	var dataString = "nombreTest=Evaluacion Nutricional(MNA)&idPaciente=" + $.id + "&resultadoTest=" + indiceMNA +
+			"&resultadoColorTest=" + circuloResultado + "&descripcionResultadoTest=" + txtResultado +
+			"&fechaTest=" +	+  dia + "-" + mes + "-" + anno + "&horaTest=" + hora + ":" + minutos + ":" + segundos +
+			"&notasTest=" + notasTest + "&usuarioID=" + nombre_usuario + "&idTest=" + testMaxID + "&registroTest=ok";
+			db.transaction(function(tx){  
+				
+				tx.executeSql("INSERT INTO Test(idTest,nombreTest,idPaciente,resultadoTest,resultadoColorTest,descripcionResultadoTest,fechaTest,horaTest,notasTest,usuarioID)"+
+				" VALUES(" + testMaxID + "," +
+				"'Riesgo de caida multiple'," +
+				"'" + $.id + "'," +
+				"'" + indiceMNA + "'," +
+				"'" + circuloResultado + "'," +
+				"'" + txtResultado + "'," +
+				"'" +  dia + "-" + mes + "-" + anno  + "'," +
+				"'" +  hora + ":" + minutos + ":" + segundos  + "'," +
+				"'" + notasTest + "'," + 
+				"'" + nombre_usuario + "');");   
+			},errorDB,exitoTest(dataString)); 
+	
+	
 	}		
 	//PAGINA CONTACTO
 		
 	function abrirNavegadorContacto(){
-		window.open(encodeURI('http://www3.ubu.es/ubunurse/#page_contact'), '_system', 'location=yes');
-		
+	window.open(encodeURI('http://www3.ubu.es/ubunurse/#page_contact'), '_system', 'location=yes');
+	
 	}		
 	//PAGINA GRAFICO
 	$(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
