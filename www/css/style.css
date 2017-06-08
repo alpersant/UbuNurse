@@ -1,5 +1,6 @@
-
-
+/*
+Colores para mostrar las tablas
+*/
 th {
 	background: #68b2ee;
     border-bottom: 3px solid #0D0D0D;
@@ -16,6 +17,9 @@ tr:nth-child(even) {
 #evaluacion{
 	display: none;
 }
+/*
+ Adaptacion de las imagenes y textos a la pantalla	
+*/
 img {
     max-width:100%;
 }
@@ -45,6 +49,9 @@ box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
 #txtResultado{
 	color:#FF333F;
 }
+/*
+Estilos de los cuestionarios	
+*/
 td.opcionKatz{
 	text-align:center;
 }

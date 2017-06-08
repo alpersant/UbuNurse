@@ -1,70 +1,70 @@
 //JavaScript Document
 /************************************************************
-	*@auhtor:
-	*@fecha:
-	*@version:
-	*@sinopsis:
-	*
+	*@auhtor: Álvaro Pérez Santamaría
+	*@fecha: 08/06/2017
+	*@version: 1.0.0
+	*@sinopsis: Funciones de la aplicación UbuNurse, una aplicacion
+	*           para la visita domiciliria.
 	*
 	/*
 	* Variables de la aplicacion
 */
-/**/
+/*Variable para almacenar la base de datos*/
 var db;
-/**/
+/*Variable para almacenar el usuario registrado*/
 var nombre_usuario;
 
-/**/
+/*Variable para almacenar el resultado del cuestionario*/
 var resultadoTest=0;
-/**/
+/*Variable para almacenar las notas del cuestionario */
 var notasTest;
-/**/
+/*Variable para almacenar el texto identificativo del resultado del cuestionario*/
 var txtResultado;
-/**/
+/*Variable para almacenar el color asociado al resultado del cuestionario*/
 var circuloResultado;
-/**/
+/*Variable para identificar la pantalla visible dentro de la aplicacion*/
 var idPagina;
-/**/
+/*Variable para almacenar el número identificativo del último cuestionario*/
 var testMaxID;
-/**/
+/*Variable que determina si un usario ya existen en la base de datos*/
 var usuario=true;
-/**/
+/*Variable que determina si la clave corresponde con la clave del usuario en la base de datos*/
 var clave=true;
-/**/
+/*Variable que determina si el usuario está loggeado*/
 var userloggeado=false;
-/**/
+/*Variable que determina si hemos encontrado a un usuario en la base de datos*/
 var usuario_econtrado=false;
-/**/
+/*Variable que almacena la fecha actual para su registro en la base de datos*/
 var fechaActual;
-/**/
+/*Variable que almacena el numero día actual*/
 var dia;
-/**/
+/*Variable que almacena el numero mes actual*/
 var mes;
-/**/
+/*Variable que almacena el año actual*/
 var anno;
-/**/
+/*Varaiable que almacena la hora actual*/
 var hora;
-/**/
+/*Variable que almacena los minutos actuales*/
 var minutos;
-/**/
+/*Variable que almacena los segundos actuales*/
 var segundos;
-/**/
+/*Varaiable que almacena el texto del dia de la semana actual*/
 var dia_semana;
-/**/
+/*Variable para determinar el tipo cuestionario dentro del cuestionario MNA*/
 var testMNA="cribaje";
-/**/
+/*Variable para determinar si ha habido algun error*/
 var error=false;
-/**/
+/*Variable para determinar si la aplicacion tiene que eliminar todos los cuestionarios*/
 var eliminar_cuestionarios=false;
-/**/
+/*Variable para almacenar el identificador del paciente para la grafica de resultados*/
 var pacienteResultadosAnteriores;
-/**/
+/*Varaiable para almacenar el nombre del cuestionario para la grafica de resultados*/
 var nombreTestResultadosAnteriores;
-/**/
+/*Variable para almacenar las fechas de los cuestionarios de la grafica*/
 var fechasGrafico=[];
-/**/
+/*Varaiable para almacenar los resultados de los cuestionarios de la grafica*/
 var resultadosGrafico=[];
-/**/
+/*Varaiable para almacenar los colores asociados al resultados de los cuestionarios de la grafica*/
 var coloresGrafico=[];
 /*
 	* Carga inicial de la app
@@ -75,7 +75,7 @@ var app = {
 	},
     bindEvents: function() {
 		
-        //
+        //Activamos la lectura del botón atrás
 		document.addEventListener("backbutton", onBackKeyDown, true);
 		
 	},
@@ -86,10 +86,9 @@ var app = {
 */
 /************************
 	*
-	*
-	*
-	*
-	*
+	* Funcion checkConexion que comprueba si hay conexion a Internet en el dispositivo
+	* y nos devuelve true si existe conexión si no false.
+    *
 ***************************/
 
 function checkConexion() { 
@@ -109,42 +108,12 @@ function checkConexion() {
 }
 /************************
 	*
-	*
-	*
-	*
-	*
+	* Funcion que abre y/o crea la base de datos
+    *
 ***************************/
-function verAcciones(){
-	db.transaction(function(tx){  
-		tx.executeSql("SELECT * FROM Acciones",[],function(tx,rs){
-			
-			if (rs.rows.length>0){
-				for(var i=0;i<rs.rows.length;i++){  
-					var act=rs.rows.item(i);
-					//alert("Accion: " + act.accion + "\nDatos: "+act.datos+"\n");
-					//guardarBD(act.accion,act.datos);
-				}
-			}
-		}				
-		
-		);	
-	},errorDB,exitoDB);
-}
-function vaciarBD() {
-	alert("vaciarBD");
-    db.transaction(function(tx) {
-        tx.executeSql("DROP TABLE Usuarios;");
-		tx.executeSql("DROP TABLE Test;");
-		tx.executeSql("DROP TABLE Pacientes;");	
-		tx.executeSql("DROP TABLE Acciones;");		
-		
-		}, function(error) {
-        alert('Transaction DROP ERROR: ' + error.message);
-		}, function() {
-		
-        alert('DROP database OK');
-	});
-}
+
+	
+	
 function openBD(){
 	
 	if(typeof db== "undefined"){
@@ -178,7 +147,7 @@ function openBD(){
 /************************
 	*
 	*
-	*
+	* Función que si la base datos se ha creado correctamente sigue creando las tablas.
 	*
 	*
 ***************************/
@@ -228,7 +197,7 @@ function continuarDB(){
 
 /************************
 	*
-	*
+	* Funcion para el exito de las transaction de la base de datos
 	*
 	*
 	*
@@ -240,8 +209,8 @@ function exitoDB(){
 /************************
 	*
 	*
-	*
-	*
+	* Funcion que permite guardar los datos en la base de datos remota o en la tabla de acciones pendientes
+	* una vez que se ha guardado correctamente en la base de datos local
 	*
 ***************************/	
 function exitoTest(dataString){
@@ -266,7 +235,7 @@ function exitoTest(dataString){
 
 /************************
 	*
-	*
+	*Función que aleta de un error en el uso de la base de datos
 	*
 	*
 	*
@@ -276,7 +245,7 @@ function errorDB(){
 }	
 /************************
 	*
-	*
+	* Funcion que alerta de un error en la inserccion de datos en la base de datos
 	*
 	*
 	*
@@ -286,7 +255,7 @@ function errorinsertDB(){
 }
 /************************
 	*
-	*
+	* Función para manejar la navegabilidad de la aplicación con el baton atrás
 	*
 	*
 	*
@@ -332,7 +301,13 @@ function copiaSeguridad(){
 		
 	}
 }
-
+/************************
+	*
+	* Función para borrar las acciones pendientes en la base de datos.
+	*
+	*
+	*
+***************************/
 function deleteAccion(accionBorrar,cantidadBorrar){
 	if (cantidadBorrar>0){
 		
@@ -347,6 +322,11 @@ function deleteAccion(accionBorrar,cantidadBorrar){
 	
 	
 }
+/************************
+	*
+	* Función para guardar datos en la base de datos remota
+	*
+***************************/
 function guardarBD(accion,datos){
 	
 	$.ajax({
@@ -365,9 +345,7 @@ function guardarBD(accion,datos){
 	
 }/************************
 	*
-	*
-	*
-	*
+	* Función para conseguir la hora y fecha actual
 	*
 ***************************/	
 //Fecha y hora actual
@@ -394,7 +372,7 @@ function getFechaHora(){
 /************************
 	*
 	*
-	*
+	* Funcion que da formato europeo a la fecha
 	*
 	*
 ***************************/
@@ -450,7 +428,11 @@ function cargarDetallesUsuario(){
 	
 }		
 
-
+/************************
+	*
+	* Función para registrar un usuario en la base de datos
+	*
+***************************/
 function registrarUsuario(){
 	if($("#registro_password").val()==$("#registro_password_validate").val() && $("#registro_usuario").val()!="" &&
 	$("#registro_password").val()!="" && $("#registro_nombre").val()!=""){
@@ -488,6 +470,11 @@ function registrarUsuario(){
 	
 	
 }
+/************************
+	*
+	* Función para registrar el usuario en la base de datos local
+	*
+***************************/
 function continuarRegistro(){
 	
 	db.transaction(function(tx){  
@@ -500,8 +487,13 @@ function continuarRegistro(){
 	},function(){errorRegistro(false);},exitoRegistro);
 	
 	
+	
 }
-
+/************************
+	*
+	* Función para guardar datos del usuario en la base de datos remota
+	*
+***************************/
 function exitoRegistro(){
 	var redConnection = checkConexion();
 	var usuario = $("#registro_usuario").val();
@@ -529,7 +521,11 @@ function exitoRegistro(){
 	
 	$("#page_registro_popup").popup('open');
 }
-
+/************************
+	*
+	* Función para guardar datos de los usuarios
+	*
+***************************/
 function errorRegistro(accion){
 	if(accion){
 		
@@ -551,6 +547,11 @@ function errorRegistro(accion){
 	
 	
 }
+/************************
+	*
+	* Función para modificar datos del usuario
+	*
+***************************/
 function continuarEdicion(){
 	
 	var usuario = $("#registro_usuario").val();
@@ -587,6 +588,11 @@ function continuarEdicion(){
 	$("#page_registro_popup").popup('open');
 	
 }
+/************************
+	*
+	* Función para borrar datos del usuario
+	*
+***************************/
 function deleteUsuario(){
 	
 	db.transaction(function(tx){ 
@@ -638,6 +644,11 @@ function deleteUsuario(){
 	
 	
 }
+/************************
+	*
+	* Función para cerrar el aviso de borrado
+	*
+***************************/
 function cerrarPopupRegistro(){
 	$("page_registro_popup").popup('close');
 	navigator.app.backHistory();
@@ -652,7 +663,7 @@ $(document).on('pagebeforeshow', '#page_login', openBD);
 /************************
 	*
 	*
-	*
+	*Funcion que compueba si el usuario está loggeado en la aplicacion
 	*
 	*
 ***************************/
@@ -677,7 +688,7 @@ function checkLog(){
 /************************
 	*
 	*
-	*
+	*Función de validacion de datos de loggeo
 	*
 	*
 ***************************/
@@ -723,7 +734,7 @@ function login(){
 /************************
 	*
 	*
-	*
+	* Funcion de alerta de usuario no encontrado o erroneo
 	*
 	*
 ***************************/
@@ -734,7 +745,7 @@ function errorUsuario(){
 /************************
 	*
 	*
-	*
+	* Funcion para marcar como loggeado el usuario en la base de datos local
 	*
 	*
 ***************************/
@@ -748,7 +759,7 @@ function loggInUsuario(){
 }
 /************************
 	*
-	*
+	* Funcion de validacion de campos de loggeo
 	*
 	*
 	*
@@ -775,7 +786,7 @@ function validacionLoginError(){
 /************************
 	*
 	*
-	*
+	* Funcion para hacer logout de la aplicacion
 	*
 	*
 ***************************/
@@ -844,7 +855,7 @@ function cargarPacientes(){
 	
 }		
 
-//PAGINA: NUEVO/EDITAR PACIENTE
+//PAGINA: NUEVO/EDITAR PACIENTE: carga de datos
 $(document).on('pagebeforeshow', '#page_editPaciente', cargarDetallesPaciente);
 function cargarDetallesPaciente(){
 	document.getElementById("eliminarPaciente").style.display = 'none';
@@ -868,7 +879,12 @@ function cargarDetallesPaciente(){
 	},nuevoPaciente,exitoDB); 
 	
 	
-}		
+}	
+/************************
+	*
+	* Función para restablecer los campos del formulario
+	*
+***************************/
 function nuevoPaciente(){
 	
 	document.getElementById("eliminarPaciente").style.display = 'none';
@@ -881,7 +897,11 @@ function nuevoPaciente(){
 	document.getElementById("detalle_cp").value="";
 	document.getElementById("detalle_telefono").value="";
 }		
-
+/************************
+	*
+	* Función para guardar datos del paciente en la base de datos local
+	*
+***************************/
 function guardarPaciente(){
 	if( $("#detalle_cip").val()!=""){
 		db.transaction(function(tx){ 
@@ -907,11 +927,21 @@ function guardarPaciente(){
 	
 	
 }		
+/************************
+	*
+	* Función de alerta para paciente ya registrado
+	*
+***************************/
 function errorPacienteDuplicado(){
 	$("#detalle_cip").css("border", "2px solid red");
 	navigator.vibrate(325);
 	$("#page_paciente_popupError").popup('open');
 }
+/************************
+	*
+	* Función para guardar datos del paciente en la base de datos local
+	*
+***************************/
 function insertPaciente(){
 	
 	db.transaction(function(tx){  
@@ -961,6 +991,11 @@ function insertPaciente(){
 	$.id="";
 	
 }		
+/************************
+	*
+	* Función para modificar datos en la base de datos local
+	*
+***************************/
 function updatePaciente(){
 	
 	db.transaction(function(tx){  
@@ -971,7 +1006,12 @@ function updatePaciente(){
 		$("#detalle_cp").val(),$("#detalle_telefono").val(),$.id]);  
 	},errorPacienteDuplicado,continuarEdicionPaciente);
 	
-}		
+}	
+/************************
+	*
+	* Función para modificar datos en la base de datos remota
+	*
+***************************/
 function continuarEdicionPaciente(){
 	var redConnection = checkConexion();
 	
@@ -1012,6 +1052,11 @@ function continuarEdicionPaciente(){
 	
 	navigator.app.backHistory ();
 }
+/************************
+	*
+	* Función para borra datos del paciente en la base de datos local y remota
+	*
+***************************/
 function deletePaciente(){
 	
 	db.transaction(function(tx){ 
@@ -1137,7 +1182,12 @@ function eliminarTestHistorial(test){
 	}
 	cargarHistorialTest();    
 	navigator.app.backHistory(); 	
-}		
+}	
+/************************
+	*
+	* Función para ocultar el boton de eliminar todos los cuestionarios
+	*
+***************************/
 function mostrarBotonEliminarTodos(rows){
 	if(rows>0){
 		$(".linkEliminarTodos").css("display", "block");
@@ -1145,7 +1195,12 @@ function mostrarBotonEliminarTodos(rows){
 		$("#historial").append('<li>Sin registros</li>');
 		$(".linkEliminarTodos").css("display", "none");
 	}
-}		
+}
+/************************
+	*
+	* Función para guardar datos en la base de datos local la accion de borrado del cuestionario
+	*
+***************************/
 function restaurarIDTest(){
 	var redConnection = checkConexion();
 	var dataString = "idTest=" + $.id_Test + "&deleteTest=ok";
@@ -1167,7 +1222,12 @@ function restaurarIDTest(){
 	
 }		
 
-//PAGINA: RESULTADOS ANTERIORES
+//PAGINA: RESULTADOS 
+/************************
+	*
+	* Función para cargar los datos del paciente o no en la pagina de resultados
+	*
+***************************/
 $(document).on('pagebeforeshow', '#page_resultadoTest', cargarResultado);
 $(document).on('pagebeforeshow', '#page_resultado', cargarResultado);
 function cargarResultado(){
@@ -1262,7 +1322,12 @@ function cargarResultado(){
 	
 	
 	
-}		
+}
+/************************
+	*
+	* Función para mostrar el acceso a la grafica de resultados, debe existir al menos dos resultados
+	*
+***************************/
 function disponibleBotonResultados(visible){
 	if(visible){
 		$("#btn_resultados").css("display", "block");
@@ -1273,26 +1338,26 @@ function disponibleBotonResultados(visible){
 	
 	
 }		
-
+/************************
+	*
+	* Función para guardar el identificador de la pagina atual
+	*
+***************************/
 function guardarPagina(){
 	idPagina=$.mobile.activePage.attr('id');
 }		
-
+/************************
+	*
+	* Función para abrir el textarea de las actuaciones de un cuestionario
+	*
+***************************/
 function abrirActuaciones(){
 	$("#actuaciones").css("display", "block");
 	
 }		
 
 //PAGINA: CONFIGURACION
-function cambiarTema(){
 	
-	var tema= $("opcion_tema").find("input:checked").val();
-	if(tema="b"){
-		$("#contenidoPrincipal").attr("data-theme","b");
-		
-	}
-	
-}		
 // Guadar las actuaciones
 
 function guardarActuacionesTest(){
@@ -1307,7 +1372,11 @@ function guardarActuacionesTest(){
 	
 	
 }		
-
+/************************
+	*
+	* Función para guardar las actuaciones de un cuestionario
+	*
+***************************/
 function guardarActuaciones(){
 	var txtActuaciones=$("#actuacionesTxt").val();
 	if(txtActuaciones==""){
@@ -1322,6 +1391,11 @@ function guardarActuaciones(){
 	},errorDB,updateExitoTest(txtActuaciones,testMaxID));
 }			
 
+/************************
+	*
+	* Función para guardar las actuaciones de un cuestionario en la base de datos remota
+	*
+***************************/
 function updateExitoTest(txtActuaciones,testMaxID){
 	
 	var redConnection = checkConexion();
@@ -1345,7 +1419,11 @@ function updateExitoTest(txtActuaciones,testMaxID){
 	
 }
 //PAGINA: CALCULAR BARTHEL
-
+/************************
+	*
+	* Función para calcular el resultado del cuestionario Barthel
+	*
+***************************/
 function calculaBarthel(){ 
 	
 	var sumaBarthel=0;
@@ -1433,7 +1511,11 @@ function calculaBarthel(){
 		},errorDB,exitoTest(dataString)); 
 	}
 }		
-//Indice de Katz
+/************************
+	*
+	* Función para calcular el resultado del cuestionario Katz
+	*
+***************************/
 function calculaKatz(){
 	var indiceKatz=0;
 	var opcionesKatz=["#opcion_baño",
@@ -1511,7 +1593,11 @@ function calculaKatz(){
 	}
 	
 }		
-//Indice de Lowy
+/************************
+	*
+	* Función para calcular el resultado del cuestionario Lowy
+	*
+***************************/
 function calculaLowy(){
 	var indiceLowy=0;
 	var opcionesLowy=["#opcion_telefono",
@@ -1596,7 +1682,11 @@ function calculaLowy(){
 	}
 }		
 
-	//PAGINA: Test Pfeiffer
+/************************
+	*
+	* Funciones para calcular la edad de un paciente
+	*
+***************************/
 	function calculaEdad(fecha){
 		getFechaHora();
 		var txtEdad="";
@@ -1613,7 +1703,11 @@ function calculaLowy(){
 		return  txtEdad;
 	}		
 	$(document).on('pagebeforeshow', '#page_inicioPfeiffer', cargarDatosPfeiffer);
-		
+/************************
+	*
+	* Función para calcular el resultado cargar los datos del paciente en el cuestionario Pfeiffer
+	*
+***************************/		
 	function cargarDatosPfeiffer(){
 		getFechaHora();
 		var edad;	
@@ -1650,7 +1744,11 @@ function calculaLowy(){
 		$("#presidenteAnterior").append('<strong>Presidente Anterior: </strong> José Luis Rodríguez Zapatero');
 		$("#calculoResta").append('<strong>Resta: </strong> 20 - 17 - 14 - 11 - 8 - 5 - 2 - 0');
 	}		
-		
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Pfeiffer
+	*
+***************************/	
 	function calculaPfeiffer(){
 		var indicePfeiffer=0;
 		var opcionesPfeiffer=["#opcion_dia",
@@ -1740,7 +1838,11 @@ function calculaLowy(){
 		
 	//PAGINA: Test Lobo
 	$(document).on('pagebeforeshow', '#page_inicioLobo', cargarDatosLobo);
-		
+	/************************
+	*
+	* Función para cargar los datos del paciente en el cuestionario Lobo
+	*
+***************************/	
 	function cargarDatosLobo(){
 		getFechaHora();
 		$("#datosTemporal").html('');
@@ -1754,7 +1856,12 @@ function calculaLowy(){
 			});  
 		},errorDB,exitoDB); 
 		
-	}		
+	}
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Lobo
+	*
+***************************/
 	function calculaLobo(){
 		var indiceLobo=0;
 		var opcionesLobo=["#opcion_temporal",
@@ -1848,6 +1955,11 @@ function calculaLowy(){
 		}
 	}		
 	//PAGINA Test Yesavage
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Yesavage
+	*
+***************************/
 	function calculaYesavage(){
 		var indiceYesavage=0;
 		var opcionesYesavage=["#opcion_vida",
@@ -1935,6 +2047,11 @@ function calculaLowy(){
 		}
 	}		
 	//PAGINA Test Gijon
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Gijon
+	*
+***************************/
 	function calculaGijon(){
 		var indiceGijon=0;
 		var opcionesGijon=["#opcion_familia",
@@ -2012,6 +2129,11 @@ function calculaLowy(){
 		}
 	}		
 	//PAGINA Test Apgar
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Apgar
+	*
+***************************/
 	function calculaApgar(){
 		var indiceApgar=0;
 		var opcionesApgar=["#opcion_familia",
@@ -2089,6 +2211,11 @@ function calculaLowy(){
 		}
 	}		
 	//PAGINA Test Apgar Neonatal
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Apgar NeoNatal
+	*
+***************************/
 	function calculaApgarNeo(){
 		var indiceApgarNeo=0;
 		var opcionesApgarNeo=["#opcion_corazon",
@@ -2166,6 +2293,11 @@ function calculaLowy(){
 		}
 	}		
 	//PAGINA Test Barber Medio Rural
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Barber Medio Rural
+	*
+***************************/
 	function calculaBarberMR(){
 		var indiceBarberMR=0;
 		var opcionesBarberMR=["#opcion_vida",
@@ -2243,6 +2375,11 @@ function calculaLowy(){
 		
 	
 	//PAGINA TEST UPP BRADEN
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario Braden
+	*
+***************************/
 	function calculaBraden(){
 		var indiceBraden=0;
 		var opcionesBraden=["#opcion_sensorial",
@@ -2326,6 +2463,11 @@ function calculaLowy(){
 		}
 	}		
 	//PAGINA TEST MONITORIZACION UPP 
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario de monitorizacion de UPP
+	*
+***************************/
 	function calculaUPP(){
 		var indiceUPP=0;
 		var opcionesUPP=["#opcion_longitud",
@@ -2386,6 +2528,11 @@ function calculaLowy(){
 		}
 	}		
 	//PAGINA TEST CAIDAS MULTIPLES 
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario de caidas multiples
+	*
+***************************/
 	function calculaCaidasMultiples(){
 		var indiceCaida=0;
 		
@@ -2466,6 +2613,11 @@ function calculaLowy(){
 	}		
 		
 	//PAGINA TEST MNA
+	/************************
+	*
+	* Función para calcular el resultado del cuestionario MNA
+	*
+***************************/
 	$(document).on('pagebeforeshow', '#page_inicioMNA', testInicialMNA);
 	function testInicialMNA(){
 		testMNA="cribaje";
@@ -2614,12 +2766,21 @@ function calculaLowy(){
 	
 	}		
 	//PAGINA CONTACTO
-		
+		/************************
+	*
+	* Función para abrir la pagina web con el formulario de contacto
+	*
+***************************/
 	function abrirNavegadorContacto(){
 	window.open(encodeURI('http://www3.ubu.es/ubunurse/#page_contact'), '_system', 'location=yes');
 	
 	}		
 	//PAGINA GRAFICO
+	/************************
+	*
+	* Función para mostrar el grafico de resultados
+	*
+***************************/
 	$(document).on('pagebeforeshow', '#resultado_home', crearGrafico);
 		
 	function crearGrafico(){
@@ -2637,7 +2798,11 @@ function calculaLowy(){
 	
 	
 	}		
-		
+		/************************
+	*
+	* Función para almacenar los datos de los cuestionarios del grafico
+	*
+***************************/
 	function buscarDatosGrafico(){
 	fechasGrafico.length=0;
 	resultadosGrafico.length=0;
@@ -2665,7 +2830,11 @@ function calculaLowy(){
 	},errorDB,dibujarGrafico);
 	
 	}		
-		
+		/************************
+	*
+	* Función para dibujar en el canvas de la pagina HMTL el grafico
+	*
+***************************/
 	function dibujarGrafico(){
 	
 	var ctx = document.getElementById("graficoResultados").getContext('2d');
