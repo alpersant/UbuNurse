@@ -1380,7 +1380,7 @@ function guardarActuacionesTest(){
 function guardarActuaciones(){
 	var txtActuaciones=$("#actuacionesTxt").val();
 	if(txtActuaciones==""){
-		txtActuaciones="No se realizón ninguna acción";
+		txtActuaciones="No se realizó ninguna acción";
 	}
 	
 	db.transaction(function(tx){ 
